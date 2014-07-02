@@ -1,0 +1,505 @@
+
+@font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 300;
+    src: url("fonts/OpenSans-Light.ttf");
+}
+@font-face {
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: 300;
+    src: url("fonts/OpenSans-LightItalic-small.ttf");
+}
+@font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: url("fonts/OpenSans-Regular.ttf");
+}
+@font-face {
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: url("fonts/OpenSans-Italic-small.ttf");
+}
+@font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 600;
+    src: url("fonts/OpenSans-Semibold.ttf");
+}
+@font-face {
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: 600;
+    src: url("fonts/OpenSans-SemiboldItalic.ttf");
+}
+@font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: url("fonts/OpenSans-Bold.ttf");
+}
+@font-face {
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: 700;
+    src: url("fonts/OpenSans-BoldItalic.ttf");
+}
+@font-face {
+    font-family: "Proxima Nova";
+    font-style: normal;
+    font-weight: 300;
+    src: url("../fonts/ProximaNova-Light.otf");
+}
+@font-face {
+    font-family: "Proxima Nova";
+    font-style: italic;
+    font-weight: 300;
+    src: url("../fonts/ProximaNova-LightItalic.otf");
+}
+@font-face {
+    font-family: "Proxima Nova";
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/ProximaNova-Regular.otf");
+}
+@font-face {
+    font-family: "Proxima Nova";
+    font-style: italic;
+    font-weight: 400;
+    src: url("../fonts/ProximaNova-RegularItalic.otf");
+}
+@font-face {
+    font-family: "Proxima Nova";
+    font-style: normal;
+    font-weight: 600;
+    src: url("../fonts/ProximaNova-Semibold.otf");
+}
+@font-face {
+    font-family: "Proxima Nova";
+    font-style: italic;
+    font-weight: 600;
+    src: url("../fonts/ProximaNova-SemiboldItalic.otf");
+}
+@font-face {
+    font-family: "Proxima Nova";
+    font-style: normal;
+    font-weight: 700;
+    src: url("../fonts/ProximaNova-Bold.otf");
+}
+@font-face {
+    font-family: "Proxima Nova";
+    font-style: italic;
+    font-weight: 700;
+    src: url("../fonts/ProximaNova-BoldItalic.otf");
+}
+@font-face {
+    font-family: "Proxima Nova";
+    font-style: normal;
+    font-weight: 800;
+    src: url("../fonts/ProximaNova-Extrabold.otf");
+}
+@font-face {
+    font-family: "Proxima Nova";
+    font-style: normal;
+    font-weight: 900;
+    src: url("../fonts/ProximaNova-Black.otf");
+}
+@font-face {
+    font-family: "Ubuntu";
+    font-style: normal;
+    font-weight: 400;
+    src: url("fonts/Ubuntu-Regular.ttf");
+}
+@font-face {
+    font-family: "SourceCodePro";
+    font-style: normal;
+    font-weight: normal;
+    src: url("fonts/SourceCodePro-Regular-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/SourceCodePro-Regular-webfont.woff") format("woff"), url("fonts/SourceCodePro-Regular-webfont.ttf") format("truetype"), url("fonts/SourceCodePro-Regular-webfont.svg#SourceCodeProRegular") format("svg");
+}
+@font-face {
+    font-family: "SourceCodePro";
+    font-style: normal;
+    font-weight: bold;
+    src: url("fonts/SourceCodePro-Bold-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/SourceCodePro-Bold-webfont.woff") format("woff"), url("fonts/SourceCodePro-Bold-webfont.ttf") format("truetype"), url("fonts/SourceCodePro-Bold-webfont.svg#SourceCodeProBold") format("svg");
+}
+@font-face {
+    font-family: "UbuntuMono";
+    font-style: normal;
+    font-weight: normal;
+    src: url("fonts/UbuntuMono-R-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/UbuntuMono-R-webfont.woff") format("woff"), url("fonts/UbuntuMono-R-webfont.ttf") format("truetype"), url("fonts/UbuntuMono-R-webfont.svg#UbuntuMonoRegular") format("svg");
+}
+@font-face {
+    font-family: "UbuntuMono";
+    font-style: normal;
+    font-weight: bold;
+    src: url("fonts/UbuntuMono-B-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/UbuntuMono-B-webfont.woff") format("woff"), url("fonts/UbuntuMono-B-webfont.ttf") format("truetype"), url("fonts/UbuntuMono-B-webfont.svg#UbuntuMonoBold") format("svg");
+}
+@font-face {
+    font-family: "Bree Serif";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Bree Serif"), local("BreeSerif-Regular"), url("fonts/BreeSerif-Regular.ttf");
+}
+@font-face {
+    font-family: "PT Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: url("https://fonts.googleapis.com/css?family=PT+Sans");
+}
+@font-face {
+    font-family: "Droid Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: url("https://fonts.googleapis.com/css?family=Droid+Sans:400");
+}
+@font-face {
+    font-family: "Asap";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Asap"), local("Asap-Regular"), url("https://themes.googleusercontent.com/static/fonts/asap/v2/nvGvEwsMAvkIa6w2U-PXffesZW2xOQ-xsNqO47m55DA.woff") format("woff");
+}
+@font-face {
+    font-family: "Asap";
+    font-style: normal;
+    font-weight: 700;
+    src: local("Asap Bold"), local("Asap-Bold"), url("https://themes.googleusercontent.com/static/fonts/asap/v2/QGN0GG0540fyG6NL_PpOpgLUuEpTyoUstqEm5AMlJo4.woff") format("woff");
+}
+@font-face {
+    font-family: "Asap";
+    font-style: italic;
+    font-weight: 400;
+    src: local("Asap Italic"), local("Asap-Italic"), url("https://themes.googleusercontent.com/static/fonts/asap/v2/QnZU7dKCBgkkMBlac2djsOvvDin1pK8aKteLpeZ5c0A.woff") format("woff");
+}
+body.home {
+    background: none repeat scroll 0 0 #FFFFFF;
+    font-family: 'Asap','Helvetica Neue',Helvetica,sans-serif;
+}
+body.home .content-page.home {
+    max-width: 100%;
+    padding: 0;
+}
+body.home section .inner-container {
+    -moz-box-sizing: border-box;
+    display: block;
+    margin: 0 auto;
+    max-width: 1290px;
+    padding: 0 45px;
+    position: relative;
+}
+body.home section .inner-container .kdbutton .button-title {
+    font-family: 'Asap','Helvetica Neue',Helvetica,sans-serif;
+}
+body.home section .inner-container h3.general-title {
+    color: #2FBD72;
+    display: block;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-align: center;
+}
+body.home section .inner-container h4.general-subtitle {
+    color: #747474;
+    display: block;
+    font-size: 22px;
+    font-weight: 400;
+    margin: 12px 0 84px;
+    text-align: center;
+}
+body.home section .inner-container p {
+    font-family: 'Open Sans','Proxima Nova','Helvetica Neue',Helvetica,Arial;
+}
+body.home section.introduction {
+    background-color: #202527;
+    background-image: url("/a/images/home-pat.png");
+    padding: 90px 0 382px;
+    position: relative;
+    text-align: center;
+}
+body.home section.introduction:after {
+    background-image: url("/a/images/wave-bg.png");
+    background-repeat: repeat-x;
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 3px;
+    position: absolute;
+    width: 100vw;
+}
+body.home section.introduction article {
+    -moz-box-sizing: border-box;
+    display: block;
+    float: left;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 32px;
+    padding: 58px 0 0;
+    width: 100%;
+}
+body.home section.introduction article h2 {
+    color: #29C566;
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin: 0 0 17px;
+}
+body.home section.introduction article p {
+    color: #FFFFFF;
+    margin: 0 auto 50px;
+    max-width: 800px;
+}
+body.home section.introduction article .kdbutton {
+    border-radius: 4px 4px 4px 4px;
+    text-transform: uppercase;
+    width: 190px;
+}
+body.home section.introduction article .kdbutton .button-title {
+    color: inherit !important;
+}
+body.home section.introduction article .kdbutton.green {
+    background-color: #29C566;
+    color: #071D11;
+    margin-right: 9px;
+}
+body.home section.introduction article .kdbutton.green:hover {
+    background-color: #D7D7D7;
+    color: #071D11;
+}
+body.home section.introduction article .kdbutton.thin-white {
+    background-color: rgba(0, 0, 0, 0);
+    border: 2px solid #B7B7B7;
+    color: #E0DFDF;
+}
+body.home section.introduction article .kdbutton.thin-white:hover {
+    background-color: #B7B7B7;
+    color: #071D11;
+}
+body.home section.screenshots {
+    position: absolute;
+    top: 460px;
+    width: 100%;
+}
+body.home section.screenshots .inner-container {
+    height: 44.6vw;
+    max-height: 575px;
+}
+body.home section.screenshots .inner-container:after {
+    background-image: url("/a/images/screenshots-shadow.png");
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
+    bottom: 1px;
+    content: "";
+    display: block;
+    height: 80px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+}
+body.home section.screenshots figure {
+    border-radius: 6px 6px 0 0;
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+}
+body.home section.screenshots figure img {
+    width: 100%;
+}
+body.home section.screenshots figure.first {
+    left: 17.5%;
+    width: 65%;
+    z-index: 4;
+}
+body.home section.screenshots figure.second {
+    left: 7%;
+    margin-top: 4.8%;
+    width: 58%;
+    z-index: 3;
+}
+body.home section.screenshots figure.third {
+    margin-top: 4.8%;
+    right: 7%;
+    width: 58%;
+    z-index: 3;
+}
+body.home section.features {
+    letter-spacing: 0;
+    margin: 0 auto;
+    max-width: 1290px;
+    word-spacing: 0;
+}
+body.home section.features .inner-container {
+    margin-top: 32%;
+}
+body.home section.features .feature {
+    -moz-box-sizing: border-box;
+    display: inline-block;
+    letter-spacing: normal;
+    padding: 0 35px 74px 108px;
+    position: relative;
+    vertical-align: top;
+    width: 49%;
+    word-spacing: normal;
+}
+body.home section.features .feature h5 {
+    color: #2FBD72;
+    display: block;
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+body.home section.features .feature p {
+    color: #505050;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+}
+body.home section.features .feature .icon {
+    border: 2px solid #BBBBBB;
+    border-radius: 50% 50% 50% 50%;
+    display: block;
+    height: 80px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 80px;
+}
+body.home section.features .feature .icon:after {
+    content: "";
+    display: block;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+body.home section.features .feature .icon.bubbles:after {
+    background: url("/a/sprites/landings.sprite.png") repeat scroll 0 -160px rgba(0, 0, 0, 0);
+    height: 40px;
+    width: 40px;
+}
+@media (min--moz-device-pixel-ratio: 1.5), not all, not all, (min-resolution: 1.5dppx) {
+body.home section.features .feature .icon.bubbles:after {
+    background: url("/a/sprites/landings@2x.sprite.png") repeat scroll 0 -158px / 46.5px 448px rgba(0, 0, 0, 0);
+}
+}
+body.home section.features .feature .icon.team:after {
+    background: url("/a/sprites/landings.sprite.png") repeat scroll 0 -412px rgba(0, 0, 0, 0);
+    height: 40px;
+    width: 46px;
+}
+@media (min--moz-device-pixel-ratio: 1.5), not all, not all, (min-resolution: 1.5dppx) {
+body.home section.features .feature .icon.team:after {
+    background: url("/a/sprites/landings@2x.sprite.png") repeat scroll 0 -408px / 46.5px 448px rgba(0, 0, 0, 0);
+}
+}
+body.home section.features .feature .icon.box:after {
+    background: url("/a/sprites/landings.sprite.png") repeat scroll 0 -41px rgba(0, 0, 0, 0);
+    height: 46px;
+    width: 40px;
+}
+@media (min--moz-device-pixel-ratio: 1.5), not all, not all, (min-resolution: 1.5dppx) {
+body.home section.features .feature .icon.box:after {
+    background: url("/a/sprites/landings@2x.sprite.png") repeat scroll 0 -40.5px / 46.5px 448px rgba(0, 0, 0, 0);
+}
+}
+body.home section.features .feature .icon.settings:after {
+    background: url("/a/sprites/landings.sprite.png") repeat scroll 0 -288px rgba(0, 0, 0, 0);
+    height: 40px;
+    width: 37px;
+}
+@media (min--moz-device-pixel-ratio: 1.5), not all, not all, (min-resolution: 1.5dppx) {
+body.home section.features .feature .icon.settings:after {
+    background: url("/a/sprites/landings@2x.sprite.png") repeat scroll 0 -285px / 46.5px 448px rgba(0, 0, 0, 0);
+}
+}
+body.home section.check-out {
+    background: none repeat scroll 0 0 #EEEEEE;
+    border-top: 1px solid #E2E2E2;
+    font-family: 'Open Sans','Proxima Nova','Helvetica Neue',Helvetica,Arial;
+    padding: 71px 0;
+    text-align: center;
+}
+body.home section.check-out h3 {
+    color: #515151;
+    font-size: 22px;
+    font-weight: 400;
+}
+body.home section.check-out h3 a {
+    border-bottom: 1px solid #515151;
+    color: inherit;
+    display: inline-block;
+    font-weight: 600;
+    padding-bottom: 2px;
+    text-decoration: none;
+}
+body.home section.check-out h3 a:hover {
+    text-decoration: none;
+}
+@media only screen and (min-width: 320px) and (max-width: 568px) {
+body.home section.introduction {
+    padding-bottom: 102px;
+}
+body.home section.introduction article {
+    padding-top: 98px;
+}
+body.home section.introduction article h2 {
+    font-size: 26px;
+}
+body.home section.introduction article p {
+    font-size: 18px;
+    line-height: 24px;
+}
+body.home section.introduction article .kdbutton {
+    clear: both;
+    display: block;
+    float: none;
+    margin: 12px 0 16px;
+    width: 100%;
+}
+body.home section.screenshots {
+    display: none;
+}
+body.home section.features .inner-container {
+    margin-top: 82px;
+}
+body.home section.features .feature {
+    display: block;
+    padding: 0 35px 44px 61px;
+    width: auto;
+}
+body.home section.features .feature h5 {
+    font-size: 18px;
+}
+body.home section.features .feature i {
+    transform: scale(0.6);
+    transform-origin: 0 0 0;
+}
+body.home section.testimonials .inner-container .general-title {
+    font-size: 26px;
+}
+body.home section.testimonials .inner-container .general-subtitle {
+    font-size: 18px;
+    line-height: 24px;
+}
+body.home section.testimonials article {
+    display: block;
+    padding: 2px 0 2px 50px;
+    width: auto;
+}
+body.home section.testimonials article p {
+    font-size: 14px;
+    line-height: 20px;
+}
+body.home section.testimonials article:before {
+    transform: scale(0.6);
+    transform-origin: 0 0 0;
+}
+body.home section.check-out h3 {
+    font-size: 18px;
+    line-height: 24px;
+}
+}
