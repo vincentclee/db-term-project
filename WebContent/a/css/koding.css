@@ -470,7 +470,7 @@ pre {
     visibility: hidden;
 }
 #koding-logo cite {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -1230px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -1230px rgba(0, 0, 0, 0);
     display: block;
     height: 55px;
     margin: 0 0 0 1px;
@@ -538,7 +538,7 @@ pre {
     animation: 1.5s ease-in-out 0s normal none 100 pulse;
 }
 #main-nav > a.activity .icon {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -886px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -886px rgba(0, 0, 0, 0);
     height: 55px;
     width: 55px;
 }
@@ -548,7 +548,7 @@ pre {
 }
 }
 #main-nav > a.topics .icon {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -1487px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -1487px rgba(0, 0, 0, 0);
     height: 55px;
     width: 55px;
 }
@@ -558,7 +558,7 @@ pre {
 }
 }
 #main-nav > a.editor .icon {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -1141px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -1141px rgba(0, 0, 0, 0);
     height: 55px;
     width: 55px;
 }
@@ -568,7 +568,7 @@ pre {
 }
 }
 #main-nav > a.terminal .icon {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -1431px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -1431px rgba(0, 0, 0, 0);
     height: 55px;
     width: 55px;
 }
@@ -578,7 +578,7 @@ pre {
 }
 }
 #main-nav > a.apps .icon {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -942px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -942px rgba(0, 0, 0, 0);
     height: 55px;
     width: 55px;
 }
@@ -588,7 +588,7 @@ pre {
 }
 }
 #main-nav > a.teamwork .icon {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -1375px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -1375px rgba(0, 0, 0, 0);
     height: 55px;
     width: 55px;
 }
@@ -598,7 +598,7 @@ pre {
 }
 }
 #main-nav > a.bugs .icon {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -1029px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -1029px rgba(0, 0, 0, 0);
     height: 55px;
     width: 55px;
 }
@@ -646,7 +646,7 @@ pre {
     width: 30px;
 }
 .account-area .acc-dropdown-icon.help .icon {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -1622px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -1622px rgba(0, 0, 0, 0);
     height: 20px;
     margin: 18px 0 0 13px;
     width: 15px;
@@ -679,7 +679,7 @@ pre {
     display: block;
 }
 .account-area .acc-dropdown-icon.notifications .icon {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -458px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -458px rgba(0, 0, 0, 0);
     height: 20px;
     margin: 18px 0 0 13px;
     width: 20px;
@@ -693,7 +693,7 @@ pre {
     width: 55px;
 }
 .account-area .acc-dropdown-icon.search .icon {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -479px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -479px rgba(0, 0, 0, 0);
     height: 20px;
     margin: 17px 0 0 17px;
     width: 20px;
@@ -711,7 +711,7 @@ pre {
     width: 50px;
 }
 .account-area .acc-dropdown-icon.groups .icon {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -258px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -258px rgba(0, 0, 0, 0);
     height: 9px;
     margin: 24px 0 0 15px;
     width: 18px;
@@ -1889,7 +1889,7 @@ div.nominateicon {
     right: 295px;
 }
 .avatararea-popup.notifications .tab span {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -458px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -458px rgba(0, 0, 0, 0);
     height: 20px;
     margin: 19px 0 0 3px;
     width: 20px;
@@ -1984,7 +1984,7 @@ div.nominateicon {
     padding-right: 40px;
 }
 .avatararea-popup.group-switcher .avatararea-popup-list li:hover .custom-link-view .icon.dashboard-page {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -102px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -102px rgba(0, 0, 0, 0);
     height: 20px;
     width: 20px;
 }
@@ -1994,7 +1994,7 @@ div.nominateicon {
 }
 }
 .avatararea-popup.group-switcher .avatararea-popup-list li .custom-link-view .icon.dashboard-page {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -123px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -123px rgba(0, 0, 0, 0);
     height: 20px;
     opacity: 0.5;
     width: 20px;
@@ -2789,7 +2789,7 @@ a.custom-link-view.border-only-green:hover .title {
     vertical-align: sub;
 }
 .kdcontextmenu.resurrection .kdlistitemview-contextitem.default .icon.edit {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -560px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -560px rgba(0, 0, 0, 0);
     height: 16px;
     width: 16px;
 }
@@ -2799,7 +2799,7 @@ a.custom-link-view.border-only-green:hover .title {
 }
 }
 .kdcontextmenu.resurrection .kdlistitemview-contextitem.default .icon.delete {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -543px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -543px rgba(0, 0, 0, 0);
     height: 16px;
     width: 16px;
 }
@@ -2839,7 +2839,7 @@ a.custom-link-view.border-only-green:hover .title {
     z-index: 11;
 }
 .kdtabhandlecontainer.application-tab-handle-holder .kdtabhandle-movenav .leftButton {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -1581px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -1581px rgba(0, 0, 0, 0);
     display: block;
     float: left;
     height: 20px;
@@ -2851,7 +2851,7 @@ a.custom-link-view.border-only-green:hover .title {
 }
 }
 .kdtabhandlecontainer.application-tab-handle-holder .kdtabhandle-movenav .rightButton {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -1543px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -1543px rgba(0, 0, 0, 0);
     display: block;
     float: left;
     height: 20px;
@@ -2876,7 +2876,7 @@ a.custom-link-view.border-only-green:hover .title {
     opacity: 1;
 }
 .kdtabhandlecontainer.application-tab-handle-holder .kdtabhandle span.close-tab {
-    background: url("/a/sprites/app.sprite.png") repeat scroll 0 -59px rgba(0, 0, 0, 0);
+    background: url("/db-term-project/a/sprites/app.sprite.png") repeat scroll 0 -59px rgba(0, 0, 0, 0);
     height: 20px;
     opacity: 0;
     right: 8px;
