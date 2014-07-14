@@ -1,0 +1,15 @@
+table#kanban-board th {
+	color: #1AAF5D;
+	font-size: 28px;
+}
+/* table#kanban-board td {
+	
+	table-layout:fixed;
+	 white-space: nowrap;
+} */
+.table-column {
+	max-height:100%;
+	height:auto !important;
+	overflow:auto;
+	overflow-x:hidden;
+}
