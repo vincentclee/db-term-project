@@ -2687,7 +2687,7 @@ li.vm-loader-item .terminal-session-stack li:hover {
 .workspace-chat .input-container {
     background: none repeat scroll 0 0 #282F31;
     border-left: 11px solid #1B2224;
-    padding: 15px;
+    padding: 15px 0 20px 15px;
 }
 .workspace-chat .messages {
     -moz-box-sizing: border-box;
@@ -3506,7 +3506,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     transition: none 0s ease 0s;
 }
 .teamwork .application-tabview {
-    height: calc(100% - 58px);
     transition: none 0s ease 0s;
 }
 .teamwork .kdsplitview-resizer.vertical {
@@ -3950,9 +3949,9 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     background-color: #282F31;
     border-bottom: 11px solid #1B2224;
     border-left: 11px solid #1B2224;
-    height: 72px;
+    height: 105px;
     overflow: hidden;
-    padding: 15px;
+    padding: 25px 0 0 15px;
     position: relative;
 }
 .tw-users-area span {
@@ -3999,7 +3998,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 .tw-chat {
     background-color: #1B2224;
-    height: calc(100% - 58px);
+    height: calc(100% + 20px);
     transition: none 0s ease 0s;
     width: 280px;
 }

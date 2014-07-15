@@ -9,7 +9,6 @@ table#kanban-board th {
 	overflow:auto;
 	overflow-x:hidden;
 }
-
 #login {
 	width: 30%;
 	margin: 0 auto;
