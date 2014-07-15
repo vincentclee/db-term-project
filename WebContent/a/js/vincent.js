@@ -19,7 +19,7 @@ $(document).ready(function() {
 	});
 	
 	/* set correct height on browser open */
-	$("div.kdview .panel-container").css("height", $(window).height() - 113);
+	$("div.kdview .workspace").css("height", $(window).height() - 113);
 	
 	/* Table Columns Overflow */
 	$("div.table-column").css("max-height", $(window).height() - 156);
@@ -27,7 +27,7 @@ $(document).ready(function() {
 
 /* dynamically resize height */
 $(window).resize(function() {
-	$("div.kdview .panel-container").css("height", $(window).height() - 113);
+	$("div.kdview .workspace").css("height", $(window).height() - 113);
 	
 	/* Table Columns Overflow */
 	$("div.table-column").css("max-height", $(window).height() - 156);

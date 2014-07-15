@@ -108,144 +108,118 @@
 							</div>
 						</h4>
 					</div>
-					<div class="kdview tw-chat-open">
-						<div class="kdview workspace">
-							<div class="kdview panel">
-								<!-- Main Content -->
-								<div style="height: 705px;overflow-x: auto;" class="kdview panel-container">
-
-
-
-
-
-
-										<div class="kdview content-page">
-											<aside class="kdview">
-												<nav class="kdview kdlistview kdlistview-inner-nav">
-													<a
-														class="kdview kdlistitemview kdlistitemview-default selected"
-														href="/Account/Profile">User profile</a><a
-														class="kdview kdlistitemview kdlistitemview-default"
-														href="/Account/Email">Email notifications</a><a
-														class="kdview kdlistitemview kdlistitemview-default"
-														href="/Account/Externals">Linked accounts</a>
-													<hr>
-													<a class="kdview kdlistitemview kdlistitemview-default"
-														href="/Account/Payment">Payment methods</a><a
-														class="kdview kdlistitemview kdlistitemview-default"
-														href="/Account/Subscriptions">Your subscriptions</a><a
-														class="kdview kdlistitemview kdlistitemview-default"
-														href="/Account/Billing">Billing history</a>
-													<hr>
-													<a class="kdview kdlistitemview kdlistitemview-default"
-														href="/Account/SSH">SSH keys</a><a
-														class="kdview kdlistitemview kdlistitemview-default"
-														href="/Account/Keys">Koding Keys</a><a
-														class="kdview kdlistitemview kdlistitemview-default"
-														href="/Account/Referral">Referral System</a>
-													<hr>
-													<a class="kdview kdlistitemview kdlistitemview-default"
-														href="/Account/Delete">Delete account</a>
-													<hr>
-													<a target="_blank" href="/tos.html">Terms of service <span
-														class="icon new-page"></span></a> <a target="_blank"
-														href="/privacy.html">Privacy policy <span
-														class="icon new-page"></span></a>
-												</nav>
-											</aside>
-											<div class="kdview kdscrollview kdtabview">
-												<div class="kdview kdtabhandlecontainer hidden" style="">
-													<div class="kdview kdtabhandle-tabs clearfix">
-														<div class="kdtabhandle active" title="Title"
-															style="max-width: 128px; min-width: 30px;">
-															<span class="close-tab"></span><b>Title</b>
-														</div>
-													</div>
-												</div>
-												<div class="kdview kdtabpaneview clearfix active">
-													<div class="kdview settings-list-wrapper user-profile">
-														<div class="kdview username">
-															<span class="avatarview online"
-																style="width: 160px; height: 160px; background-size: 160px 160px; background-image: none;"
-																href="/vincentlee"><img width="160" height="160"
-																class="" style="opacity: 1;"
-																src="//gravatar.com/avatar/2a3a0441d6aa8660518b65ddda25c40a?size=160&amp;d=https://koding-cdn.s3.amazonaws.com/images/default.avatar.160.png&amp;r=g">
-																<cite></cite>
-															<div class="statusIndicator"
-																	style="width: 5px; height: 5px;"></div></span>
-																	<br>
-															<section>
-																<form class="kdformview with-fields">
-																	<div class="kdview formline firstname medium half">
-																		<div class="input-wrapper">
-																			<input type="text" class="kdinput text medium half"
-																				name="firstName" placeholder="firstname"
-																				style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-position: right center;"><input
-																				type="text" class="kdinput text medium half"
-																				name="lastName" placeholder="lastname">
-																		</div>
-																	</div>
-																	<div class="kdview formline email medium">
-																		<div class="input-wrapper">
-																			<input type="text" class="kdinput text medium"
-																				name="email" placeholder="you@yourdomain.com">
-																		</div>
-																	</div>
-																	<div class="kdview formline username medium">
-																		<div class="input-wrapper">
-																			<input type="text" class="kdinput text medium"
-																				name="username" readonly="true"
-																				placeholder="username">
-																		</div>
-																	</div>
-																	<div class="kdview formline password medium half">
-																		<div class="input-wrapper">
-																			<input type="password"
-																				class="kdinput text medium half" name="password"
-																				placeholder="password"
-																				style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACIUlEQVQ4EX2TOYhTURSG87IMihDsjGghBhFBmHFDHLWwSqcikk4RRKJgk0KL7C8bMpWpZtIqNkEUl1ZCgs0wOo0SxiLMDApWlgOPrH7/5b2QkYwX7jvn/uc//zl3edZ4PPbNGvF4fC4ajR5VrNvt/mo0Gr1ZPOtfgWw2e9Lv9+chX7cs64CS4Oxg3o9GI7tUKv0Q5o1dAiTfCgQCLwnOkfQOu+oSLyJ2A783HA7vIPLGxX0TgVwud4HKn0nc7Pf7N6vV6oZHkkX8FPG3uMfgXC0Wi2vCg/poUKGGcagQI3k7k8mcp5slcGswGDwpl8tfwGJg3xB6Dvey8vz6oH4C3iXcFYjbwiDeo1KafafkC3NjK7iL5ESFGQEUF7Sg+ifZdDp9GnMF/KGmfBdT2HCwZ7TwtrBPC7rQaav6Iv48rqZwg+F+p8hOMBj0IbxfMdMBrW5pAVGV/ztINByENkU0t5BIJEKRSOQ3Aj+Z57iFs1R5NK3EQS6HQqF1zmQdzpFWq3W42WwOTAf1er1PF2USFlC+qxMvFAr3HcexWX+QX6lUvsKpkTyPSEXJkw6MQ4S38Ljdbi8rmM/nY+CvgNcQqdH6U/xrYK9t244jZv6ByUOSiDdIfgBZ12U6dHEHu9TpdIr8F0OP692CtzaW/a6y3y0Wx5kbFHvGuXzkgf0xhKnPzA4UTyaTB8Ph8AvcHi3fnsrZ7Wore02YViqVOrRXXPhfqP8j6MYlawoAAAAASUVORK5CYII=&quot;); background-repeat: no-repeat; background-attachment: scroll; background-position: right center;"><input
-																				type="password" class="kdinput text medium half"
-																				name="confirmPassword"
-																				placeholder="confirm password"
-																				style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACIUlEQVQ4EX2TOYhTURSG87IMihDsjGghBhFBmHFDHLWwSqcikk4RRKJgk0KL7C8bMpWpZtIqNkEUl1ZCgs0wOo0SxiLMDApWlgOPrH7/5b2QkYwX7jvn/uc//zl3edZ4PPbNGvF4fC4ajR5VrNvt/mo0Gr1ZPOtfgWw2e9Lv9+chX7cs64CS4Oxg3o9GI7tUKv0Q5o1dAiTfCgQCLwnOkfQOu+oSLyJ2A783HA7vIPLGxX0TgVwud4HKn0nc7Pf7N6vV6oZHkkX8FPG3uMfgXC0Wi2vCg/poUKGGcagQI3k7k8mcp5slcGswGDwpl8tfwGJg3xB6Dvey8vz6oH4C3iXcFYjbwiDeo1KafafkC3NjK7iL5ESFGQEUF7Sg+ifZdDp9GnMF/KGmfBdT2HCwZ7TwtrBPC7rQaav6Iv48rqZwg+F+p8hOMBj0IbxfMdMBrW5pAVGV/ztINByENkU0t5BIJEKRSOQ3Aj+Z57iFs1R5NK3EQS6HQqF1zmQdzpFWq3W42WwOTAf1er1PF2USFlC+qxMvFAr3HcexWX+QX6lUvsKpkTyPSEXJkw6MQ4S38Ljdbi8rmM/nY+CvgNcQqdH6U/xrYK9t244jZv6ByUOSiDdIfgBZ12U6dHEHu9TpdIr8F0OP692CtzaW/a6y3y0Wx5kbFHvGuXzkgf0xhKnPzA4UTyaTB8Ph8AvcHi3fnsrZ7Wore02YViqVOrRXXPhfqP8j6MYlawoAAAAASUVORK5CYII=&quot;); background-repeat: no-repeat; background-attachment: scroll; background-position: right center;">
-																		</div>
-																	</div>
-																	<div class="kdview formline button-field clearfix">
-																		<button id="kd-2419"
-																			class="kdbutton profile-save-changes solid green w-loader"
-																			type="submit">
-																			<span class="kdview kdloader hidden"
-																				style="width: 27.5px; height: 27.5px; position: absolute; left: 50%; top: 50%;"><span
-																				id="cl_kd-2421" class="canvas-loader"
-																				style="display: none;"><canvas width="28"
-																						height="28"></canvas>
-																					<canvas style="display: none;" width="28"
-																						height="28"></canvas></span></span> <span class="icon hidden"></span>
-																			<span class="button-title">SAVE CHANGES</span>
-																		</button>
-																	</div>
-																</form>
-															</section>
-															<div></div>
-														</div>
-													</div>
-												</div>
-											</div>
+					<div class="kdview workspace">
+					<!-- MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT -->
+					<!-- MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT -->
+					<!-- MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT -->
+					<!-- MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT -->
+					<!-- MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT -->
+					<!-- MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT -->
+					<!-- MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT === MAIN CONTENT -->
+						<div class="kdview content-page">
+							<aside class="kdview">
+								<nav class="kdview kdlistview kdlistview-inner-nav">
+									<a
+										class="kdview kdlistitemview kdlistitemview-default selected"
+										href="/Account/Profile">User profile</a><a
+										class="kdview kdlistitemview kdlistitemview-default"
+										href="/Account/Email">Email notifications</a><a
+										class="kdview kdlistitemview kdlistitemview-default"
+										href="/Account/Externals">Linked accounts</a>
+									<hr>
+									<a class="kdview kdlistitemview kdlistitemview-default"
+										href="/Account/Payment">Payment methods</a><a
+										class="kdview kdlistitemview kdlistitemview-default"
+										href="/Account/Subscriptions">Your subscriptions</a><a
+										class="kdview kdlistitemview kdlistitemview-default"
+										href="/Account/Billing">Billing history</a>
+									<hr>
+									<a class="kdview kdlistitemview kdlistitemview-default"
+										href="/Account/SSH">SSH keys</a><a
+										class="kdview kdlistitemview kdlistitemview-default"
+										href="/Account/Keys">Koding Keys</a><a
+										class="kdview kdlistitemview kdlistitemview-default"
+										href="/Account/Referral">Referral System</a>
+									<hr>
+									<a class="kdview kdlistitemview kdlistitemview-default"
+										href="/Account/Delete">Delete account</a>
+									<hr>
+									<a target="_blank" href="/tos.html">Terms of service <span
+										class="icon new-page"></span></a> <a target="_blank"
+										href="/privacy.html">Privacy policy <span
+										class="icon new-page"></span></a>
+								</nav>
+							</aside>
+							<div class="kdview kdscrollview kdtabview">
+								<div class="kdview kdtabhandlecontainer hidden" style="">
+									<div class="kdview kdtabhandle-tabs clearfix">
+										<div class="kdtabhandle active" title="Title"
+											style="max-width: 128px; min-width: 30px;">
+											<span class="close-tab"></span><b>Title</b>
 										</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 									</div>
+								</div>
+								<div class="kdview kdtabpaneview clearfix active">
+									<div class="kdview settings-list-wrapper user-profile">
+										<div class="kdview username">
+											<span class="avatarview online"
+												style="width: 160px; height: 160px; background-size: 160px 160px; background-image: none;"
+												href="/vincentlee"><img width="160" height="160"
+												class="" style="opacity: 1;"
+												src="//gravatar.com/avatar/2a3a0441d6aa8660518b65ddda25c40a?size=160&amp;d=https://koding-cdn.s3.amazonaws.com/images/default.avatar.160.png&amp;r=g">
+												<cite></cite>
+												<div class="statusIndicator"
+													style="width: 5px; height: 5px;"></div></span> <br>
+											<section>
+												<form class="kdformview with-fields">
+													<div class="kdview formline firstname medium half">
+														<div class="input-wrapper">
+															<input type="text" class="kdinput text medium half"
+																name="firstName" placeholder="firstname">
+																<input type="text" class="kdinput text medium half"
+																name="lastName" placeholder="lastname">
+														</div>
+													</div>
+													<div class="kdview formline email medium">
+														<div class="input-wrapper">
+															<input type="text" class="kdinput text medium"
+																name="email" placeholder="you@yourdomain.com">
+														</div>
+													</div>
+													<div class="kdview formline username medium">
+														<div class="input-wrapper">
+															<input type="text" class="kdinput text medium"
+																name="username" readonly="true" placeholder="username">
+														</div>
+													</div>
+													<div class="kdview formline password medium half">
+														<div class="input-wrapper">
+															<input type="password" class="kdinput text medium half"
+																name="password" placeholder="password">
+																<input type="password" class="kdinput text medium half"
+																name="confirmPassword" placeholder="confirm password">
+														</div>
+													</div>
+													<div class="kdview formline button-field clearfix">
+														<button id="kd-2419"
+															class="kdbutton profile-save-changes solid green w-loader"
+															type="submit">
+															<span class="kdview kdloader hidden"
+																style="width: 27.5px; height: 27.5px; position: absolute; left: 50%; top: 50%;"><span
+																id="cl_kd-2421" class="canvas-loader"
+																style="display: none;"><canvas width="28"
+																		height="28"></canvas>
+																	<canvas style="display: none;" width="28" height="28"></canvas></span></span>
+															<span class="icon hidden"></span> <span
+																class="button-title">SAVE CHANGES</span>
+														</button>
+													</div>
+												</form>
+											</section>
+											<div></div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
