@@ -2,14 +2,22 @@ table#kanban-board th {
 	color: #1AAF5D;
 	font-size: 28px;
 }
-/* table#kanban-board td {
-	
-	table-layout:fixed;
-	 white-space: nowrap;
-} */
 .table-column {
 	max-height:100%;
 	height:auto !important;
 	overflow:auto;
 	overflow-x:hidden;
+}
+
+#login {
+	width: 30%;
+	margin: 0 auto;
+}
+
+* {
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
+    margin: 0;
+    padding: 0;
 }
