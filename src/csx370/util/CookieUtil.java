@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServletRequest;
  * Cookie Utilities
  */
 public class CookieUtil {
+	/** Cookie Name */
 	private static final String COOKIE_NAME = "ProjectManagement";
+	
+	/** Length of Time to Store cookie */
 	private static final int MAX_AGE = 60*60*24*365;
 	
 	/**
@@ -28,7 +31,7 @@ public class CookieUtil {
 		 * 4093 bytes per domain
 		 */
 		Cookie cookie = new Cookie(COOKIE_NAME, uuid.toString());
-		cookie.setMaxAge(MAX_AGE); //Store cookie for 1 year
+		cookie.setMaxAge(MAX_AGE);
 		
 		return cookie;
 	}

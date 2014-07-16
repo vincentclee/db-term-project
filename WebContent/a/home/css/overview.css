@@ -419,24 +419,24 @@ body.scroll #fluidfooter { top:4500px; }
 	   -moz-transition:   -moz-transform 1s;
 	        transition:        transform 1s;
  }
-#cases .copy-container .copy { margin-top:-153px; }
+#cases .copy-container .copy {  margin-top:-153px; }
 
 #cases .copy .intro { width:610px; }
-#cases .hero { margin-top:-352px; margin-left:-1374px; }
+#cases .hero {  margin-top:-352px;  margin-left:-900px; }
 
 #cases.ac-responsive-height-0-to-790 .copy-container { height:53%; }
-#cases.ac-responsive-height-0-to-790 .copy { margin-top:-150px; }
+#cases.ac-responsive-height-0-to-790 .copy {  margin-top:-150px;  }
 #cases.ac-responsive-height-0-to-790 .copy .intro { width:510px; }
-#cases.ac-responsive-height-0-to-790 .hero { margin-top:-178px; margin-left:-777px; }
+#cases.ac-responsive-height-0-to-790 .hero {  margin-top:-300px;  margin-left:-850px; }
 
-#cases.ac-responsive-tablet-portrait .copy .intro { width:710px; margin-top:-352px; }
-#cases.ac-responsive-tablet-landscape .copy .intro { width:650px; margin-top:-139px; }
+#cases.ac-responsive-tablet-portrait .copy .intro { width:710px;  margin-top:-352px;  }
+#cases.ac-responsive-tablet-landscape .copy .intro { width:650px;  margin-top:-139px;  }
 
 #cases.ac-responsive-handheld-landscape { -webkit-transform:translateZ(0); overflow: hidden; }
 #cases.ac-responsive-handheld-landscape > div { -webkit-transform:translateZ(0); }
 
 #cases.ac-responsive-handheld-portrait .copy .intro { width:900px; margin-top:-188px; }
-#cases.ac-responsive-handheld-landscape .copy .intro { width:580px; margin-top:-32px; margin-left:386px; }
+#cases.ac-responsive-handheld-landscape .copy .intro { width:580px; margin-top:-32px;  margin-left:386px; }
 
 
 /* footers
