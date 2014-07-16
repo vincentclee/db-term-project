@@ -36,6 +36,36 @@ public class login extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
+		request.getRemoteAddr();
+		request.getRemoteHost();
+		request.getRemotePort();
+		request.getRemoteUser();
+		request.getCookies();
+		request.getAuthType();
+		request.getProtocol();
+		request.getRequestedSessionId();
+		request.getUserPrincipal();
+		request.getServerName();
+		request.getServletContext();
+		request.getServletPath();
+		request.getRequestURI();
+		request.getRequestURL();
+		
+		System.out.println();
+		System.out.println(request.getRemoteAddr());
+		System.out.println(request.getRemoteHost());
+		System.out.println(request.getRemotePort());
+		System.out.println(request.getRemoteUser());
+		System.out.println(request.getCookies());
+		System.out.println(request.getAuthType());
+		System.out.println(request.getProtocol());
+		System.out.println(request.getRequestedSessionId());
+		System.out.println(request.getUserPrincipal());
+		System.out.println(request.getServerName());
+		System.out.println(request.getServletContext());
+		System.out.println(request.getServletPath());
+		System.out.println(request.getRequestURI());
+		System.out.println(request.getRequestURL());
 		
 //		User user = someMethodNameHere(username, password);
 		/*

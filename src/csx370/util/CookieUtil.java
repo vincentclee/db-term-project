@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class CookieUtil {
 	private static final String COOKIE_NAME = "ProjectManagement";
+	private static final int MAX_AGE = 60*60*24*365;
 	
 	/**
 	 * Generate a new Cookie
@@ -27,17 +28,17 @@ public class CookieUtil {
 		 * 4093 bytes per domain
 		 */
 		Cookie cookie = new Cookie(COOKIE_NAME, uuid.toString());
-		cookie.setMaxAge(60*60*24*365); //Store cookie for 1 year
+		cookie.setMaxAge(MAX_AGE); //Store cookie for 1 year
 		
 		return cookie;
 	}
 	
 	/**
 	 * Retrieve Cookie
-	 * @param request HTTP Requst
+	 * @param request HTTP Request
 	 * @return a Cookie object
 	 */
-	public static Cookie generateCookie(HttpServletRequest request) {
+	public static Cookie getCookie(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
 			for (int i = 0; i < cookies.length; i++) {
@@ -49,6 +50,18 @@ public class CookieUtil {
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Create a cookie with value
+	 * @param value
+	 * @return
+	 */
+	public static Cookie createCookie(String value) {
+		Cookie cookie = new Cookie(COOKIE_NAME, value);
+		cookie.setMaxAge(MAX_AGE); //Store cookie for 1 year
+		
+		return cookie;
 	}
 	
 	/**
