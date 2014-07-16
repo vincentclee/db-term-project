@@ -52,17 +52,17 @@ public class login extends HttpServlet {
 		
 		
 		//Output
-		PrintWriter printWriter = response.getWriter();
-		Gson gson = new Gson();
-		if (user == null) {
-			printWriter.print(gson.toJson(new User())); //{"userId":0,"username":"","displayname":"","email":""}
-		} else {
-			response.addCookie(user.getCookie());
-			
-			//remove the cookie
-			user.setCookie(null);
-			
-			printWriter.print(gson.toJson(user)); //{"userId":2,"username":"vincentlee","displayname":"Vincent Lee","email":"vlee@ktunnel.com.tr"}
-		}
+//		PrintWriter printWriter = response.getWriter();
+//		Gson gson = new Gson();
+//		if (user == null) {
+//			printWriter.print(gson.toJson(new User())); //{"userId":0,"username":"","displayname":"","email":""}
+//		} else {
+//			response.addCookie(user.getCookie());
+//			
+//			//remove the cookie
+//			user.setCookie(null);
+//			
+//			printWriter.print(gson.toJson(user)); //{"userId":2,"username":"vincentlee","displayname":"Vincent Lee","email":"vlee@ktunnel.com.tr"}
+//		}
 	}
 }// curl http://localhost:8080/db-term-project/login --data "username=value1" -X POST
