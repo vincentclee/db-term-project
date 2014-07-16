@@ -57,6 +57,65 @@ public class DAO
   }// ctor
 
   /**
+   * Authenticate user login. The first argument can be either the username or email.
+   * If authentication is successful, an User object with data pertaining to the corresponding
+   * user is return. Returns null in the case of an unsuccessful login.
+   *
+   * @param usernameOrEmail either the username or email given by the user
+   * @param password the password given by the user
+   * @return User object with user's details upon success, null upon failed attempt
+   */
+  public User authenticate(String usernameOrEmail, String password)
+  {
+    // user object to return. if no match is found in the db, this will not change.
+    User user = null;
+
+    try
+    {
+      PreparedStatement usernameAuthenticate = this.conn.prepareStatement("SELECT * FROM User WHERE UserName = (?) AND Password = UNHEX(SHA1(?))");
+      usernameAuthenticate.setString(1, usernameOrEmail);
+      usernameAuthenticate.setString(2, password);
+      
+      ResultSet rsUsername = usernameAuthenticate.executeQuery();
+      
+      if(rsUsername.next())
+      {
+	// if username query returns a row, then use it
+	user = new User(rsUsername.getInt("UserID"), 
+			usernameOrEmail,
+			rsUsername.getString("Email"), 
+			rsUsername.getString("DisplayName"),
+			rsUsername.getString("Specialization"));
+      }// if
+      else
+      {
+	// if username query does not return a row, try the email query
+	PreparedStatement emailAuthenticate = this.conn.prepareStatement("SELECT * FROM User WHERE Email = (?) AND Password = UNHEX(SHA1(?))");
+	emailAuthenticate.setString(1, usernameOrEmail);
+	emailAuthenticate.setString(2, password);
+	
+	ResultSet rsEmail = emailAuthenticate.executeQuery();
+	
+	// if email query returns a row, then use it. otherwise, function will return null
+	if(rsEmail.next())
+	{
+	  user = new User(rsEmail.getInt("UserID"), 
+			  rsEmail.getString("UserName"), 
+			  usernameOrEmail,
+			  rsEmail.getString("DisplayName"),
+			  rsEmail.getString("Specialization"));
+	}// if
+      }// else
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error authenticating user: " + e.getMessage());
+    }// catch
+
+    return user;
+  }// authenticate
+  
+  /**
    * Create a new user account in the DB with the given details and return a User
    * object detailing the newly created user
    *
