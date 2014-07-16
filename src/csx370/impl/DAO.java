@@ -65,7 +65,7 @@ public class DAO
    * @param specialization the user's specialization
    * @param password the user's password
    */
-  public void createUserAccount(String username, String email, String displayName, String specialization, String password)
+  public void createUser(String username, String email, String displayName, String specialization, String password)
   {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
@@ -172,6 +172,33 @@ public class DAO
       System.err.println("Error creating task: " + e.getMessage());
     }// catch
   }// createTask
+
+  /**
+   * Connect a specific user to a specific task indentified by their respective IDs.
+   *
+   * @param taskID the taskID to connect to the given userID
+   * @param userID the userID to connect to the given taskID
+   */
+  public void createUserTask(int taskID, int userID)
+  {
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    // TODO
+    // check prepared statement for schema errors when they're made
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    try
+    {
+      PreparedStatement insertUserTask = this.conn.prepareStatement("INSERT INTO UserTask(TaskID, UserID) VALUES (?,?)");
+      insertUserTask.setInt(1, taskID);
+      insertUserTask.setInt(2, userID);
+
+      insertUserTask.executeUpdate();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error creating task: " + e.getMessage());
+    }// catch
+  }// createUserTask
 
   /**
    * Check the connection to the db.
