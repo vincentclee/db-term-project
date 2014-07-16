@@ -37,7 +37,7 @@ public class login extends HttpServlet {
 		String password = request.getParameter("password");
 		
 		
-		User user = someMethodNameHere(username, password);
+//		User user = someMethodNameHere(username, password);
 		/*
 		 * Database can't id can't start with 0. 
 		 *  
