@@ -288,7 +288,7 @@ body.scroll #fluidfooter { top:4500px; }
 #hero .copy .intro { margin:0; text-align:left; width:340px; }
 #hero .copy h2 img.title { margin:0 0; }
 #hero .copy .intro.power { text-align:left; }
-#hero .hero { top:177px; margin-top:0; margin-left:-105px; }
+#hero .hero { top:177px; margin-top:0; margin-left:50px; }
 
 #hero.ac-responsive-height-0-to-790 .copy { margin-top:-200px; }
 #hero.ac-responsive-height-0-to-790 .copy .intro { margin:-10px 0 0; width:340px; }
@@ -371,7 +371,7 @@ body.scroll #fluidfooter { top:4500px; }
 #smart.ac-responsive-height-0-to-790 .copy-container { height:48%; }
 #smart.ac-responsive-height-0-to-790 .copy { margin-top:-141px; }
 #smart.ac-responsive-height-0-to-790 .copy .intro { width:600px; }
-#smart.ac-responsive-height-0-to-790 .hero { margin-top:-473px; margin-left:-407px; }
+#smart.ac-responsive-height-0-to-790 .hero { margin-top:-473px; margin-left:-500px; }
 
 #smart.ac-responsive-tablet-portrait .copy .intro { width:800px; margin-top:310px; }
 #smart.ac-responsive-tablet-landscape .copy .intro { width:745px; margin-top:133px; }
@@ -389,17 +389,17 @@ body.scroll #fluidfooter { top:4500px; }
 #ios .copy-container { height:90%; }
 #ios .copy-container .copy { margin-top:-184px; margin-left:-240px; }
 #ios .copy-container .copy .intro { width:430px; margin-left:220px; text-align:left; }
-#ios .hero { margin-top:-900px; margin-left:-623px; }
+#ios .hero { margin-top:-500px; margin-left:-623px; }
 
 @media only screen and (min-width:1120px) {
 	#ios .copy-container .copy { margin-left:-191px; }
 	#ios .copy-container .copy .intro { width:500px; }
-	#ios .hero { margin-left:-594px; }
+	#ios .hero { margin-left:-1000px; }
 }
 
 #ios.ac-responsive-height-0-to-790 .copy { margin-top:-135px; margin-left:-164px; }
 #ios.ac-responsive-height-0-to-790 .copy .intro { width:430px; margin-left:180px; }
-#ios.ac-responsive-height-0-to-790 .hero { margin-top:-465px; margin-left:-475px; }
+#ios.ac-responsive-height-0-to-790 .hero { margin-top:-465px; margin-left:-850px; }
 
 #ios.ac-responsive-tablet-portrait .copy .intro { margin-top:38px; margin-left:460px; }
 #ios.ac-responsive-tablet-landscape .copy .intro { width:466px; margin-left:457px; margin-top:49px; }
@@ -427,7 +427,7 @@ body.scroll #fluidfooter { top:4500px; }
 #cases.ac-responsive-height-0-to-790 .copy-container { height:53%; }
 #cases.ac-responsive-height-0-to-790 .copy {  margin-top:-150px;  }
 #cases.ac-responsive-height-0-to-790 .copy .intro { width:510px; }
-#cases.ac-responsive-height-0-to-790 .hero {  margin-top:-300px;  margin-left:-850px; }
+#cases.ac-responsive-height-0-to-790 .hero {  margin-top:-300px;  margin-left:-615px; }
 
 #cases.ac-responsive-tablet-portrait .copy .intro { width:710px;  margin-top:-352px;  }
 #cases.ac-responsive-tablet-landscape .copy .intro { width:650px;  margin-top:-139px;  }
