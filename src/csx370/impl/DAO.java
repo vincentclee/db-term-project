@@ -303,7 +303,7 @@ public class DAO
    * Update email for user identified by the given id. 
    *
    * @param userID the id identifying the user
-   * @param email the user's new email or null for no change
+   * @param email the user's new email
    * @return 0 for successful update, -1 if an error occurred
    */
   public int updateUserEmail(int userID, String email)
@@ -329,7 +329,7 @@ public class DAO
    * Update display name for user identified by the given id. 
    *
    * @param userID the id identifying the user
-   * @param displayName the user's new display name or null for no change
+   * @param displayName the user's new display name
    * @return 0 for successful update, -1 if an error occurred
    */
   public int updateUserDisplayName(int userID, String displayName)
@@ -355,7 +355,7 @@ public class DAO
    * Update specialization for user identified by the given id. 
    *
    * @param userID the id identifying the user
-   * @param specialization the user's new specialization or null for no change
+   * @param specialization the user's new specialization
    * @return 0 for successful update, -1 if an error occurred
    */
   public int updateUserSpecialization(int userID, String specialization)
@@ -376,6 +376,32 @@ public class DAO
 
     return 0;
   }// updateUserSpecialization
+
+  /**
+   * Update password for user identified by the given id. 
+   *
+   * @param userID the id identifying the user
+   * @param password the user's new password
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateUserPassword(int userID, String password)
+  {
+    try
+    {
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Password = UNHEX(SHA2(?)) WHERE UserID = (?)");
+      updateUser.setString(1, password);
+      updateUser.setInt(2, userID);
+
+      updateUser.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating user info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateUserPassword
 
   /**
    * Delete the user identified by the given id from the db
@@ -605,7 +631,7 @@ public class DAO
     }// catch
 
     return 0;
-  }// updateProjectTargetDate
+  }// updateProjectManager
 
   /**
    * Update the status of the project with the given id
