@@ -1262,7 +1262,7 @@ public class DAO
     }// try
     catch(Exception e)
     {
-      System.err.println("Error adding user to project: " + e.getMessage());
+      System.err.println("Error updating user project data: " + e.getMessage());
       return -1;
     }// catch
     
@@ -1290,7 +1290,7 @@ public class DAO
     }// try
     catch(Exception e)
     {
-      System.err.println("Error adding user to project: " + e.getMessage());
+      System.err.println("Error updating user project data: " + e.getMessage());
       return -1;
     }// catch
     
@@ -1318,7 +1318,7 @@ public class DAO
     }// try
     catch(Exception e)
     {
-      System.err.println("Error adding user to project: " + e.getMessage());
+      System.err.println("Error updating user project data: " + e.getMessage());
       return -1;
     }// catch
     
@@ -1350,6 +1350,60 @@ public class DAO
     
     return 0;
   }// removeUserFromProject
+
+  /**
+   * Create a dependency between two tasks.  The main task is dependent on dependency task,
+   * meaning the dependency task must be completed before the main task can be completed.
+   *
+   * @param mainTaskID the id of the main task
+   * @param dependencyTaskID the id of the dependency task
+   * @return 0 for successful addition, -1 if an error occurred
+   */
+  public int addTaskDependency(int mainTaskID, int dependencyTaskID)
+  {
+    try
+    {
+      PreparedStatement insertTaskDependencies = this.conn.prepareStatement("INSERT INTO TaskDependencies(TaskID, DependencyTask) VALUES (?,?)");
+      insertTaskDependencies.setInt(1, mainTaskID);
+      insertTaskDependencies.setInt(2, dependencyTaskID);
+
+      insertTaskDependencies.executeUpdate();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error adding task dependency: " + e.getMessage());
+      return -1;
+    }// catch
+    
+    return 0;
+  }// addTaskDependency
+
+  /**
+   * Remove a dependency between two tasks.  The main task is dependent on dependency task,
+   * meaning the dependency task must be completed before the main task can be completed.
+   *
+   * @param mainTaskID the id of the main task
+   * @param dependencyTaskID the id of the dependency task
+   * @return 0 for successful removal, -1 if an error occurred
+   */
+  public int removeTaskDependency(int mainTaskID, int dependencyTaskID)
+  {
+    try
+    {
+      PreparedStatement deleteTaskDependencies = this.conn.prepareStatement("DELETE FROM TaskDependencies WHERE TaskID = (?) AND DependencyTask = (?)");
+      deleteTaskDependencies.setInt(1, mainTaskID);
+      deleteTaskDependencies.setInt(2, dependencyTaskID);
+
+      deleteTaskDependencies.executeUpdate();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error removing task dependency: " + e.getMessage());
+      return -1;
+    }// catch
+    
+    return 0;
+  }// removeTaskDependency
  
   /**
    * Check the connection to the db.
@@ -1409,6 +1463,9 @@ public class DAO
       this.conn.prepareStatement("TRUNCATE TABLE ProjectTask").executeUpdate();
       this.conn.prepareStatement("TRUNCATE TABLE UserTask").executeUpdate();
       this.conn.prepareStatement("TRUNCATE TABLE ProjectUser").executeUpdate();
+      
+this.conn.prepareStatement("TRUNCATE TABLE TaskDependencies").executeUpdate();
+      
     }// try
     catch(Exception e)
     {
