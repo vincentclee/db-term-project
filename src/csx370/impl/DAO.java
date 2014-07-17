@@ -85,7 +85,7 @@ public class DAO
 			usernameOrEmail,
 			rsUsername.getString("Email"), 
 			rsUsername.getString("DisplayName"),
-			rsUsername.getString("Specialization"));
+			rsUsername.getString("CookieID"));
       }// if
       else
       {
@@ -103,7 +103,7 @@ public class DAO
 			  rsEmail.getString("UserName"), 
 			  usernameOrEmail,
 			  rsEmail.getString("DisplayName"),
-			  rsEmail.getString("Specialization"));
+			  rsEmail.getString("CookieID"));
 	}// if
       }// else
     }// try
@@ -122,11 +122,11 @@ public class DAO
    * @param username the unique username of the user
    * @param email the unique registration email of the user
    * @param displayName the non-unique display name of the user
-   * @param specialization the user's specialization
+   * @param cookieID the user's cookieID
    * @param password the user's password
    * @return a user object containing all info about this user from the User table, or null if an error occured
    */
-  public User createUser(String username, String email, String displayName, String specialization, String password)
+  public User createUser(String username, String email, String displayName, String cookieID, String password)
   {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
@@ -139,11 +139,11 @@ public class DAO
     try
     {
       // insert info into db
-      PreparedStatement insertUser = this.conn.prepareStatement("INSERT INTO User(UserName, Email, DisplayName, Specialization, Password) VALUES (?,?,?,?,UNHEX(SHA2(?)))");
+      PreparedStatement insertUser = this.conn.prepareStatement("INSERT INTO User(UserName, Email, DisplayName, CookieID, Password) VALUES (?,?,?,?,UNHEX(SHA2(?)))");
       insertUser.setString(1, username);
       insertUser.setString(2, email);
       insertUser.setString(3, displayName);
-      insertUser.setString(4, specialization);
+      insertUser.setString(4, cookieID);
       insertUser.setString(5, password);
       
       insertUser.executeUpdate();
@@ -158,7 +158,7 @@ public class DAO
       userID = rs.getInt("UserID");
       
       // create user object to return
-      user = new User(userID, username, email, displayName, specialization);
+      user = new User(userID, username, email, displayName, cookieID);
     }// try
     catch(Exception e)
     {
@@ -192,7 +192,7 @@ public class DAO
 			rs.getString("UserName"),
 			rs.getString("Email"),
 			rs.getString("DisplayName"),
-			rs.getString("Specialization"));
+			rs.getString("CookieID"));
       }// if
     }// try
     catch(Exception e)
@@ -227,7 +227,7 @@ public class DAO
 			username,
 			rs.getString("Email"),
 			rs.getString("DisplayName"),
-			rs.getString("Specialization"));
+			rs.getString("CookieID"));
       }// if
     }// try
     catch(Exception e)
@@ -262,7 +262,7 @@ public class DAO
 			rs.getString("UserName"),
 			email,
 			rs.getString("DisplayName"),
-			rs.getString("Specialization"));
+			rs.getString("CookieID"));
       }// if
     }// try
     catch(Exception e)
@@ -352,18 +352,18 @@ public class DAO
   }// updateUserDisplayName
 
   /**
-   * Update specialization for user identified by the given id. 
+   * Update cookieID for user identified by the given id. 
    *
    * @param userID the id identifying the user
-   * @param specialization the user's new specialization
+   * @param cookieID the user's new cookieID
    * @return 0 for successful update, -1 if an error occurred
    */
-  public int updateUserSpecialization(int userID, String specialization)
+  public int updateUserCookieID(int userID, String cookieID)
   {
     try
     {
-      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Specialization = (?) WHERE UserID = (?)");
-      updateUser.setString(1, specialization);
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET CookieID = (?) WHERE UserID = (?)");
+      updateUser.setString(1, cookieID);
       updateUser.setInt(2, userID);
 
       updateUser.executeQuery();
@@ -375,7 +375,7 @@ public class DAO
     }// catch
 
     return 0;
-  }// updateUserSpecialization
+  }// updateUserCookieID
 
   /**
    * Update password for user identified by the given id. 
@@ -1152,8 +1152,9 @@ public class DAO
    *
    * @param projectID the projectID to connect to the given taskID
    * @param taskID the taskID to connect to the given projectID
+   * @return 0 for successful addition, -1 if an error occurred
    */
-  public void addTaskToProject(int projectID, int taskID)
+  public int addTaskToProject(int projectID, int taskID)
   {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
@@ -1171,7 +1172,10 @@ public class DAO
     catch(Exception e)
     {
       System.err.println("Error adding task to project: " + e.getMessage());
+      return -1;
     }// catch
+    
+    return 0;
   }// addTaskToProject
 
   /**
@@ -1207,8 +1211,9 @@ public class DAO
    * @param projectID the projectID to connect to the given taskID
    * @param commits
    * @param contributions
+   * @return 0 for successful addition, -1 if an error occurred
    */
-  public void addUserToProject(int userID, int projectID, String commits, String contributions)
+  public int addUserToProject(int userID, int projectID, String commits, String specialization, String contributions)
   {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
@@ -1218,19 +1223,107 @@ public class DAO
     
     try
     {
-      PreparedStatement insertProjectUser = this.conn.prepareStatement("INSERT INTO ProjectUser(ProjectID, TaskID, Commits, Contributions) VALUES (?,?,?,?)");
+      PreparedStatement insertProjectUser = this.conn.prepareStatement("INSERT INTO ProjectUser(ProjectID, TaskID, Commits, Specialization, Contributions) VALUES (?,?,?,?,?)");
       insertProjectUser.setInt(1, projectID);
       insertProjectUser.setInt(2, userID);
       insertProjectUser.setString(3, commits);
-      insertProjectUser.setString(4, contributions);
+      insertProjectUser.setString(4, specialization);
+      insertProjectUser.setString(5, contributions);
 
       insertProjectUser.executeUpdate();
     }// try
     catch(Exception e)
     {
       System.err.println("Error adding user to project: " + e.getMessage());
+      return -1;
     }// catch
+    
+    return 0;
   }// addUserToProject
+
+  /**
+   * Update the commits on the specified project made by the specified user
+   *
+   * @param projectID the id of the project
+   * @param userID the id of the user
+   * @param commits the new commits
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateCommits(int projectID, int userID, String commits)
+  {
+    try
+    {
+      PreparedStatement updateProjectUser = this.conn.prepareStatement("UPDATE ProjectUser SET Commits = (?) WHERE ProjectID = (?) AND UserID = (?)");
+      updateProjectUser.setString(1, commits);
+      updateProjectUser.setInt(2, projectID);
+      updateProjectUser.setInt(3, userID);
+
+      updateProjectUser.executeUpdate();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error adding user to project: " + e.getMessage());
+      return -1;
+    }// catch
+    
+    return 0;
+  }// updateCommits
+
+  /**
+   * Update the given user's specialization on the specified project
+   *
+   * @param projectID the id of the project
+   * @param userID the id of the user
+   * @param specialization the user's new specialization
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateSpecialization(int projectID, int userID, String specialization)
+  {
+    try
+    {
+      PreparedStatement updateProjectUser = this.conn.prepareStatement("UPDATE ProjectUser SET Specialization = (?) WHERE ProjectID = (?) AND UserID = (?)");
+      updateProjectUser.setString(1, specialization);
+      updateProjectUser.setInt(2, projectID);
+      updateProjectUser.setInt(3, userID);
+
+      updateProjectUser.executeUpdate();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error adding user to project: " + e.getMessage());
+      return -1;
+    }// catch
+    
+    return 0;
+  }// updateSpecialization
+
+  /**
+   * Update the contributions to the specified project made by the specified user
+   *
+   * @param projectID the id of the project
+   * @param userID the id of the user
+   * @param contributions the new contributions
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateContributions(int projectID, int userID, String contributions)
+  {
+    try
+    {
+      PreparedStatement updateProjectUser = this.conn.prepareStatement("UPDATE ProjectUser SET Contributions = (?) WHERE ProjectID = (?) AND UserID = (?)");
+      updateProjectUser.setString(1, contributions);
+      updateProjectUser.setInt(2, projectID);
+      updateProjectUser.setInt(3, userID);
+
+      updateProjectUser.executeUpdate();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error adding user to project: " + e.getMessage());
+      return -1;
+    }// catch
+    
+    return 0;
+  }// updateContributions
 
   /**
    * Remove a user from a project, indentified by their respective IDs.
@@ -1257,7 +1350,7 @@ public class DAO
     
     return 0;
   }// removeUserFromProject
-  
+ 
   /**
    * Check the connection to the db.
    *
@@ -1278,8 +1371,10 @@ public class DAO
 
   /**
    * Close the connection to the db.
+   *
+   * @return 0 for successful close, -1 if an error occurred
    */
-  public void close()
+  public int close()
   {
     try
     {
@@ -1288,13 +1383,18 @@ public class DAO
     catch(Exception e)
     {
       System.err.println("Error closing connection: " + e.getMessage());
+      return -1;
     }// catch
+    
+    return 0;
   }// close
   
   /**
    * Remove all tuples from the DB by truncating each table.
+   *
+   * @return 0 for successful removal, -1 if an error occurred
    */
-  public void resetDB()
+  public int resetDB()
   {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
@@ -1313,6 +1413,9 @@ public class DAO
     catch(Exception e)
     {
       System.err.println("Error resetting database: " + e.getMessage());
+      return -1;
     }// catch
+
+    return 0;
   }// resetDB
 }// DAO

@@ -6,7 +6,7 @@ package csx370.impl;
 public class User
 {
   private int userID;
-  private String username, email, displayName, specialization;
+  private String username, email, displayName, cookieID;
 
   /**
    * Create a User object with the given info.
@@ -15,9 +15,9 @@ public class User
    * @param username the unique username of the user
    * @param email the unique registration email of the user
    * @param displayName the non-unique display name of the user
-   * @param specialization the user's specialization
+   * @param cookeID the cookieID of the user
    */
-  public User(int userID, String username, String email, String displayName, String specialization)
+  public User(int userID, String username, String email, String displayName, String cookieID)
   {
     super();
     
@@ -25,7 +25,7 @@ public class User
     this.username = username;
     this.email = email;
     this.displayName = displayName;
-    this.specialization = specialization;
+    this.cookieID = cookieID;
   }// ctor
 
   /**
@@ -57,9 +57,9 @@ public class User
   }
 
   /**
-   * @return the specialization
+   * @return the cookieID
    */
-  public String getSpecialization() {
-    return specialization;
+  public String getCookieID() {
+    return cookieID;
   }
 }// User
