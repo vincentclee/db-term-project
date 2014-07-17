@@ -722,7 +722,7 @@ public class DAO
       rs.next();
       taskID = rs.getInt("TaskID");
 
-      // create taskx object to return
+      // create task object to return
       task = new Task(taskID, projectID, hasDependency, type, priority, deadline, title, notes, description, scope, status);
     }// try
     catch(Exception e)
@@ -1228,6 +1228,9 @@ public class DAO
       System.err.println("Error removing user from project: " + e.getMessage());
       return -1;
     }// catch
+    
+    return 0;
+  }// removeUserFromProject
   
   /**
    * Check the connection to the db.
