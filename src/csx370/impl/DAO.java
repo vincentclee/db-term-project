@@ -58,8 +58,8 @@ public class DAO
 
   /**
    * Authenticate user login. The first argument can be either the username or email.
-   * If authentication is successful, an User object with data pertaining to the corresponding
-   * user is return. Returns null in the case of an unsuccessful login.
+   * If authentication is successful, a User object with data pertaining to the corresponding
+   * user is returned. Returns null in the case of an unsuccessful login.
    *
    * @param usernameOrEmail either the username or email given by the user
    * @param password the password given by the user
@@ -72,7 +72,7 @@ public class DAO
 
     try
     {
-      PreparedStatement usernameAuthenticate = this.conn.prepareStatement("SELECT * FROM User WHERE UserName = (?) AND Password = UNHEX(SHA1(?))");
+      PreparedStatement usernameAuthenticate = this.conn.prepareStatement("SELECT * FROM User WHERE UserName = (?) AND Password = UNHEX(SHA2(?))");
       usernameAuthenticate.setString(1, usernameOrEmail);
       usernameAuthenticate.setString(2, password);
       
@@ -90,7 +90,7 @@ public class DAO
       else
       {
 	// if username query does not return a row, try the email query
-	PreparedStatement emailAuthenticate = this.conn.prepareStatement("SELECT * FROM User WHERE Email = (?) AND Password = UNHEX(SHA1(?))");
+	PreparedStatement emailAuthenticate = this.conn.prepareStatement("SELECT * FROM User WHERE Email = (?) AND Password = UNHEX(SHA2(?))");
 	emailAuthenticate.setString(1, usernameOrEmail);
 	emailAuthenticate.setString(2, password);
 	
@@ -124,7 +124,7 @@ public class DAO
    * @param displayName the non-unique display name of the user
    * @param specialization the user's specialization
    * @param password the user's password
-   * @return a user object containing all info about this user from the User table
+   * @return a user object containing all info about this user from the User table, or null if an error occured
    */
   public User createUser(String username, String email, String displayName, String specialization, String password)
   {
@@ -139,7 +139,7 @@ public class DAO
     try
     {
       // insert info into db
-      PreparedStatement insertUser = this.conn.prepareStatement("INSERT INTO User(UserName, Email, DisplayName, Specialization, Password) VALUES (?,?,?,?,UNHEX(SHA1(?)))");
+      PreparedStatement insertUser = this.conn.prepareStatement("INSERT INTO User(UserName, Email, DisplayName, Specialization, Password) VALUES (?,?,?,?,UNHEX(SHA2(?)))");
       insertUser.setString(1, username);
       insertUser.setString(2, email);
       insertUser.setString(3, displayName);
@@ -169,6 +169,239 @@ public class DAO
   }// createUser
 
   /**
+   * Get info about the user identified by their id
+   *
+   * @param id the user's id
+   * @return a user object containing information about the user or null if an error occured
+   */  
+  public User getUserByID(int userID)
+  {
+    // user object to return, will stay null if no user is found
+    User user =  null;
+
+    try
+    {
+      PreparedStatement selectUser = this.conn.prepareStatement("SELECT * FROM User WHERE UserID = (?)");
+      selectUser.setInt(1, userID);
+
+      ResultSet rs = selectUser.executeQuery();
+      if(rs.next())
+      {
+	// if a user with the specified id exists, make the user object with its data
+	user = new User(userID, 
+			rs.getString("UserName"),
+			rs.getString("Email"),
+			rs.getString("DisplayName"),
+			rs.getString("Specialization"));
+      }// if
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving user info: " + e.getMessage());
+    }// catch
+
+    return user;
+  }// getUserByID
+
+  /**
+   * Get info about the user identified by their username
+   *
+   * @param username the user's username
+   * @return a user object containing information about the user or null if an error occured
+   */  
+  public User getUserByUsername(String username)
+  {
+    // user object to return, will stay null if no user is found
+    User user =  null;
+
+    try
+    {
+      PreparedStatement selectUser = this.conn.prepareStatement("SELECT * FROM User WHERE UserName = (?)");
+      selectUser.setString(1, username);
+
+      ResultSet rs = selectUser.executeQuery();
+      if(rs.next())
+      {
+	// if a user with the specified username exists, make the user object with its data
+	user = new User(rs.getInt("UserID"), 
+			username,
+			rs.getString("Email"),
+			rs.getString("DisplayName"),
+			rs.getString("Specialization"));
+      }// if
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving user info: " + e.getMessage());
+    }// catch
+
+    return user;
+  }// getUserByUsername
+
+  /**
+   * Get info about the user identified by their email
+   *
+   * @param email the user's email
+   * @return a user object containing information about the user or null if an error occured
+   */  
+  public User getUserByEmail(String email)
+  {
+    // user object to return, will stay null if no user is found
+    User user =  null;
+
+    try
+    {
+      PreparedStatement selectUser = this.conn.prepareStatement("SELECT * FROM User WHERE Email = (?)");
+      selectUser.setString(1, email);
+
+      ResultSet rs = selectUser.executeQuery();
+      if(rs.next())
+      {
+	// if a user with the specified email exists, make the user object with its data
+	user = new User(rs.getInt("UserID"), 
+			rs.getString("UserName"),
+			email,
+			rs.getString("DisplayName"),
+			rs.getString("Specialization"));
+      }// if
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving user info: " + e.getMessage());
+    }// catch
+
+    return user;
+  }// getUserByUsername
+
+  /**
+   * Update username for user identified by the given id. 
+   *
+   * @param userID the id identifying the user
+   * @param username the user's new username
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateUsername(int userID, String username)
+  {
+    try
+    {
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET UserName = (?) WHERE UserID = (?)");
+      updateUser.setString(1, username);
+      updateUser.setInt(2, userID);
+
+      updateUser.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating user info: " + e.getMessage());
+      return -1;
+    }// catch
+    
+    return 0;
+  }// updateUserName
+
+  /**
+   * Update email for user identified by the given id. 
+   *
+   * @param userID the id identifying the user
+   * @param email the user's new email or null for no change
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateUserEmail(int userID, String email)
+  {
+    try
+    {
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Email = (?) WHERE UserID = (?)");
+      updateUser.setString(1, email);
+      updateUser.setInt(2, userID);
+
+      updateUser.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating user info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateUserEmail
+
+  /**
+   * Update display name for user identified by the given id. 
+   *
+   * @param userID the id identifying the user
+   * @param displayName the user's new display name or null for no change
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateUserDisplayName(int userID, String displayName)
+  {
+    try
+    {
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET DisplayName = (?) WHERE UserID = (?)");
+      updateUser.setString(1, displayName);
+      updateUser.setInt(2, userID);
+
+      updateUser.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating user info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateUserDisplayName
+
+  /**
+   * Update specialization for user identified by the given id. 
+   *
+   * @param userID the id identifying the user
+   * @param specialization the user's new specialization or null for no change
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateUserSpecialization(int userID, String specialization)
+  {
+    try
+    {
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Specialization = (?) WHERE UserID = (?)");
+      updateUser.setString(1, specialization);
+      updateUser.setInt(2, userID);
+
+      updateUser.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating user info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateUserSpecialization
+
+  /**
+   * Delete the user identified by the given id from the db
+   *
+   * @param userID the id identifying the user
+   * @return 0 for successful delete, -1 if an error occurred
+   */
+  public int deleteUser(int userID)
+  {
+    try
+    {
+      PreparedStatement deleteUser = this.conn.prepareStatement("DELETE FROM User WHERE UserID = (?)");
+      deleteUser.setInt(1, userID);
+
+      deleteUser.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error deleting user: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// deleteUser
+
+  /**
    * Create a new project in the DB with the given details and return a Project 
    * object detailing the newly created project
    *
@@ -177,7 +410,7 @@ public class DAO
    * @param targetDate
    * @param managerID
    * @param status
-   * @return a Project object containing all info about this project from the Project table
+   * @return a Project object containing all info about this project from the Project table or null if an error occured
    */
   public Project createProject(String title, String description, String targetDate, int managerID, String status)
   {
@@ -217,7 +450,7 @@ public class DAO
       rs.next();
       projectID = rs.getInt("ProjectID");
       
-      // create prject object to return
+      // create project object to return
       project = new Project(projectID, title, description, targetDate, managerID, status);
     }// try
     catch(Exception e)
@@ -228,6 +461,202 @@ public class DAO
     return project;
   }// createProject
 
+  /**
+   * Retrieve from the db the project specified by the given id
+   *
+   * @param projectID the project's id
+   * @return a Project object containing information about the project or null if an error occured
+   */
+  public Project getProject(int projectID)
+  {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // TODO
+    // check types for variables
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // project object to return, will stay null if no project is found
+    Project project =  null;
+
+    try
+    {
+      PreparedStatement selectProject = this.conn.prepareStatement("SELECT * FROM Project WHERE ProjectID = (?)");
+      selectProject.setInt(1, projectID);
+
+      ResultSet rs = selectProject.executeQuery();
+      if(rs.next())
+      {
+	// if a project with the specified id exists, make the project object with its data
+	project = new Project(projectID, 
+			      rs.getString("Title"),
+			      rs.getString("Description"), 
+			      rs.getString("TargetDate"),
+			      rs.getInt("ManagerID"), 
+			      rs.getString("Status"));
+
+      }// if
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving project info: " + e.getMessage());
+    }// catch
+
+    return project;
+  }// getProject
+  
+  /**
+   * Update the title of the project with the given id
+   *
+   * @param projectID the id of the project to update
+   * @param title the new title of the project
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateProjectTitle(int projectID, String title)
+  {
+    try
+    {
+      PreparedStatement updateProject = this.conn.prepareStatement("UPDATE Project SET Title = (?) WHERE ProjectID = (?)");
+      updateProject.setString(1, title);
+      updateProject.setInt(2, projectID);
+
+      updateProject.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating project info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateProjectTitle
+
+  /**
+   * Update the description of the project with the given id
+   *
+   * @param projectID the id of the project to update
+   * @param description the new description of the project
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateProjectDescription(int projectID, String description)
+  {
+    try
+    {
+      PreparedStatement updateProject = this.conn.prepareStatement("UPDATE Project SET Description = (?) WHERE ProjectID = (?)");
+      updateProject.setString(1, description);
+      updateProject.setInt(2, projectID);
+
+      updateProject.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating project info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateProjectDescription
+
+  /**
+   * Update the target date of the project with the given id
+   *
+   * @param projectID the id of the project to update
+   * @param targetDate the new target date of the project
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateProjectTargetDate(int projectID, String targetDate)
+  {
+    try
+    {
+      PreparedStatement updateProject = this.conn.prepareStatement("UPDATE Project SET TargetDate = (?) WHERE ProjectID = (?)");
+      updateProject.setString(1, targetDate);
+      updateProject.setInt(2, projectID);
+
+      updateProject.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating project info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateProjectTargetDate
+
+  /**
+   * Update the manager of the project with the given id
+   *
+   * @param projectID the id of the project to update
+   * @param managerID the id of the new manager of the project
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateProjectManager(int projectID, int managerID)
+  {
+    try
+    {
+      PreparedStatement updateProject = this.conn.prepareStatement("UPDATE Project SET Manager = (?) WHERE ProjectID = (?)");
+      updateProject.setInt(1, managerID);
+      updateProject.setInt(2, projectID);
+
+      updateProject.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating project info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateProjectTargetDate
+
+  /**
+   * Update the status of the project with the given id
+   *
+   * @param projectID the id of the project to update
+   * @param status the new status of the project
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateProjectStatus(int projectID, String status)
+  {
+    try
+    {
+      PreparedStatement updateProject = this.conn.prepareStatement("UPDATE Project SET Status = (?) WHERE ProjectID = (?)");
+      updateProject.setString(1, status);
+      updateProject.setInt(2, projectID);
+
+      updateProject.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating project info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateProjectStatus
+
+  /**
+   * Delete the project with the given id
+   *
+   * @param projectID the id of the project to delete
+   * @return 0 for successful delete, -1 if an error occurred
+   */
+  public int deleteProject(int projectID)
+  {
+    try
+    {
+      PreparedStatement deleteProject = this.conn.prepareStatement("DELETE FROM Project WHERE ProjectID = (?)");
+      deleteProject.setInt(1, projectID);
+
+      deleteProject.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error deleting project: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// deleteProject
+  
   /**
    * Create a new task in the DB with the given details and return a Task object
    * detailing the newly created task
@@ -242,7 +671,7 @@ public class DAO
    * @param description
    * @param scope
    * @param status
-   * @return a Task object containing all info about this task from the Task table
+   * @return a Task object containing all info about this task from the Task table or null if an error occured
    */
   public Task createTask(String type, String priority, int projectID, boolean hasDependency, 
 			 String deadline, String title, String notes, String description, 
@@ -293,7 +722,7 @@ public class DAO
       rs.next();
       taskID = rs.getInt("TaskID");
 
-      // create prject object to return
+      // create taskx object to return
       task = new Task(taskID, projectID, hasDependency, type, priority, deadline, title, notes, description, scope, status);
     }// try
     catch(Exception e)
@@ -305,12 +734,344 @@ public class DAO
   }// createTask
 
   /**
-   * Connect a user and a task, indentified by their respective IDs.
+   * Retrieve from the db the task specified by the given id
+   *
+   * @param taskID the task's id
+   * @return a Task object containing information about the task or null if an error occured
+   */
+  public Task getTask(int taskID)
+  {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // TODO
+    // check types for variables
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // task object to return, will stay null if no task is found
+    Task task =  null;
+
+    try
+    {
+      PreparedStatement selectTask = this.conn.prepareStatement("SELECT * FROM Task WHERE TaskID = (?)");
+      selectTask.setInt(1, taskID);
+
+      ResultSet rs = selectTask.executeQuery();
+      if(rs.next())
+      {
+	// if a task with the specified id exists, make the task object with its data
+	task = new Task(taskID, 
+			rs.getInt("ProjectID"),
+			rs.getBoolean("HasDependency"), 
+			rs.getString("Type"), 
+			rs.getString("Priority"),
+			rs.getString("Deadline"), 
+			rs.getString("Title"), 
+			rs.getString("Notes"),
+			rs.getString("Description"),
+			rs.getString("Scope"), 
+			rs.getString("Status"));
+
+      }// if
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving task info: " + e.getMessage());
+    }// catch
+
+    return task;
+  }// getTask
+
+  /**
+   * Update the type of the task with the given id
+   *
+   * @param taskID the id of the task to update
+   * @param type the new type of the task
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateTaskType(int taskID, String type)
+  {
+    try
+    {
+      PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET Type = (?) WHERE TaskID = (?)");
+      updateTask.setString(1, type);
+      updateTask.setInt(2, taskID);
+
+      updateTask.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating task info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateTaskType
+
+  /**
+   * Update the priority of the task with the given id
+   *
+   * @param taskID the id of the task to update
+   * @param priority the new priority of the task
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateTaskPriority(int taskID, String priority)
+  {
+    try
+    {
+      PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET Priority = (?) WHERE TaskID = (?)");
+      updateTask.setString(1, priority);
+      updateTask.setInt(2, taskID);
+
+      updateTask.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating task info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateTaskPriority
+
+  /**
+   * Update the project that the task with the given id is linked to
+   *
+   * @param taskID the id of the task to update
+   * @param projectID the id of the new project that the task is linked to
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateTaskProject(int taskID, int projectID)
+  {
+    try
+    {
+      PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET ProjectID = (?) WHERE TaskID = (?)");
+      updateTask.setInt(1, projectID);
+      updateTask.setInt(2, taskID);
+
+      updateTask.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating task info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateTaskProject
+
+  /**
+   * Update whether the task with the given id has dependencies
+   *
+   * @param taskID the id of the task to update
+   * @param hasDependency true if the task has a dependency, false if otherwise
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateTaskDependency(int taskID, boolean hasDependency)
+  {
+    try
+    {
+      PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET HasDependency = (?) WHERE TaskID = (?)");
+      updateTask.setBoolean(1, hasDependency);
+      updateTask.setInt(2, taskID);
+
+      updateTask.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating task info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateTaskDependency
+
+  /**
+   * Update the deadline of the task with the given id
+   *
+   * @param taskID the id of the task to update
+   * @param deadline the new deadline of the task
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateTaskDeadline(int taskID, String deadline)
+  {
+    try
+    {
+      PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET Deadline = (?) WHERE TaskID = (?)");
+      updateTask.setString(1, deadline);
+      updateTask.setInt(2, taskID);
+
+      updateTask.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating task info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateTaskDeadline
+ 
+  /**
+   * Update the title of the task with the given id
+   *
+   * @param taskID the id of the task to update
+   * @param title the new title of the task
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateTaskTitle(int taskID, String title)
+  {
+    try
+    {
+      PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET Title = (?) WHERE TaskID = (?)");
+      updateTask.setString(1, title);
+      updateTask.setInt(2, taskID);
+
+      updateTask.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating task info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateTaskTitle
+
+  /**
+   * Update the notes of the task with the given id
+   *
+   * @param taskID the id of the task to update
+   * @param notes the new notes of the task
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateTaskNotes(int taskID, String notes)
+  {
+    try
+    {
+      PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET Notes = (?) WHERE TaskID = (?)");
+      updateTask.setString(1, notes);
+      updateTask.setInt(2, taskID);
+
+      updateTask.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating task info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateTaskNotes
+
+  /**
+   * Update the description of the task with the given id
+   *
+   * @param taskID the id of the task to update
+   * @param description the new description of the task
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateTaskDescription(int taskID, String description)
+  {
+    try
+    {
+      PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET Description = (?) WHERE TaskID = (?)");
+      updateTask.setString(1, description);
+      updateTask.setInt(2, taskID);
+
+      updateTask.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating task info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateTaskDescription
+
+  /**
+   * Update the scope of the task with the given id
+   *
+   * @param taskID the id of the task to update
+   * @param scope the new scope of the task
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateTaskScope(int taskID, String scope)
+  {
+    try
+    {
+      PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET Scope = (?) WHERE TaskID = (?)");
+      updateTask.setString(1, scope);
+      updateTask.setInt(2, taskID);
+
+      updateTask.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating task info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateTaskScope
+
+  /**
+   * Update the status of the task with the given id
+   *
+   * @param taskID the id of the task to update
+   * @param status the new status of the task
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateTaskStatus(int taskID, String status)
+  {
+    try
+    {
+      PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET Status = (?) WHERE TaskID = (?)");
+      updateTask.setString(1, status);
+      updateTask.setInt(2, taskID);
+
+      updateTask.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating task info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateTaskStatus
+
+  /**
+   * Delete the task with the given id
+   *
+   * @param taskID the id of the task to delete
+   * @return 0 for successful delete, -1 if an error occurred
+   */
+  public int deleteTask(int taskID)
+  {
+    try
+    {
+      PreparedStatement deleteTask = this.conn.prepareStatement("DELETE FROM Task WHERE TaskID = (?)");
+      deleteTask.setInt(1, taskID);
+
+      deleteTask.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error deleting task: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// deleteTask
+
+  /**
+   * Add a user to a task, indentified by their respective IDs.
    *
    * @param taskID the taskID to connect to the given userID
    * @param userID the userID to connect to the given taskID
+   * @return 0 for successful addition, -1 if an error occurred
    */
-  public void createUserTask(int taskID, int userID)
+  public int addUserToTask(int taskID, int userID)
   {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
@@ -327,9 +1088,38 @@ public class DAO
     }// try
     catch(Exception e)
     {
-      System.err.println("Error creating usertask: " + e.getMessage());
+      System.err.println("Error adding user to task: " + e.getMessage());
+      return -1;
     }// catch
-  }// createUserTask
+
+    return 0;
+  }// addUserToTask
+
+  /**
+   * Remove a user from a task, indentified by their respective IDs.
+   *
+   * @param taskID the taskID that the user with the given userID is to be removed from
+   * @param userID the userID to be removed from the task with the given taskID
+   * @return 0 for successful removal, -1 if an error occurred
+   */
+  public int removeUserFromTask(int taskID, int userID)
+  {
+    try
+    {
+      PreparedStatement removeUserTask = this.conn.prepareStatement("DELETE FROM UserTask WHERE TaskID = (?) AND UserID = (?)");
+      removeUserTask.setInt(1, taskID);
+      removeUserTask.setInt(2, userID);
+      
+      removeUserTask.executeUpdate();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error removing user from task: " + e.getMessage());
+      return -1;
+    }// catch
+    
+    return 0;
+  }// removeUserFromTask
 
   /**
    * Connect a task and a project, indentified by their respective IDs.
@@ -337,7 +1127,7 @@ public class DAO
    * @param projectID the projectID to connect to the given taskID
    * @param taskID the taskID to connect to the given projectID
    */
-  public void createProjectTask(int projectID, int taskID)
+  public void addTaskToProject(int projectID, int taskID)
   {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
@@ -354,9 +1144,35 @@ public class DAO
     }// try
     catch(Exception e)
     {
-      System.err.println("Error creating projecttask: " + e.getMessage());
+      System.err.println("Error adding task to project: " + e.getMessage());
     }// catch
-  }// createProjectTask
+  }// addTaskToProject
+
+  /**
+   * Remove a task from a project, indentified by their respective IDs.
+   *
+   * @param projectID the projectID that the task with the given taskID is to be removed from
+   * @param taskID the taskID to be removed from the project with the given projectID
+   * @return 0 for successful removal, -1 if an error occurred
+   */
+  public int removeTaskFromProject(int projectID, int taskID)
+  {
+    try
+    {
+      PreparedStatement removeProjectTask = this.conn.prepareStatement("DELETE FROM ProjectTask WHERE ProjectID = (?) AND TaskID = (?)");
+      removeProjectTask.setInt(1, projectID);
+      removeProjectTask.setInt(2, taskID);
+      
+      removeProjectTask.executeUpdate();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error removing task from project: " + e.getMessage());
+      return -1;
+    }// catch
+    
+    return 0;
+  }// removeTaskFromProject
 
   /**
    * Connect user and a project, indentified by their respective IDs.
@@ -366,7 +1182,7 @@ public class DAO
    * @param commits
    * @param contributions
    */
-  public void createProjectUser(int userID, int projectID, String commits, String contributions)
+  public void addUserToProject(int userID, int projectID, String commits, String contributions)
   {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
@@ -386,10 +1202,33 @@ public class DAO
     }// try
     catch(Exception e)
     {
-      System.err.println("Error creating projectuser: " + e.getMessage());
+      System.err.println("Error adding user to project: " + e.getMessage());
     }// catch
-  }// createProjectUser
+  }// addUserToProject
 
+  /**
+   * Remove a user from a project, indentified by their respective IDs.
+   *
+   * @param projectID the projectID that the user with the given userID is to be removed from
+   * @param userID the userID to be removed from the project with the given projectID
+   * @return 0 for successful removal, -1 if an error occurred
+   */
+  public int removeUserFromProject(int projectID, int userID)
+  {
+    try
+    {
+      PreparedStatement removeProjectUser = this.conn.prepareStatement("DELETE FROM ProjectUser WHERE ProjectID = (?) AND UserID = (?)");
+      removeProjectUser.setInt(1, projectID);
+      removeProjectUser.setInt(2, userID);
+      
+      removeProjectUser.executeUpdate();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error removing user from project: " + e.getMessage());
+      return -1;
+    }// catch
+  
   /**
    * Check the connection to the db.
    *

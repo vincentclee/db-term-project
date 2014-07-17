@@ -65,7 +65,7 @@ public class Task
   /**
    * @return the hasDependency
    */
-  public boolean isHasDependency() {
+  public boolean hasDependency() {
     return hasDependency;
   }
 
