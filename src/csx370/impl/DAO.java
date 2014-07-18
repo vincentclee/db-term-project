@@ -488,6 +488,8 @@ public class DAO
       System.err.println("Error retrieving user projects: " + e.getMessage());
       projectList = null;
     }// catch
+
+    return projectList;
   }// getUserProjectsByID
     
   /**
@@ -857,7 +859,7 @@ public class DAO
    * @return a Task object containing all info about this task from the Task table or null if an error occured
    */
   public Task createTask(String type, String priority, int projectID, boolean hasDependency, 
-			 String deadline, String title, String notes, String description, 
+			 Timestamp deadline, String title, String notes, String description, 
 			 String scope, String status)
   {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -878,7 +880,7 @@ public class DAO
       insertTask.setString(2, priority);
       insertTask.setInt(3, projectID);
       insertTask.setBoolean(4, hasDependency);
-      insertTask.setString(5, deadline);
+      insertTask.setTimestamp(5, deadline);
       insertTask.setString(6, title);
       insertTask.setString(7, notes);
       insertTask.setString(8, description);
@@ -894,7 +896,7 @@ public class DAO
       selectTask.setString(2, priority);
       selectTask.setInt(3, projectID);
       selectTask.setBoolean(4, hasDependency);
-      selectTask.setString(5, deadline);
+      selectTask.setTimestamp(5, deadline);
       selectTask.setString(6, title);
       selectTask.setString(7, notes);
       selectTask.setString(8, description);
@@ -947,7 +949,7 @@ public class DAO
 			rs.getBoolean("HasDependency"), 
 			rs.getString("Type"), 
 			rs.getString("Priority"),
-			rs.getString("Deadline"), 
+			rs.getTimestamp("Deadline"), 
 			rs.getString("Title"), 
 			rs.getString("Notes"),
 			rs.getString("Description"),
@@ -973,7 +975,7 @@ public class DAO
    */
   public List<Task> getTasksForProject(int projectID)
   {
-    List<Project> taskList = null;
+    List<Task> taskList = null;
     
     try
     {
@@ -991,7 +993,7 @@ public class DAO
 			      rs.getBoolean("HasDependency"),
 			      rs.getString("Type"),
 			      rs.getString("Priority"),
-			      rs.getString("Deadline"),
+			      rs.getTimestamp("Deadline"),
 			      rs.getString("Title"),
 			      rs.getString("Notes"),
 			      rs.getString("Description"),
@@ -1004,6 +1006,8 @@ public class DAO
       System.err.println("Error retrieving project tasks: " + e.getMessage());
       taskList = null;
     }// catch
+    
+    return taskList;
   }// getTasksForProject
 
   /**
@@ -1117,12 +1121,12 @@ public class DAO
    * @param deadline the new deadline of the task
    * @return 0 for successful update, -1 if an error occurred
    */
-  public int updateTaskDeadline(int taskID, String deadline)
+  public int updateTaskDeadline(int taskID, Timestamp deadline)
   {
     try
     {
       PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET Deadline = (?) WHERE TaskID = (?)");
-      updateTask.setString(1, deadline);
+      updateTask.setTimestamp(1, deadline);
       updateTask.setInt(2, taskID);
 
       updateTask.executeQuery();
