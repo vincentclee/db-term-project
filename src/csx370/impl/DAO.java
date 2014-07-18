@@ -368,14 +368,14 @@ public class DAO
    * @param projectID the id of the project
    * @return a list of tasks associated with the specified user for the specified project
    */
-  public List<Task> getUserTasksForProjectByCookieID(int cookieID, int projectID)
+  public List<Task> getUserTasksForProjectByCookieID(String cookieID, int projectID)
   {
     List<Task> taskList = null;
     
     try
     {
       PreparedStatement selectTasks = this.conn.prepareStatement("SELECT * FROM (User NATURAL JOIN UserTask NATURAL JOIN ProjectTask NATURAL JOIN Task) WHERE CookieID = (?) AND ProjectID = (?)");
-      selectTasks.setInt(1, cookieID);
+      selectTasks.setString(1, cookieID);
       selectTasks.setInt(2, projectID);
       
       ResultSet rs = selectTasks.executeQuery();
@@ -540,7 +540,7 @@ public class DAO
    * @param userID the id of the user whose list of projects you want
    * @return a list of the projects the user is associated with, or null upon failure
    */
-  public List<Project> getUserProjectsByID(int userID)
+  public List<Project> getProjectsByUserID(int userID)
   {
     List<Project> projectList = null;
     
@@ -571,7 +571,7 @@ public class DAO
     }// catch
 
     return projectList;
-  }// getUserProjectsByID
+  }// getProjectsByUserID
     
   /**
    * Get a list of all projects associated with the given cookieID
@@ -579,7 +579,7 @@ public class DAO
    * @param cookieID the cookieid of the user whose list of projects you want
    * @return a list of the projects the user is associated with, or null upon failure
    */
-  public List<Project> getUserProjectsByCookieID(String cookieID)
+  public List<Project> getProjectsByCookieID(String cookieID)
   {
     List<Project> projectList = null;
     
@@ -610,7 +610,7 @@ public class DAO
     }// catch
 
     return projectList;
-  }// getUserProjectsByID
+  }// getProjectsByCookieID
 
   /**
    * Delete the user identified by the given id from the db
@@ -1065,6 +1065,18 @@ public class DAO
     
     return taskList;
   }// getTasksForProject
+
+  /**
+   * Returns the task board of the user with the given cookieID for the specified project
+   *
+   * @param cookieID the cookieID of the user
+   * @param projectID the id of the project
+   * @return the task board of the user with the given cookieID for the specified project 
+   */
+  public TaskBoard getProjectTaskBoard(String cookieID, int projectID)
+  {
+    return new TaskBoard(this.getUserTasksForProjectByCookieID(cookieID, projectID));
+  }// getProjectTaskBoard
 
   /**
    * Update the priority of the task with the given id
