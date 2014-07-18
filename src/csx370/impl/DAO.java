@@ -1,14 +1,15 @@
 package csx370.impl;
 
-import java.util.ArrayList
+import java.util.List;
+import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.sql.Date;
-import javax.servlet.http.Cookie;
-import csx370.util.CookieUtil;
+/*import javax.servlet.http.Cookie;
+  import csx370.util.CookieUtil;*/
 
 
 /**
@@ -71,7 +72,7 @@ public class DAO
    * @param password the password given by the user
    * @return User object with user's details upon success, null upon failed attempt
    */
-  public User authenticate(String username, String password)
+/*  public User authenticate(String username, String password)
   {
     // user object to return
     User user = null;
@@ -123,7 +124,7 @@ public class DAO
 
     return user;
   }// authenticate
-  
+*/
   /**
    * Create a new user account in the DB with the given details and return a User
    * object detailing the newly created user
@@ -466,6 +467,43 @@ public class DAO
     {
       PreparedStatement selectProjects = this.conn.prepareStatement("SELECT * FROM (ProjectUser NATURAL JOIN Project) WHERE UserID = (?)");
       selectProjects.setInt(1, userID);
+      
+      ResultSet rs = selectProjects.executeQuery();
+      
+      // iterate through returned items and add to list
+      projectList = new ArrayList<Project>();
+      while(rs.next())
+      {
+	projectList.add(new Project(rs.getInt("ProjectID"), 
+				    rs.getString("Title"),
+				    rs.getString("Description"),
+				    rs.getDate("StartDate"), 
+				    rs.getDate("TargetDate"), 
+				    rs.getInt("Manager"),
+				    rs.getString("Status")));
+      }// while
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving user projects: " + e.getMessage());
+      projectList = null;
+    }// catch
+  }// getUserProjectsByID
+    
+  /**
+   * Get a list of all projects associated with the given cookieID
+   *
+   * @param cookieID the cookieid of the user whose list of projects you want
+   * @return a list of the projects the user is associated with, or null upon failure
+   */
+  public List<Project> getUserProjectsByCookieID(String cookieID)
+  {
+    List<Project> projectList = null;
+    
+    try
+    {
+      PreparedStatement selectProjects = this.conn.prepareStatement("SELECT * FROM (ProjectUser NATURAL JOIN Project) WHERE CookieID = (?)");
+      selectProjects.setString(1, cookieID);
 
       ResultSet rs = selectProjects.executeQuery();
 
@@ -476,7 +514,8 @@ public class DAO
 	projectList.add(new Project(rs.getInt("ProjectID"), 
 				    rs.getString("Title"),
 				    rs.getString("Description"),
-				    rs.getString("TargetDate"), 
+				    rs.getDate("StartDate"), 
+				    rs.getDate("TargetDate"), 
 				    rs.getInt("Manager"),
 				    rs.getString("Status")));
       }// while
@@ -488,7 +527,7 @@ public class DAO
     }// catch
 
     return projectList;
-  }// getUserProjectByID
+  }// getUserProjectsByID
 
   /**
    * Delete the user identified by the given id from the db
@@ -520,12 +559,13 @@ public class DAO
    *
    * @param title
    * @param description
+   * @param startDate
    * @param targetDate
    * @param managerID
    * @param status
    * @return a Project object containing all info about this project from the Project table or null if an error occured
    */
-  public Project createProject(String title, String description, Date targetDate, int managerID, String status)
+  public Project createProject(String title, String description, Date startDate, Date targetDate, int managerID, String status)
   {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
@@ -540,30 +580,32 @@ public class DAO
     try
     {
       // insert info into db
-      PreparedStatement insertProject = this.conn.prepareStatement("INSERT INTO Project(Title, Description, TargetDate, Manager, Status) VALUES (?,?,?,?,?)");
+      PreparedStatement insertProject = this.conn.prepareStatement("INSERT INTO Project(Title, Description, StartDate, TargetDate, Manager, Status) VALUES (?,?,?,?,?,?)");
       insertProject.setString(1, title);
       insertProject.setString(2, description);
-      insertProject.setDate(3, targetDate);
-      insertProject.setInt(4, managerID);
-      insertProject.setString(5, status);
+      insertProject.setDate(3, startDate);
+      insertProject.setDate(4, targetDate);
+      insertProject.setInt(5, managerID);
+      insertProject.setString(6, status);
       
       insertProject.executeUpdate();
 
       // get projectID from freshly inserted row
       int projectID;
-      PreparedStatement selectProject = this.conn.prepareStatement("SELECT ProjectID FROM Project WHERE Title = (?) AND Description = (?) AND TargetDate = (?) AND Manager = (?) AND Status = (?)");
+      PreparedStatement selectProject = this.conn.prepareStatement("SELECT ProjectID FROM Project WHERE Title = (?) AND Description = (?) AND StartDate = (?) AND TargetDate = (?) AND Manager = (?) AND Status = (?)");
       selectProject.setString(1, title);
       selectProject.setString(2, description);
-      selectProject.setDate(3, targetDate);
-      selectProject.setInt(4, managerID);
-      selectProject.setString(5, status);
+      insertProject.setDate(3, startDate);
+      insertProject.setDate(4, targetDate);
+      insertProject.setInt(5, managerID);
+      insertProject.setString(6, status);
 
       ResultSet rs = selectProject.executeQuery();
       rs.next();
       projectID = rs.getInt("ProjectID");
       
       // create project object to return
-      project = new Project(projectID, title, description, targetDate, managerID, status);
+      project = new Project(projectID, title, description, startDate, targetDate, managerID, status);
     }// try
     catch(Exception e)
     {
@@ -602,7 +644,8 @@ public class DAO
 	project = new Project(projectID, 
 			      rs.getString("Title"),
 			      rs.getString("Description"), 
-			      rs.getString("TargetDate"),
+			      rs.getDate("StartDate"),
+			      rs.getDate("TargetDate"),
 			      rs.getInt("ManagerID"), 
 			      rs.getString("Status"));
 
@@ -668,6 +711,32 @@ public class DAO
 
     return 0;
   }// updateProjectDescription
+
+  /**
+   * Update the start date of the project with the given id
+   *
+   * @param projectID the id of the project to update
+   * @param startDate the new start date of the project
+   * @return 0 for successful update, -1 if an error occurred
+   */
+  public int updateProjectStartDate(int projectID, Date startDate)
+  {
+    try
+    {
+      PreparedStatement updateProject = this.conn.prepareStatement("UPDATE Project SET StartDate = (?) WHERE ProjectID = (?)");
+      updateProject.setDate(1, startDate);
+      updateProject.setInt(2, projectID);
+
+      updateProject.executeQuery();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating project info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// updateProjectStartDate
 
   /**
    * Update the target date of the project with the given id
@@ -895,6 +964,47 @@ public class DAO
 
     return task;
   }// getTask
+
+  /**
+   * Retrieve all tasks associated with the specified project
+   *
+   * @param projectID the id of the project whose tasks you want
+   * @return a list of tasks associated with the given project
+   */
+  public List<Task> getTasksForProject(int projectID)
+  {
+    List<Project> taskList = null;
+    
+    try
+    {
+      PreparedStatement selectTasks = this.conn.prepareStatement("SELECT * FROM (ProjectTask NATURAL JOIN Task) WHERE ProjectID = (?)");
+      selectTasks.setInt(1, projectID);
+      
+      ResultSet rs = selectTasks.executeQuery();
+      
+      // iterate through returned items and add to list
+      taskList = new ArrayList<Task>();
+      while(rs.next())
+      {
+	taskList.add(new Task(rs.getInt("TaskID"), 
+			      projectID, 
+			      rs.getBoolean("HasDependency"),
+			      rs.getString("Type"),
+			      rs.getString("Priority"),
+			      rs.getString("Deadline"),
+			      rs.getString("Title"),
+			      rs.getString("Notes"),
+			      rs.getString("Description"),
+			      rs.getString("Scope"),
+			      rs.getString("Status")));
+      }// while
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving project tasks: " + e.getMessage());
+      taskList = null;
+    }// catch
+  }// getTasksForProject
 
   /**
    * Update the type of the task with the given id
@@ -1442,20 +1552,20 @@ public class DAO
   }// removeUserFromProject
 
   /**
-   * Create a dependency between two tasks.  The main task is dependent on dependency task,
-   * meaning the dependency task must be completed before the main task can be completed.
+   * Create a dependency between two tasks.  The main task is dependent on dependent task,
+   * meaning the dependent task must be completed before the main task can be completed.
    *
    * @param mainTaskID the id of the main task
-   * @param dependencyTaskID the id of the dependency task
+   * @param dependentTaskID the id of the dependency task
    * @return 0 for successful addition, -1 if an error occurred
    */
-  public int addTaskDependency(int mainTaskID, int dependencyTaskID)
+  public int addTaskDependency(int mainTaskID, int dependentTaskID)
   {
     try
     {
-      PreparedStatement insertTaskDependencies = this.conn.prepareStatement("INSERT INTO TaskDependencies(TaskID, DependencyTask) VALUES (?,?)");
+      PreparedStatement insertTaskDependencies = this.conn.prepareStatement("INSERT INTO TaskDependencies(TaskID, DependentTask) VALUES (?,?)");
       insertTaskDependencies.setInt(1, mainTaskID);
-      insertTaskDependencies.setInt(2, dependencyTaskID);
+      insertTaskDependencies.setInt(2, dependentTaskID);
 
       insertTaskDependencies.executeUpdate();
     }// try
@@ -1469,20 +1579,20 @@ public class DAO
   }// addTaskDependency
 
   /**
-   * Remove a dependency between two tasks.  The main task is dependent on dependency task,
-   * meaning the dependency task must be completed before the main task can be completed.
+   * Remove a dependency between two tasks.  The main task is dependent on dependent task,
+   * meaning the dependent task must be completed before the main task can be completed.
    *
    * @param mainTaskID the id of the main task
-   * @param dependencyTaskID the id of the dependency task
+   * @param dependentTaskID the id of the dependent task
    * @return 0 for successful removal, -1 if an error occurred
    */
-  public int removeTaskDependency(int mainTaskID, int dependencyTaskID)
+  public int removeTaskDependency(int mainTaskID, int dependentTaskID)
   {
     try
     {
-      PreparedStatement deleteTaskDependencies = this.conn.prepareStatement("DELETE FROM TaskDependencies WHERE TaskID = (?) AND DependencyTask = (?)");
+      PreparedStatement deleteTaskDependencies = this.conn.prepareStatement("DELETE FROM TaskDependencies WHERE TaskID = (?) AND DependentTask = (?)");
       deleteTaskDependencies.setInt(1, mainTaskID);
-      deleteTaskDependencies.setInt(2, dependencyTaskID);
+      deleteTaskDependencies.setInt(2, dependentTaskID);
 
       deleteTaskDependencies.executeUpdate();
     }// try

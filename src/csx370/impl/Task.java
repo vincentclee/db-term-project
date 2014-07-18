@@ -1,5 +1,7 @@
 package csx370.impl;
 
+import java.sql.Timestamp;
+
 /**
  * An entity object for tranferring data from the Task table to the application.
  */
@@ -7,7 +9,8 @@ public class Task
 {
   private int taskID, projectID;
   private boolean hasDependency;
-  private String type, priority, deadline, title, notes, description, scope, status;
+  private String type, priority, title, notes, description, scope, status;
+  private Timestamp deadline;
   
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   // TODO
@@ -30,7 +33,7 @@ public class Task
    * @param status
    */
   public Task(int taskID, int projectID, boolean hasDependency, String type,
-	      String priority, String deadline, String title, String notes,
+	      String priority, Timestamp deadline, String title, String notes,
 	      String description, String scope, String status) 
   {
     super();
@@ -86,7 +89,7 @@ public class Task
   /**
    * @return the deadline
    */
-  public String getDeadline() {
+  public Timestamp getDeadline() {
     return deadline;
   }
 

@@ -1,12 +1,15 @@
 package csx370.impl;
 
+import java.sql.Date;
+
 /**
  * An entity object for tranferring data from the Project table to the application.
  */
 public class Project
 {
   private int projectID, manager;
-  private String title, description, targetDate, status;
+  private String title, description, status;
+  private Date startDate, targetDate;
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   // TODO
@@ -19,11 +22,12 @@ public class Project
    * @param projectID the primary key of the row containing this project's info
    * @param title
    * @param description
+   * @param startDate
    * @param targetDate
    * @param manager
    * @param status
    */
-  public Project(int projectID, String title, String description, String targetDate, 
+  public Project(int projectID, String title, String description, Date startDate, Date targetDate, 
 		 int manager, String status)
   {
     super();
@@ -31,6 +35,7 @@ public class Project
     this.projectID = projectID;
     this.title = title;
     this.description = description;
+    this.startDate = startDate;
     this.targetDate = targetDate;
     this.manager = manager;
     this.status = status;
@@ -65,9 +70,16 @@ public class Project
   }
   
   /**
+   * @return the startDate
+   */
+  public Date getStartDate() {
+    return startDate;
+  }
+  
+  /**
    * @return the targetDate
    */
-  public String getTargetDate() {
+  public Date getTargetDate() {
     return targetDate;
   }
 
