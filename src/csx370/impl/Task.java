@@ -33,8 +33,8 @@ public class Task
    * @param status
    */
   public Task(int taskID, int projectID, boolean hasDependency, String type,
-	      String priority, Timestamp deadline, String title, String notes,
-	      String description, String scope, String status) 
+	      Priority priority, Timestamp deadline, String title, String notes,
+	      String description, String scope, TaskStatus status) 
   {
     super();
     
@@ -42,13 +42,13 @@ public class Task
     this.projectID = projectID;
     this.hasDependency = hasDependency;
     this.type = type;
-    this.priority = priority;
+    this.priority = priority.toString();
     this.deadline = deadline;
     this.title = title;
     this.notes = notes;
     this.description = description;
     this.scope = scope;
-    this.status = status;
+    this.status = status.toString();
   }// ctor
 
   /**

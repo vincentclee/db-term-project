@@ -8,8 +8,8 @@ import java.sql.Date;
 public class Project
 {
   private int projectID, manager;
-  private String title, description, status;
-  private Date startDate, targetDate;
+  private String title, description;
+  private Date startDate, targetDate, status;
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   // TODO
@@ -28,7 +28,7 @@ public class Project
    * @param status
    */
   public Project(int projectID, String title, String description, Date startDate, Date targetDate, 
-		 int manager, String status)
+		 int manager, ProjectStatus status)
   {
     super();
 
@@ -38,7 +38,7 @@ public class Project
     this.startDate = startDate;
     this.targetDate = targetDate;
     this.manager = manager;
-    this.status = status;
+    this.status = status.toString();
   }// ctor
 
   /**
