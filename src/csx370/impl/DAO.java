@@ -138,11 +138,6 @@ public class DAO
    */
   public User createUser(String username, String email, String displayName, String cookieID, String password)
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // check prepared statement for schema errors when they're made
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     // user object to return
     User user =  null;
 
@@ -571,8 +566,6 @@ public class DAO
   {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
-    // check prepared statement for schema errors when they're made
-    // maybe use default value for status?
     // update parameter comments
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -626,11 +619,6 @@ public class DAO
    */
   public Project getProject(int projectID)
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // check types for variables
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
     // project object to return, will stay null if no project is found
     Project project =  null;
 
@@ -846,9 +834,7 @@ public class DAO
    * Create a new task in the DB with the given details and return a Task object
    * detailing the newly created task
    *
-   * @param type
    * @param priority
-   * @param projectID
    * @param hasDependency
    * @param deadline
    * @param title
@@ -858,15 +844,12 @@ public class DAO
    * @param status
    * @return a Task object containing all info about this task from the Task table or null if an error occured
    */
-  public Task createTask(String type, Priority priority, int projectID, boolean hasDependency, 
+  public Task createTask(Priority priority, boolean hasDependency, 
 			 Timestamp deadline, String title, String notes, String description, 
 			 String scope, TaskStatus status)
   {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
-    // check prepared statement for schema errors when they're made
-    // check types for variables 
-    // maybe use default value for status?
     // update parameter comments
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     
@@ -875,40 +858,36 @@ public class DAO
     
     try
     {
-      PreparedStatement insertTask = this.conn.prepareStatement("INSERT INTO Task(Type, Priority, ProjectID, HasDependency, Deadline, Title, Notes, Description, Scope, Status) VALUES (?,?,?,?,?,?,?,?,?,?)");
-      insertTask.setString(1, type);
-      insertTask.setString(2, priority.toString());
-      insertTask.setInt(3, projectID);
-      insertTask.setBoolean(4, hasDependency);
-      insertTask.setTimestamp(5, deadline);
-      insertTask.setString(6, title);
-      insertTask.setString(7, notes);
-      insertTask.setString(8, description);
-      insertTask.setString(9, scope);
-      insertTask.setString(10, status.toString());
+      PreparedStatement insertTask = this.conn.prepareStatement("INSERT INTO Task(Priority, HasDependency, Deadline, Title, Notes, Description, Scope, Status) VALUES (?,?,?,?,?,?,?,?)");
+      insertTask.setString(1, priority.toString());
+      insertTask.setBoolean(2, hasDependency);
+      insertTask.setTimestamp(3, deadline);
+      insertTask.setString(4, title);
+      insertTask.setString(5, notes);
+      insertTask.setString(6, description);
+      insertTask.setString(7, scope);
+      insertTask.setString(8, status.toString());
       
       insertTask.executeUpdate();
 
       // get taskID from freshly inserted row
       int taskID;
-      PreparedStatement selectTask = this.conn.prepareStatement("SELECT TaskID FROM Task WHERE Type = (?) AND Priority = (?) AND ProjectID = (?) AND HasDependency = (?) AND Deadline = (?) AND Title = (?) AND Notes = (?) AND Description = (?) AND Scope = (?) AND Status = (?)");
-      selectTask.setString(1, type);
-      selectTask.setString(2, priority.toString());
-      selectTask.setInt(3, projectID);
-      selectTask.setBoolean(4, hasDependency);
-      selectTask.setTimestamp(5, deadline);
-      selectTask.setString(6, title);
-      selectTask.setString(7, notes);
-      selectTask.setString(8, description);
-      selectTask.setString(9, scope);
-      selectTask.setString(10, status.toString());
+      PreparedStatement selectTask = this.conn.prepareStatement("SELECT TaskID FROM Task WHERE Priority = (?) AND HasDependency = (?) AND Deadline = (?) AND Title = (?) AND Notes = (?) AND Description = (?) AND Scope = (?) AND Status = (?)");
+      selectTask.setString(1, priority.toString());
+      selectTask.setBoolean(2, hasDependency);
+      selectTask.setTimestamp(3, deadline);
+      selectTask.setString(4, title);
+      selectTask.setString(5, notes);
+      selectTask.setString(6, description);
+      selectTask.setString(7, scope);
+      selectTask.setString(8, status.toString());
 
       ResultSet rs = selectTask.executeQuery();
       rs.next();
       taskID = rs.getInt("TaskID");
 
       // create task object to return
-      task = new Task(taskID, projectID, hasDependency, type, priority, deadline, title, notes, description, scope, status);
+      task = new Task(taskID, hasDependency, priority, deadline, title, notes, description, scope, status);
     }// try
     catch(Exception e)
     {
@@ -927,11 +906,6 @@ public class DAO
    */
   public Task getTask(int taskID)
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // check types for variables
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
     // task object to return, will stay null if no task is found
     Task task =  null;
 
@@ -945,9 +919,7 @@ public class DAO
       {
 	// if a task with the specified id exists, make the task object with its data
 	task = new Task(taskID, 
-			rs.getInt("ProjectID"),
 			rs.getBoolean("HasDependency"), 
-			rs.getString("Type"), 
 			stringToPriority(rs.getString("Priority")),
 			rs.getTimestamp("Deadline"), 
 			rs.getString("Title"), 
@@ -989,9 +961,7 @@ public class DAO
       while(rs.next())
       {
 	taskList.add(new Task(rs.getInt("TaskID"), 
-			      projectID, 
 			      rs.getBoolean("HasDependency"),
-			      rs.getString("Type"),
 			      stringToPriority(rs.getString("Priority")),
 			      rs.getTimestamp("Deadline"),
 			      rs.getString("Title"),
@@ -1009,32 +979,6 @@ public class DAO
     
     return taskList;
   }// getTasksForProject
-
-  /**
-   * Update the type of the task with the given id
-   *
-   * @param taskID the id of the task to update
-   * @param type the new type of the task
-   * @return 0 for successful update, -1 if an error occurred
-   */
-  public int updateTaskType(int taskID, String type)
-  {
-    try
-    {
-      PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET Type = (?) WHERE TaskID = (?)");
-      updateTask.setString(1, type);
-      updateTask.setInt(2, taskID);
-
-      updateTask.executeQuery();
-    }// try
-    catch(Exception e)
-    {
-      System.err.println("Error updating task info: " + e.getMessage());
-      return -1;
-    }// catch
-
-    return 0;
-  }// updateTaskType
 
   /**
    * Update the priority of the task with the given id
@@ -1061,32 +1005,6 @@ public class DAO
 
     return 0;
   }// updateTaskPriority
-
-  /**
-   * Update the project that the task with the given id is linked to
-   *
-   * @param taskID the id of the task to update
-   * @param projectID the id of the new project that the task is linked to
-   * @return 0 for successful update, -1 if an error occurred
-   */
-  public int updateTaskProject(int taskID, int projectID)
-  {
-    try
-    {
-      PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET ProjectID = (?) WHERE TaskID = (?)");
-      updateTask.setInt(1, projectID);
-      updateTask.setInt(2, taskID);
-
-      updateTask.executeQuery();
-    }// try
-    catch(Exception e)
-    {
-      System.err.println("Error updating task info: " + e.getMessage());
-      return -1;
-    }// catch
-
-    return 0;
-  }// updateTaskProject
 
   /**
    * Update whether the task with the given id has dependencies
@@ -1303,11 +1221,6 @@ public class DAO
    */
   public int addUserToTask(int taskID, int userID)
   {
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // check prepared statement for schema errors when they're made
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     try
     {
       PreparedStatement insertUserTask = this.conn.prepareStatement("INSERT INTO UserTask(TaskID, UserID) VALUES (?,?)");
@@ -1360,11 +1273,6 @@ public class DAO
    */
   public int addTaskToProject(int projectID, int taskID)
   {
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // check prepared statement for schema errors when they're made
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     try
     {
       PreparedStatement insertProjectTask = this.conn.prepareStatement("INSERT INTO ProjectTask(ProjectID, TaskID) VALUES (?,?)");
@@ -1414,6 +1322,7 @@ public class DAO
    * @param userID the userID to connect to the given projectID
    * @param projectID the projectID to connect to the given taskID
    * @param commits
+   * @param specialization
    * @param contributions
    * @return 0 for successful addition, -1 if an error occurred
    */
@@ -1421,7 +1330,6 @@ public class DAO
   {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
-    // check prepared statement for schema errors when they're made
     // update parameter comments
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     

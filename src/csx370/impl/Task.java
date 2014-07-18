@@ -7,9 +7,9 @@ import java.sql.Timestamp;
  */
 public class Task
 {
-  private int taskID, projectID;
+  private int taskID;
   private boolean hasDependency;
-  private String type, priority, title, notes, description, scope, status;
+  private String priority, title, notes, description, scope, status;
   private Timestamp deadline;
   
   ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,9 +21,7 @@ public class Task
    * Create a Task object with the given info.
    *
    * @param taskID 
-   * @param projectID
    * @param hasDependency
-   * @param type
    * @param priority
    * @param deadline
    * @param title
@@ -32,16 +30,14 @@ public class Task
    * @param scope
    * @param status
    */
-  public Task(int taskID, int projectID, boolean hasDependency, String type,
+  public Task(int taskID, boolean hasDependency,
 	      Priority priority, Timestamp deadline, String title, String notes,
 	      String description, String scope, TaskStatus status) 
   {
     super();
     
     this.taskID = taskID;
-    this.projectID = projectID;
     this.hasDependency = hasDependency;
-    this.type = type;
     this.priority = priority.toString();
     this.deadline = deadline;
     this.title = title;
@@ -59,24 +55,10 @@ public class Task
   }
 
   /**
-   * @return the projectID
-   */
-  public int getProjectID() {
-    return projectID;
-  }
-
-  /**
    * @return the hasDependency
    */
   public boolean hasDependency() {
     return hasDependency;
-  }
-
-  /**
-   * @return the type
-   */
-  public String getType() {
-    return type;
   }
 
   /**
