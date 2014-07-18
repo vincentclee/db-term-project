@@ -8,8 +8,8 @@ import java.sql.Date;
 public class Project
 {
   private int projectID, manager;
-  private String title, description;
-  private Date startDate, targetDate, status;
+  private String title, description, status;
+  private Date startDate, targetDate;
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   // TODO

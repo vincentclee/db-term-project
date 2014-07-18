@@ -480,7 +480,7 @@ public class DAO
 				    rs.getDate("StartDate"), 
 				    rs.getDate("TargetDate"), 
 				    rs.getInt("Manager"),
-				    rs.getString("Status")));
+				    stringToProjectStatus(rs.getString("Status"))));
       }// while
     }// try
     catch(Exception e)
@@ -519,7 +519,7 @@ public class DAO
 				    rs.getDate("StartDate"), 
 				    rs.getDate("TargetDate"), 
 				    rs.getInt("Manager"),
-				    rs.getString("Status")));
+				    stringToProjectStatus(rs.getString("Status"))));
       }// while
     }// try
     catch(Exception e)
@@ -567,7 +567,7 @@ public class DAO
    * @param status
    * @return a Project object containing all info about this project from the Project table or null if an error occured
    */
-  public Project createProject(String title, String description, Date startDate, Date targetDate, int managerID, String status)
+  public Project createProject(String title, String description, Date startDate, Date targetDate, int managerID, ProjectStatus status)
   {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
@@ -588,7 +588,7 @@ public class DAO
       insertProject.setDate(3, startDate);
       insertProject.setDate(4, targetDate);
       insertProject.setInt(5, managerID);
-      insertProject.setString(6, status);
+      insertProject.setString(6, status.toString());
       
       insertProject.executeUpdate();
 
@@ -600,7 +600,7 @@ public class DAO
       insertProject.setDate(3, startDate);
       insertProject.setDate(4, targetDate);
       insertProject.setInt(5, managerID);
-      insertProject.setString(6, status);
+      insertProject.setString(6, status.toString());
 
       ResultSet rs = selectProject.executeQuery();
       rs.next();
@@ -649,7 +649,7 @@ public class DAO
 			      rs.getDate("StartDate"),
 			      rs.getDate("TargetDate"),
 			      rs.getInt("ManagerID"), 
-			      rs.getString("Status"));
+			      stringToProjectStatus(rs.getString("Status")));
 
       }// if
     }// try
@@ -799,12 +799,12 @@ public class DAO
    * @param status the new status of the project
    * @return 0 for successful update, -1 if an error occurred
    */
-  public int updateProjectStatus(int projectID, String status)
+  public int updateProjectStatus(int projectID, ProjectStatus status)
   {
     try
     {
       PreparedStatement updateProject = this.conn.prepareStatement("UPDATE Project SET Status = (?) WHERE ProjectID = (?)");
-      updateProject.setString(1, status);
+      updateProject.setString(1, status.toString());
       updateProject.setInt(2, projectID);
 
       updateProject.executeQuery();
@@ -858,9 +858,9 @@ public class DAO
    * @param status
    * @return a Task object containing all info about this task from the Task table or null if an error occured
    */
-  public Task createTask(String type, String priority, int projectID, boolean hasDependency, 
+  public Task createTask(String type, Priority priority, int projectID, boolean hasDependency, 
 			 Timestamp deadline, String title, String notes, String description, 
-			 String scope, String status)
+			 String scope, TaskStatus status)
   {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
@@ -877,7 +877,7 @@ public class DAO
     {
       PreparedStatement insertTask = this.conn.prepareStatement("INSERT INTO Task(Type, Priority, ProjectID, HasDependency, Deadline, Title, Notes, Description, Scope, Status) VALUES (?,?,?,?,?,?,?,?,?,?)");
       insertTask.setString(1, type);
-      insertTask.setString(2, priority);
+      insertTask.setString(2, priority.toString());
       insertTask.setInt(3, projectID);
       insertTask.setBoolean(4, hasDependency);
       insertTask.setTimestamp(5, deadline);
@@ -885,7 +885,7 @@ public class DAO
       insertTask.setString(7, notes);
       insertTask.setString(8, description);
       insertTask.setString(9, scope);
-      insertTask.setString(10, status);
+      insertTask.setString(10, status.toString());
       
       insertTask.executeUpdate();
 
@@ -893,7 +893,7 @@ public class DAO
       int taskID;
       PreparedStatement selectTask = this.conn.prepareStatement("SELECT TaskID FROM Task WHERE Type = (?) AND Priority = (?) AND ProjectID = (?) AND HasDependency = (?) AND Deadline = (?) AND Title = (?) AND Notes = (?) AND Description = (?) AND Scope = (?) AND Status = (?)");
       selectTask.setString(1, type);
-      selectTask.setString(2, priority);
+      selectTask.setString(2, priority.toString());
       selectTask.setInt(3, projectID);
       selectTask.setBoolean(4, hasDependency);
       selectTask.setTimestamp(5, deadline);
@@ -901,7 +901,7 @@ public class DAO
       selectTask.setString(7, notes);
       selectTask.setString(8, description);
       selectTask.setString(9, scope);
-      selectTask.setString(10, status);
+      selectTask.setString(10, status.toString());
 
       ResultSet rs = selectTask.executeQuery();
       rs.next();
@@ -948,13 +948,13 @@ public class DAO
 			rs.getInt("ProjectID"),
 			rs.getBoolean("HasDependency"), 
 			rs.getString("Type"), 
-			rs.getString("Priority"),
+			stringToPriority(rs.getString("Priority")),
 			rs.getTimestamp("Deadline"), 
 			rs.getString("Title"), 
 			rs.getString("Notes"),
 			rs.getString("Description"),
 			rs.getString("Scope"), 
-			rs.getString("Status"));
+			stringToTaskStatus(rs.getString("Status")));
 
       }// if
     }// try
@@ -992,13 +992,13 @@ public class DAO
 			      projectID, 
 			      rs.getBoolean("HasDependency"),
 			      rs.getString("Type"),
-			      rs.getString("Priority"),
+			      stringToPriority(rs.getString("Priority")),
 			      rs.getTimestamp("Deadline"),
 			      rs.getString("Title"),
 			      rs.getString("Notes"),
 			      rs.getString("Description"),
 			      rs.getString("Scope"),
-			      rs.getString("Status")));
+			      stringToTaskStatus(rs.getString("Status"))));
       }// while
     }// try
     catch(Exception e)
@@ -1043,12 +1043,12 @@ public class DAO
    * @param priority the new priority of the task
    * @return 0 for successful update, -1 if an error occurred
    */
-  public int updateTaskPriority(int taskID, String priority)
+  public int updateTaskPriority(int taskID, Priority priority)
   {
     try
     {
       PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET Priority = (?) WHERE TaskID = (?)");
-      updateTask.setString(1, priority);
+      updateTask.setString(1, priority.toString());
       updateTask.setInt(2, taskID);
 
       updateTask.executeQuery();
@@ -1251,12 +1251,12 @@ public class DAO
    * @param status the new status of the task
    * @return 0 for successful update, -1 if an error occurred
    */
-  public int updateTaskStatus(int taskID, String status)
+  public int updateTaskStatus(int taskID, TaskStatus status)
   {
     try
     {
       PreparedStatement updateTask = this.conn.prepareStatement("UPDATE Task SET Status = (?) WHERE TaskID = (?)");
-      updateTask.setString(1, status);
+      updateTask.setString(1, status.toString());
       updateTask.setInt(2, taskID);
 
       updateTask.executeQuery();
@@ -1417,7 +1417,7 @@ public class DAO
    * @param contributions
    * @return 0 for successful addition, -1 if an error occurred
    */
-  public int addUserToProject(int userID, int projectID, String commits, String specialization, String contributions)
+  public int addUserToProject(int userID, int projectID, String commits, Specialization specialization, String contributions)
   {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
@@ -1431,7 +1431,7 @@ public class DAO
       insertProjectUser.setInt(1, projectID);
       insertProjectUser.setInt(2, userID);
       insertProjectUser.setString(3, commits);
-      insertProjectUser.setString(4, specialization);
+      insertProjectUser.setString(4, specialization.toString());
       insertProjectUser.setString(5, contributions);
 
       insertProjectUser.executeUpdate();
@@ -1481,12 +1481,12 @@ public class DAO
    * @param specialization the user's new specialization
    * @return 0 for successful update, -1 if an error occurred
    */
-  public int updateSpecialization(int projectID, int userID, String specialization)
+  public int updateSpecialization(int projectID, int userID, Specialization specialization)
   {
     try
     {
       PreparedStatement updateProjectUser = this.conn.prepareStatement("UPDATE ProjectUser SET Specialization = (?) WHERE ProjectID = (?) AND UserID = (?)");
-      updateProjectUser.setString(1, specialization);
+      updateProjectUser.setString(1, specialization.toString());
       updateProjectUser.setInt(2, projectID);
       updateProjectUser.setInt(3, userID);
 
@@ -1674,4 +1674,149 @@ public class DAO
 
     return 0;
   }// resetDB
+
+  private ProjectStatus stringToProjectStatus(String s) throws Exception
+  {
+    ProjectStatus returnVal = null;
+
+    switch(s)
+    {
+      case "Started":
+      {
+	returnVal = ProjectStatus.STARTED;
+	break;
+      }
+      case "Not Started":
+      {
+	returnVal = ProjectStatus.NOT_STARTED;
+	break;
+      }
+      case "Finished":
+      {
+	returnVal = ProjectStatus.FINISHED;
+	break;
+      }
+      case "In Progress":
+      {
+	returnVal = ProjectStatus.IN_PROGRESS;
+	break;
+      }
+      default:
+      {
+	throw new Exception(s + " is not a valid state for a project's status");
+      }
+    }// switch
+
+    return returnVal;
+  }// stringToProjectStatus
+
+  private TaskStatus stringToTaskStatus(String s) throws Exception
+  {
+    TaskStatus returnVal = null;
+
+    switch(s)
+    {
+      case "Queued":
+      {
+	returnVal = TaskStatus.QUEUED;
+	break;
+      }
+      case "In Progress":
+      {
+	returnVal = TaskStatus.IN_PROGRESS;
+	break;
+      }
+      case "Waiting":
+      {
+	returnVal = TaskStatus.WAITING;
+	break;
+      }
+      case "Blocked":
+      {
+	returnVal = TaskStatus.BLOCKED;
+	break;
+      }
+      case "Complete":
+      {
+	returnVal = TaskStatus.COMPLETE;
+	break;
+      }
+      default:
+      {
+	throw new Exception(s + " is not a valid state for a task's status");
+      }
+    }// switch
+
+    return returnVal;
+  }// stringToTaskStatus
+  
+  private Priority stringToPriority(String s) throws Exception
+  {
+    Priority returnVal = null;
+
+    switch(s)
+    {
+      case "Low":
+      {
+	returnVal = Priority.LOW;
+	break;
+      }
+      case "Normal":
+      {
+	returnVal = Priority.NORMAL;
+	break;
+      }
+      case "High":
+      {
+	returnVal = Priority.HIGH;
+	break;
+      }
+      case "Urgent":
+      {
+	returnVal = Priority.URGENT;
+	break;
+      }
+      default:
+      {
+	throw new Exception(s + " is not a valid state for a priority");
+      }
+    }// switch
+
+    return returnVal;
+  }// stringToPriority
+
+  private Specialization stringToSpecialization(String s) throws Exception
+  {
+    Specialization returnVal = null;
+    
+    switch(s)
+    {
+      case "Test":
+      {
+	returnVal = Specialization.TEST;
+	break;
+      }
+      case "Backend":
+      {
+	returnVal = Specialization.BACKEND;
+	break;
+      }
+      case "Frontend":
+      {
+	returnVal = Specialization.FRONTEND;
+	break;
+      }
+      case "Management":
+      {
+	returnVal = Specialization.MANAGEMENT;
+	break;
+      }
+      default:
+      {
+	throw new Exception(s + " is not a valid state for a specialization");
+      }
+    }// switch
+
+    return returnVal;
+  }// stringToSpecialization
 }// DAO
