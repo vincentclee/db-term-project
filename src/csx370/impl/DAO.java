@@ -319,13 +319,13 @@ public class DAO
   }// getUserByCookieID
 
   /**
-   * Retrieve a list of tasks associated with the specified user for the specified project
+   * Retrieve a list of tasks associated with the user with the given id for the specified project
    *
    * @param userID the id of the user
    * @param projectID the id of the project
    * @return a list of tasks associated with the specified user for the specified project
    */
-  public List<Task> getUsersTasksForProject(int userID, int projectID)
+  public List<Task> getUserTasksForProjectByID(int userID, int projectID)
   {
     List<Task> taskList = null;
     
@@ -359,7 +359,50 @@ public class DAO
     }// catch
 
     return taskList;
-  }// getUsersTasksForProject
+  }// getUserTasksForProjectByID
+
+  /**
+   * Retrieve a list of tasks associated with the user with the given cookieid for the specified project
+   *
+   * @param cookieID the id of the user
+   * @param projectID the id of the project
+   * @return a list of tasks associated with the specified user for the specified project
+   */
+  public List<Task> getUserTasksForProjectByCookieID(int cookieID, int projectID)
+  {
+    List<Task> taskList = null;
+    
+    try
+    {
+      PreparedStatement selectTasks = this.conn.prepareStatement("SELECT * FROM (User NATURAL JOIN UserTask NATURAL JOIN ProjectTask NATURAL JOIN Task) WHERE CookieID = (?) AND ProjectID = (?)");
+      selectTasks.setInt(1, cookieID);
+      selectTasks.setInt(2, projectID);
+      
+      ResultSet rs = selectTasks.executeQuery();
+      
+      // iterate through returned items and add to list
+      taskList = new ArrayList<Task>();
+      while(rs.next())
+      {
+	taskList.add(new Task(rs.getInt("TaskID"), 
+			      rs.getBoolean("HasDependency"), 
+			      stringToPriority(rs.getString("Priority")),
+			      rs.getTimestamp("Deadline"),
+			      rs.getString("Title"),
+			      rs.getString("Notes"),
+			      rs.getString("Description"),
+			      rs.getString("Scope"),
+			      stringToTaskStatus(rs.getString("Status"))));
+      }// while
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving user tasks: " + e.getMessage());
+      taskList = null;
+    }// catch
+
+    return taskList;
+  }// getUserTasksForProjectByCookieID
 
   /**
    * Update username for user identified by the given id. 
@@ -1559,6 +1602,49 @@ public class DAO
     
     return 0;
   }// removeTaskDependency
+
+  /**
+   * Create an entry in the application log.
+   *
+   * @param remoteAddr
+   * @param remoteHost
+   * @param remotePort
+   * @param servletPath
+   * @param requestType
+   * @param requestCookie
+   * @param requestTime
+   * @return 0 for successful addition, -1 if an error occurred
+   */
+  public int createLog(String remoteAddr, String remoteHost, String remotePort, String servletPath, 
+		       String requestType, String requestCookie, Timestamp requestTime)
+  {
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    // TODO
+    // update parameter comments
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    try
+    {
+      // insert log into db
+      PreparedStatement insertLog = this.conn.prepareStatement("INSERT INTO Log(RemoteAddr, RemoteHost, RemotePort, ServletPath, RequestType, RequestCookie, RequestTime) VALUES (?,?,?,?,?,?,?)");
+      insertLog.setString(1, remoteAddr);
+      insertLog.setString(2, remoteHost);
+      insertLog.setString(3, remotePort);
+      insertLog.setString(4, servletPath);
+      insertLog.setString(5, requestType);
+      insertLog.setString(6, requestCookie);
+      insertLog.setTimestamp(7, requestTime);
+      
+      insertLog.executeUpdate();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error creating log: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }// createLog
 
   /**
    * Check the connection to the db.
