@@ -1,0 +1,38 @@
+table#kanban-board th {
+	color: #1AAF5D;
+	font-size: 28px;
+	padding: 0 0 5px 0;
+}
+.table-column {
+	max-height:100%;
+	height:auto !important;
+	overflow:auto;
+	overflow-x:hidden;
+}
+#login {
+	width: 30%;
+	margin: 60px auto;
+}
+#registration {
+	width: 30%;
+	margin: 40px auto;
+}
+* {
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
+    margin: 0;
+    padding: 0;
+}
+.kdview .workspace {
+	height: 500px;
+	overflow-x: auto;
+}
+.tos {
+	color: #828B8B;
+	padding: 10px;
+	max-height:100%;
+	height:auto !important;
+	overflow-y:auto;
+	overflow-x:hidden;
+}

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.servlet.http.Cookie;
+import csx370.util.CookieUtil;
 
 /**
  * This is the data access object for the CSCI X370 term project. It performs the 
@@ -57,15 +59,15 @@ public class DAO
   }// ctor
 
   /**
-   * Authenticate user login. The first argument can be either the username or email.
+   * Authenticate user login. The first argument is the user's username.
    * If authentication is successful, a User object with data pertaining to the corresponding
    * user is returned. Returns null in the case of an unsuccessful login.
    *
-   * @param usernameOrEmail either the username or email given by the user
+   * @param username either the username given by the user
    * @param password the password given by the user
    * @return User object with user's details upon success, null upon failed attempt
    */
-  public User authenticate(String usernameOrEmail, String password)
+  public User authenticate(String username, String password)
   {
     // user object to return. if no match is found in the db, this will not change.
     User user = null;
@@ -73,39 +75,41 @@ public class DAO
     try
     {
       PreparedStatement usernameAuthenticate = this.conn.prepareStatement("SELECT * FROM User WHERE UserName = (?) AND Password = UNHEX(SHA2(?))");
-      usernameAuthenticate.setString(1, usernameOrEmail);
+      usernameAuthenticate.setString(1, username);
       usernameAuthenticate.setString(2, password);
       
       ResultSet rsUsername = usernameAuthenticate.executeQuery();
       
+      // if username query returns a row, then use it. otherwise, function will return null
       if(rsUsername.next())
       {
-	// if username query returns a row, then use it
+	Cookie cookie;
+	
+	// make new cookie and make sure it's not already in the db
+	ResultSet rsCopyCheck;
+	do
+	{
+	  cookie = CookieUtil.generateCookie();
+
+	  PreparedStatement copyCheck = this.conn.prepareStatement("SELECT * FROM User WHERE CookieID = (?)");
+	  copyCheck.setString(1, cookie.getValue());
+
+	  rsCopyCheck = copyCheck.executeQuery();
+	}while(rsCopyCheck.next());
+
+	// insert new cookie into db
+	PreparedStatement insertCookie = this.conn.prepareStatement("UPDATE User SET CookieID = (?) WHERE UserID = (?)");
+	insertCookie.setString(cookie.getValue());
+	insertCookie.setInt(rsUser.getInt("UserID"));
+	
+	insertCookie.executeUpdate();
+			       
 	user = new User(rsUsername.getInt("UserID"), 
-			usernameOrEmail,
+			username,
 			rsUsername.getString("Email"), 
 			rsUsername.getString("DisplayName"),
-			rsUsername.getString("CookieID"));
+			cookie.getValue());
       }// if
-      else
-      {
-	// if username query does not return a row, try the email query
-	PreparedStatement emailAuthenticate = this.conn.prepareStatement("SELECT * FROM User WHERE Email = (?) AND Password = UNHEX(SHA2(?))");
-	emailAuthenticate.setString(1, usernameOrEmail);
-	emailAuthenticate.setString(2, password);
-	
-	ResultSet rsEmail = emailAuthenticate.executeQuery();
-	
-	// if email query returns a row, then use it. otherwise, function will return null
-	if(rsEmail.next())
-	{
-	  user = new User(rsEmail.getInt("UserID"), 
-			  rsEmail.getString("UserName"), 
-			  usernameOrEmail,
-			  rsEmail.getString("DisplayName"),
-			  rsEmail.getString("CookieID"));
-	}// if
-      }// else
     }// try
     catch(Exception e)
     {
