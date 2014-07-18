@@ -15,7 +15,7 @@ public class User
    * @param username the unique username of the user
    * @param email the unique registration email of the user
    * @param displayName the non-unique display name of the user
-   * @param cookeID the cookieID of the user
+   * @param cookieID the cookieID of the user
    */
   public User(int userID, String username, String email, String displayName, String cookieID)
   {

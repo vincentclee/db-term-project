@@ -177,7 +177,7 @@ public class DAO
   /**
    * Get info about the user identified by their id
    *
-   * @param id the user's id
+   * @param userID the user's id
    * @return a user object containing information about the user or null if an error occured
    */  
   public User getUserByID(int userID)
@@ -1661,7 +1661,7 @@ public class DAO
   /**
    * Check the connection to the db.
    *
-   * @returns true if db is still connected, false if otherwise
+   * @return true if db is still connected, false if otherwise
    */
   public boolean isConnected()
   {
