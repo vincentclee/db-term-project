@@ -1,11 +1,15 @@
 package csx370.impl;
 
+import java.util.ArrayList
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.sql.Date;
 import javax.servlet.http.Cookie;
 import csx370.util.CookieUtil;
+
 
 /**
  * This is the data access object for the CSCI X370 term project. It performs the 
@@ -21,7 +25,7 @@ public class DAO
   ////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // db login info
-  private final String DB_URL = "jdbc:mysql://localhost/db";
+  private final String DB_URL = "jdbc:mysql://localhost/mydb";
   private final String DB_USER = "user";
   private final String DB_PASS = "pass";
 
@@ -69,7 +73,7 @@ public class DAO
    */
   public User authenticate(String username, String password)
   {
-    // user object to return. if no match is found in the db, this will not change.
+    // user object to return
     User user = null;
 
     try
@@ -114,6 +118,7 @@ public class DAO
     catch(Exception e)
     {
       System.err.println("Error authenticating user: " + e.getMessage());
+      user = null;
     }// catch
 
     return user;
@@ -167,6 +172,7 @@ public class DAO
     catch(Exception e)
     {
       System.err.println("Error creating user account: " + e.getMessage());
+      user = null;
     }// catch
 
     return user;
@@ -180,7 +186,7 @@ public class DAO
    */  
   public User getUserByID(int userID)
   {
-    // user object to return, will stay null if no user is found
+    // user object to return
     User user =  null;
 
     try
@@ -202,6 +208,7 @@ public class DAO
     catch(Exception e)
     {
       System.err.println("Error retrieving user info: " + e.getMessage());
+      user = null;
     }// catch
 
     return user;
@@ -215,7 +222,7 @@ public class DAO
    */  
   public User getUserByUsername(String username)
   {
-    // user object to return, will stay null if no user is found
+    // user object to return
     User user =  null;
 
     try
@@ -237,6 +244,7 @@ public class DAO
     catch(Exception e)
     {
       System.err.println("Error retrieving user info: " + e.getMessage());
+      user = null;
     }// catch
 
     return user;
@@ -250,7 +258,7 @@ public class DAO
    */  
   public User getUserByEmail(String email)
   {
-    // user object to return, will stay null if no user is found
+    // user object to return
     User user =  null;
 
     try
@@ -272,10 +280,47 @@ public class DAO
     catch(Exception e)
     {
       System.err.println("Error retrieving user info: " + e.getMessage());
+      user = null;
     }// catch
 
     return user;
-  }// getUserByUsername
+  }// getUserByEmail
+
+  /**
+   * Get info about the user identified by their cookieID
+   *
+   * @param cookieID the user's cookieID
+   * @return a user object containing information about the user or null if an error occured
+   */  
+  public User getUserByCookieID(String cookieID)
+  {
+    // user object to return
+    User user =  null;
+
+    try
+    {
+      PreparedStatement selectUser = this.conn.prepareStatement("SELECT * FROM User WHERE CookieID = (?)");
+      selectUser.setString(1, cookieID);
+
+      ResultSet rs = selectUser.executeQuery();
+      if(rs.next())
+      {
+	// if a user with the specified cookieID exists, make the user object with its data
+	user = new User(rs.getInt("UserID"), 
+			rs.getString("UserName"),
+			rs.getString("Email"),
+			rs.getString("DisplayName"),
+			cookieID);
+      }// if
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving user info: " + e.getMessage());
+      user = null;
+    }// catch
+
+    return user;
+  }// getUserByCookieID
 
   /**
    * Update username for user identified by the given id. 
@@ -408,6 +453,44 @@ public class DAO
   }// updateUserPassword
 
   /**
+   * Get a list of all projects the given user is associated with
+   *
+   * @param userID the id of the user whose list of projects you want
+   * @return a list of the projects the user is associated with, or null upon failure
+   */
+  public List<Project> getUserProjectsByID(int userID)
+  {
+    List<Project> projectList = null;
+    
+    try
+    {
+      PreparedStatement selectProjects = this.conn.prepareStatement("SELECT * FROM (ProjectUser NATURAL JOIN Project) WHERE UserID = (?)");
+      selectProjects.setInt(1, userID);
+
+      ResultSet rs = selectProjects.executeQuery();
+
+      // iterate through returned items and add to list
+      projectList = new ArrayList<Project>();
+      while(rs.next())
+      {
+	projectList.add(new Project(rs.getInt("ProjectID"), 
+				    rs.getString("Title"),
+				    rs.getString("Description"),
+				    rs.getString("TargetDate"), 
+				    rs.getInt("Manager"),
+				    rs.getString("Status")));
+      }// while
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving user projects: " + e.getMessage());
+      projectList = null;
+    }// catch
+
+    return projectList;
+  }// getUserProjectByID
+
+  /**
    * Delete the user identified by the given id from the db
    *
    * @param userID the id identifying the user
@@ -442,12 +525,11 @@ public class DAO
    * @param status
    * @return a Project object containing all info about this project from the Project table or null if an error occured
    */
-  public Project createProject(String title, String description, String targetDate, int managerID, String status)
+  public Project createProject(String title, String description, Date targetDate, int managerID, String status)
   {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
     // check prepared statement for schema errors when they're made
-    // check types for variables (particularly targetDate and managerID)
     // maybe use default value for status?
     // update parameter comments
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -461,7 +543,7 @@ public class DAO
       PreparedStatement insertProject = this.conn.prepareStatement("INSERT INTO Project(Title, Description, TargetDate, Manager, Status) VALUES (?,?,?,?,?)");
       insertProject.setString(1, title);
       insertProject.setString(2, description);
-      insertProject.setString(3, targetDate);
+      insertProject.setDate(3, targetDate);
       insertProject.setInt(4, managerID);
       insertProject.setString(5, status);
       
@@ -472,7 +554,7 @@ public class DAO
       PreparedStatement selectProject = this.conn.prepareStatement("SELECT ProjectID FROM Project WHERE Title = (?) AND Description = (?) AND TargetDate = (?) AND Manager = (?) AND Status = (?)");
       selectProject.setString(1, title);
       selectProject.setString(2, description);
-      selectProject.setString(3, targetDate);
+      selectProject.setDate(3, targetDate);
       selectProject.setInt(4, managerID);
       selectProject.setString(5, status);
 
@@ -486,6 +568,7 @@ public class DAO
     catch(Exception e)
     {
       System.err.println("Error creating project: " + e.getMessage());
+      project = null;
     }// catch
     
     return project;
@@ -528,6 +611,7 @@ public class DAO
     catch(Exception e)
     {
       System.err.println("Error retrieving project info: " + e.getMessage());
+      project = null;
     }// catch
 
     return project;
@@ -592,12 +676,12 @@ public class DAO
    * @param targetDate the new target date of the project
    * @return 0 for successful update, -1 if an error occurred
    */
-  public int updateProjectTargetDate(int projectID, String targetDate)
+  public int updateProjectTargetDate(int projectID, Date targetDate)
   {
     try
     {
       PreparedStatement updateProject = this.conn.prepareStatement("UPDATE Project SET TargetDate = (?) WHERE ProjectID = (?)");
-      updateProject.setString(1, targetDate);
+      updateProject.setDate(1, targetDate);
       updateProject.setInt(2, projectID);
 
       updateProject.executeQuery();
@@ -758,6 +842,7 @@ public class DAO
     catch(Exception e)
     {
       System.err.println("Error creating task: " + e.getMessage());
+      task = null;
     }// catch
 
     return task;
@@ -805,6 +890,7 @@ public class DAO
     catch(Exception e)
     {
       System.err.println("Error retrieving task info: " + e.getMessage());
+      task = null;
     }// catch
 
     return task;
@@ -1408,7 +1494,7 @@ public class DAO
     
     return 0;
   }// removeTaskDependency
- 
+
   /**
    * Check the connection to the db.
    *
@@ -1454,11 +1540,6 @@ public class DAO
    */
   public int resetDB()
   {
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // add all tables in the db to this 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     try
     {
       this.conn.prepareStatement("TRUNCATE TABLE User").executeUpdate();
@@ -1467,8 +1548,8 @@ public class DAO
       this.conn.prepareStatement("TRUNCATE TABLE ProjectTask").executeUpdate();
       this.conn.prepareStatement("TRUNCATE TABLE UserTask").executeUpdate();
       this.conn.prepareStatement("TRUNCATE TABLE ProjectUser").executeUpdate();
-      
-this.conn.prepareStatement("TRUNCATE TABLE TaskDependencies").executeUpdate();
+      this.conn.prepareStatement("TRUNCATE TABLE Log").executeUpdate();
+      this.conn.prepareStatement("TRUNCATE TABLE TaskDependencies").executeUpdate();
       
     }// try
     catch(Exception e)
