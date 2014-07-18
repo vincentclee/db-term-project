@@ -58,14 +58,14 @@ CREATE INDEX `Manager_idx` ON `mydb`.`Project` (`Manager` ASC);
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Project-User`
+-- Table `mydb`.`ProjectUser`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Project-User` (
+CREATE TABLE IF NOT EXISTS `mydb`.`ProjectUser` (
   `UserID` INT UNSIGNED NOT NULL,
   `ProjectID` INT UNSIGNED NOT NULL,
   `Commits` INT UNSIGNED NULL,
   `Contributions` DECIMAL(2,2) NULL,
-  `Specialization` ENUM('test','backend','frontend','Management') NULL,
+  `Specialization` ENUM('Test','Backend','Frontend','Management') NULL,
   PRIMARY KEY (`ProjectID`),
   CONSTRAINT `UserID`
     FOREIGN KEY (`UserID`)
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Project-User` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE UNIQUE INDEX `ProjectID_UNIQUE` ON `mydb`.`Project-User` (`ProjectID` ASC);
+CREATE UNIQUE INDEX `ProjectID_UNIQUE` ON `mydb`.`ProjectUser` (`ProjectID` ASC);
 
 
 -- -----------------------------------------------------
@@ -87,14 +87,14 @@ CREATE UNIQUE INDEX `ProjectID_UNIQUE` ON `mydb`.`Project-User` (`ProjectID` ASC
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Task` (
   `TaskID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `Priority` ENUM('low','normal','high','urgent') NULL DEFAULT 'normal',
-  `HasDependency` TINYINT(1) NULL,
+  `Priority` ENUM('Low','Normal','High','Urgent') NULL DEFAULT 'Normal',
+  `HasDependency` BOOLEAN NULL,
   `Deadline` DATETIME NULL,
   `Title` VARCHAR(200) NULL,
   `Notes` VARCHAR(200) NULL,
   `Description` VARCHAR(200) NULL,
   `Scope` VARCHAR(200) NULL,
-  `TaskStatus` ENUM('Queued', 'In Progress', 'Waiting', 'Blocked', 'Complete') NULL,
+  `Status` ENUM('Queued', 'In Progress', 'Waiting', 'Blocked', 'Complete') NULL,
   PRIMARY KEY (`TaskID`))
 ENGINE = InnoDB;
 
@@ -102,9 +102,9 @@ CREATE UNIQUE INDEX `TaskID_UNIQUE` ON `mydb`.`Task` (`TaskID` ASC);
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Project-Task`
+-- Table `mydb`.`ProjectTask`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Project-Task` (
+CREATE TABLE IF NOT EXISTS `mydb`.`ProjectTask` (
   `ProjectID` INT UNSIGNED NOT NULL,
   `TaskID` INT UNSIGNED NULL,
   PRIMARY KEY (`ProjectID`),
@@ -122,9 +122,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`User-Task`
+-- Table `mydb`.`UserTask`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`User-Task` (
+CREATE TABLE IF NOT EXISTS `mydb`.`UserTask` (
   `UserID` INT UNSIGNED NULL,
   `TaskID` INT UNSIGNED NULL,
   CONSTRAINT `UserID`
@@ -139,15 +139,15 @@ CREATE TABLE IF NOT EXISTS `mydb`.`User-Task` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `UserID_idx` ON `mydb`.`User-Task` (`UserID` ASC);
+CREATE INDEX `UserID_idx` ON `mydb`.`UserTask` (`UserID` ASC);
 
-CREATE INDEX `TaskID_idx` ON `mydb`.`User-Task` (`TaskID` ASC);
+CREATE INDEX `TaskID_idx` ON `mydb`.`UserTask` (`TaskID` ASC);
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Logging`
+-- Table `mydb`.`Log`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Logging` (
+CREATE TABLE IF NOT EXISTS `mydb`.`Log` (
   `LogID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `RemoteAddr` VARCHAR(255) NULL,
   `RemoteHost` VARCHAR(255) NULL,
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Logging` (
   PRIMARY KEY (`LogID`))
 ENGINE = InnoDB;
 
-CREATE UNIQUE INDEX `LogID_UNIQUE` ON `mydb`.`Logging` (`LogID` ASC);
+CREATE UNIQUE INDEX `LogID_UNIQUE` ON `mydb`.`Log` (`LogID` ASC);
 
 
 -- -----------------------------------------------------
