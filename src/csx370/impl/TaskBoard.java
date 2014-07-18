@@ -11,6 +11,8 @@ public class TaskBoard
   private List<Task> completedTasks;
   private List<Task> inProgressTasks;
   private List<Task> waitingTasks;
+  private List<Task> queuedTasks;
+  private List<Task> blockedTasks;
 
   /**
    * Pre-separated lists
@@ -18,12 +20,17 @@ public class TaskBoard
    * @param completedTasks list of tasks that are completed
    * @param inProgressTasks list of tasks that are in progress
    * @param waitingTasks list of tasks that are not being worked on yet
+   * @param queuedTasks list of tasks that are queued
+   * @param blockedTasks list of blocked tasks
    */
-  public TaskBoard(List<Task> completedTasks, List<Task> inProgressTasks, List<Task> waitingTasks)
+  public TaskBoard(List<Task> completedTasks, List<Task> inProgressTasks, List<Task> waitingTasks,
+		   List<Task> queuedTasks, List<Task> blockedTasks)
   {
     this.completedTasks = completedTasks;
     this.inProgressTasks = inProgressTasks;
     this.waitingTasks = waitingTasks;
+    this.queuedTasks = queuedTasks;
+    this.blockedTasks = blockedTasks;
   }// ctor
 
   /**
@@ -37,6 +44,8 @@ public class TaskBoard
     this.completedTasks = new ArrayList<Task>();
     this.inProgressTasks = new ArrayList<Task>();
     this.waitingTasks = new ArrayList<Task>();
+    this.queuedTasks = new ArrayList<Task>();
+    this.blockedTasks = new ArrayList<Task>();
 
     // loop through list and separate out tasks
     for(Task task : allTasks)
@@ -53,9 +62,17 @@ public class TaskBoard
 	  inProgressTasks.add(task);
 	  break;
 	}
-        default:
+        case "Waiting":
 	{
 	  waitingTasks.add(task);
+	}
+        case "Queued":
+	{
+	  queuedTasks.add(task);
+	}
+        case "Blocked":
+	{
+	  blockedTasks.add(task);
 	}
       }// switch
     }// for
@@ -84,4 +101,20 @@ public class TaskBoard
   {
     return this.waitingTasks;
   }// getWaitingTasks
+
+  /**
+   * @return list of queued tasks
+   */
+  public List<Task> getQueuedTasks()
+  {
+    return this.queuedTasks;
+  }// getQueuedTasks
+
+  /**
+   * @return list of blocked tasks
+   */
+  public List<Task> blockedTasks()
+  {
+    return this.blockedTasks;
+  }// getBlockedTasks
 }// TaskBoard
