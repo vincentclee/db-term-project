@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Project` (
   `StartDate` DATE NULL,
   `TargetDate` DATE NULL,
   `Manager` INT UNSIGNED NOT NULL,
-  `Status` ENUM('Started','Not-Started','Finished','In-Progress') NULL DEFAULT 'Not-Started',
+  `Status` ENUM('Started','Not Started','Finished','In Progress') NULL DEFAULT 'Not Started',
   PRIMARY KEY (`ProjectID`),
   CONSTRAINT `Manager`
     FOREIGN KEY (`Manager`)
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Task` (
   `TaskID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Priority` ENUM('Low','Normal','High','Urgent') NULL DEFAULT 'Normal',
   `HasDependency` BOOLEAN NULL,
-  `Deadline` DATETIME NULL,
+  `Deadline` TIMESTAMP NULL,
   `Title` VARCHAR(200) NULL,
   `Notes` VARCHAR(200) NULL,
   `Description` VARCHAR(200) NULL,
