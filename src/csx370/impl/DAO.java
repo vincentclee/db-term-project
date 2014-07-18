@@ -56,7 +56,7 @@ public class DAO
   }// ctor
 
   /**
-   * Create a DAO using the production DB;
+   * Create a DAO using the production DB
    */
   public DAO()
   {
@@ -317,6 +317,49 @@ public class DAO
 
     return user;
   }// getUserByCookieID
+
+  /**
+   * Retrieve a list of tasks associated with the specified user for the specified project
+   *
+   * @param userID the id of the user
+   * @param projectID the id of the project
+   * @return a list of tasks associated with the specified user for the specified project
+   */
+  public List<Task> getUsersTasksForProject(int userID, int projectID)
+  {
+    List<Task> taskList = null;
+    
+    try
+    {
+      PreparedStatement selectTasks = this.conn.prepareStatement("SELECT * FROM (UserTask NATURAL JOIN ProjectTask NATURAL JOIN Task) WHERE UserID = (?) AND ProjectID = (?)");
+      selectTasks.setInt(1, userID);
+      selectTasks.setInt(2, projectID);
+      
+      ResultSet rs = selectTasks.executeQuery();
+      
+      // iterate through returned items and add to list
+      taskList = new ArrayList<Task>();
+      while(rs.next())
+      {
+	taskList.add(new Task(rs.getInt("TaskID"), 
+			      rs.getBoolean("HasDependency"), 
+			      stringToPriority(rs.getString("Priority")),
+			      rs.getTimestamp("Deadline"),
+			      rs.getString("Title"),
+			      rs.getString("Notes"),
+			      rs.getString("Description"),
+			      rs.getString("Scope"),
+			      stringToTaskStatus(rs.getString("Status"))));
+      }// while
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving user tasks: " + e.getMessage());
+      taskList = null;
+    }// catch
+
+    return taskList;
+  }// getUsersTasksForProject
 
   /**
    * Update username for user identified by the given id. 
