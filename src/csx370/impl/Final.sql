@@ -15,10 +15,10 @@ USE `mydb` ;
 -- Table `mydb`.`User`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`User` (
-  `UserID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `UserName` VARCHAR(200) NULL,
-  `Email` VARCHAR(200) NULL,
-  `DisplayName` VARCHAR(200) NULL,
+ UNIQUE `UserID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+ Unique `UserName` VARCHAR(200) NULL,
+ UNIQUE `Email` VARCHAR(200) NULL,
+  UNIQUE `DisplayName` VARCHAR(200) NULL,
   `Password` VARCHAR(100) NULL,
   `CookieID` VARCHAR(200) NULL,
   PRIMARY KEY (`UserID`))
