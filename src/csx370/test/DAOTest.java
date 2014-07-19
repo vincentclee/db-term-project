@@ -78,13 +78,13 @@ public class DAOTest extends TestCase
     Task task5 = dao.createTask(Priority.HIGH, false, new Timestamp(567l), "star", 
 				"sdfg","tyui", "asdf", TaskStatus.WAITING);
 
-    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "asdf", "sdfg", "dfgh");
-    dao.addUserToProject(user2.getUserID(), proj1.getProjectID(), "asdf", "sdfg", "dfgh");
-    dao.addUserToProject(user3.getUserID(), proj2.getProjectID(), "asdf", "sdfg", "dfgh");
-    dao.addUserToProject(user5.getUserID(), proj2.getProjectID(), "asdf", "sdfg", "dfgh");
-    dao.addUserToProject(user1.getUserID(), proj3.getProjectID(), "asdf", "sdfg", "dfgh");
-    dao.addUserToProject(user4.getUserID(), proj3.getProjectID(), "asdf", "sdfg", "dfgh");
-    dao.addUserToProject(user5.getUserID(), proj3.getProjectID(), "asdf", "sdfg", "dfgh");
+    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user2.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user3.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user5.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user1.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user4.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user5.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
     
     dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
     dao.addTaskToProject(proj1.getProjectID(), task2.getTaskID());
@@ -119,10 +119,10 @@ public class DAOTest extends TestCase
     assertEquals("9", empty, dao.getUserTasksForProjectByID(user4.getUserID(), proj3.getProjectID()));
     
     // by cookieid
-    assertEquals("10", ala, dao.getUserTasksForProjectByID(user1.getUserID(), proj1.getProjectCookieID()));
-    assertEquals("11", calb, dao.getUserTasksForProjectByID(user3.getUserID(), proj2.getProjectCookieID()));
-    assertEquals("12", elvisc, dao.getUserTasksForProjectByID(user5.getUserID(), proj3.getProjectCookieID()));
-    assertEquals("13", empty, dao.getUserTasksForProjectByID(user4.getUserID(), proj3.getProjectCookieID()));
+    assertEquals("10", ala, dao.getUserTasksForProjectByID(user1.getUserID(), proj1.getProjectByCookieID()));
+    assertEquals("11", calb, dao.getUserTasksForProjectByID(user3.getUserID(), proj2.getProjectByCookieID()));
+    assertEquals("12", elvisc, dao.getUserTasksForProjectByID(user5.getUserID(), proj3.getProjectByCookieID()));
+    assertEquals("13", empty, dao.getUserTasksForProjectByID(user4.getUserID(), proj3.getProjectByCookieID()));
   }// testGetUserTasksForProjectFunctions
   
   public void testUserUpdates()
