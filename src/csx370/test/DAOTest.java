@@ -119,10 +119,10 @@ public class DAOTest extends TestCase
     assertEquals("9", empty, dao.getUserTasksForProjectByID(user4.getUserID(), proj3.getProjectID()));
     
     // by cookieid
-    assertEquals("10", ala, dao.getUserTasksForProjectByID(user1.getUserID(), proj1.getProjectByCookieID()));
-    assertEquals("11", calb, dao.getUserTasksForProjectByID(user3.getUserID(), proj2.getProjectByCookieID()));
-    assertEquals("12", elvisc, dao.getUserTasksForProjectByID(user5.getUserID(), proj3.getProjectByCookieID()));
-    assertEquals("13", empty, dao.getUserTasksForProjectByID(user4.getUserID(), proj3.getProjectByCookieID()));
+    assertEquals("10", ala, dao.getUserTasksForProjectByCookieID(user1.getUserID(), proj1.getProjectID()));
+    assertEquals("11", calb, dao.getUserTasksForProjectByCookieID(user3.getUserID(), proj2.getProjectID()));
+    assertEquals("12", elvisc, dao.getUserTasksForProjectByCookieID(user5.getUserID(), proj3.getProjectID()));
+    assertEquals("13", empty, dao.getUserTasksForProjectByCookieID(user4.getUserID(), proj3.getProjectID()));
   }// testGetUserTasksForProjectFunctions
   
   public void testUserUpdates()
