@@ -86,11 +86,11 @@ public class DAOTest extends TestCase
     dao.addUserToProject(user4.getUserID(), proj3.getProjectID(), "asdf", "sdfg", "dfgh");
     dao.addUserToProject(user5.getUserID(), proj3.getProjectID(), "asdf", "sdfg", "dfgh");
     
-    dao.addTaskToProject(project1.getProjectID(), task1.getTaskID());
-    dao.addTaskToProject(project1.getProjectID(), task2.getTaskID());
-    dao.addTaskToProject(project3.getProjectID(), task3.getTaskID());
-    dao.addTaskToProject(project3.getProjectID(), task4.getTaskID());
-    dao.addTaskToProject(project3.getProjectID(), task5.getTaskID());
+    dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
+    dao.addTaskToProject(proj1.getProjectID(), task2.getTaskID());
+    dao.addTaskToProject(proj3.getProjectID(), task3.getTaskID());
+    dao.addTaskToProject(proj3.getProjectID(), task4.getTaskID());
+    dao.addTaskToProject(proj3.getProjectID(), task5.getTaskID());
 
     dao.addUserToTask(task1.getTaskID(), user1.getUserID());
     dao.addUserToTask(task2.getTaskID(), user1.getUserID());
