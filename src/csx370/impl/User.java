@@ -28,6 +28,19 @@ public class User
     this.cookieID = cookieID;
   }// ctor
 
+/**
+ * Check if two User objects contain the same info.
+ *
+ * @param other the User to compare against this one
+ * @return true if the user objects contain the same info, false if otherwise
+ */
+  public boolean equals(User other)
+  {
+    return (this.userID == other.userID && this.username.equals(other.username) &&
+	    this.email.equals(other.email) && this.displayName.equals(other.displayName) &&
+	    this.cookieID.equals(other.cookieID));
+  }// equals
+
   /**
    * @return the userID
    */
