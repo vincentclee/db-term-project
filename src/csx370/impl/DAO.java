@@ -68,7 +68,7 @@ public class DAO
    * If authentication is successful, a User object with data pertaining to the corresponding
    * user is returned. Returns null in the case of an unsuccessful login.
    *
-   * @param username either the username given by the user
+   * @param username the username given by the user
    * @param password the password given by the user
    * @return User object with user's details upon success, null upon failed attempt
    */
@@ -104,8 +104,8 @@ public class DAO
 
 	// insert new cookie into db
 	PreparedStatement insertCookie = this.conn.prepareStatement("UPDATE User SET CookieID = (?) WHERE UserID = (?)");
-	insertCookie.setString(cookie.getValue());
-	insertCookie.setInt(rsUser.getInt("UserID"));
+	insertCookie.setString(1, cookie.getValue());
+	insertCookie.setInt(2, rsUsername.getInt("UserID"));
 	
 	insertCookie.executeUpdate();
 			       

@@ -21,30 +21,21 @@ public class DAOTest extends TestCase
   
   public void testAuthenticate()
   {
-    // test username authenticate
     assertNull("1", dao.authenticate("username", "password"));
-    dao.createUser("username", "1", "2", "3", "password");
-    User user = dao.authenticate("username", "password");
-    assertEquals("2", "1", user.getEmail());
-    assertEquals("3", "2", user.getDisplayName());
-    assertEquals("4", "3", user.getSpecialization());
-
-    // test email authenticate
-    assertNull("5", dao.authenticate("email", "password"));
-    dao.createUser("1", "email", "2", "3", "password");
-    user = dao.authenticate("email", "password");
-    assertEquals("6", "1", user.getUsername());
-    assertEquals("7", "2", user.getDisplayName());
-    assertEquals("8", "3", user.getSpecialization());
+    User user1 = dao.createUser("username", "1", "2", "3", "password");
+    User user2 = dao.authenticate("username", "password");
+    assertEquals("1a", user1.getUserID(), user2.getUserID());
+    assertEquals("2", "1", user2.getEmail());
+    assertEquals("2a", user1.getEmail(), user2.getEmail());
+    assertEquals("3", "2", user2.getDisplayName());
+    assertEquals("3a", user1.getDisplayName(), user2.getDisplayName());
+    assertEquals("4", "3", user2.getCookieID());
+    assertEquals("4a", user1.getCookieID(), user2.getCookieID());
   }// testAuthenticate
-
+  
   public void testCreateUser()
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    fail("not yet implemented");
+    User user = dao.createUser("spongebob", 
   }// testCreateUser
 
   public void testGetUserFunctions()
