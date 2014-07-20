@@ -55,11 +55,10 @@ public class Task
    */
   public boolean equals(Task other)
   {
-    return (this.taskID == other.taskID && this.hasDependency == this.hasDependency &&
-	    this.priority == other.priority && this.deadline.equals(other.deadline) &&
-	    this.title.equals(other.title) && this.notes.equals(other.notes) &&
-	    this.description.equals(other.description) && this.scope.equals(other.scope) &&
-      this.status == other.status);
+    return (this.taskID == other.taskID && this.hasDependency == other.hasDependency &&
+	    this.priority == other.priority && this.title.equals(other.title) && 
+	    this.notes.equals(other.notes) && this.description.equals(other.description) && 
+	    this.scope.equals(other.scope) && this.status == other.status);
   }// equals
 
   /**

@@ -50,7 +50,7 @@ public class Project
   public boolean equals(Project other)
   {
     return (this.projectID == other.projectID && this.title.equals(other.title) &&
-	    this.description.equals(other.description) && this.startDate.equals(other.startDate) &&
+	    this.description.equals(other.description) && 
 	    this.manager == other.manager && this.status.equals(other.status));
   }// equals
 

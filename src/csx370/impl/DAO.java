@@ -27,8 +27,8 @@ public class DAO
 
   // db login info
   private final String DB_URL = "jdbc:mysql://localhost/mydb";
-  private final String DB_USER = "user";
-  private final String DB_PASS = "pass";
+  private final String DB_USER = "root";
+  private final String DB_PASS = "guest";
 
   private Connection conn;
 
@@ -79,7 +79,7 @@ public class DAO
 
     try
     {
-      PreparedStatement usernameAuthenticate = this.conn.prepareStatement("SELECT * FROM User WHERE UserName = (?) AND Password = UNHEX(SHA2((?), 256))");
+      PreparedStatement usernameAuthenticate = this.conn.prepareStatement("SELECT * FROM User WHERE UserName = (?) AND Password = SHA2((?), 256)");
       usernameAuthenticate.setString(1, username);
       usernameAuthenticate.setString(2, password);
       
@@ -144,7 +144,7 @@ public class DAO
     try
     {
       // insert info into db
-      PreparedStatement insertUser = this.conn.prepareStatement("INSERT INTO User(UserName, Email, DisplayName, CookieID, Password) VALUES (?,?,?,?,UNHEX(SHA2((?), 256)))", PreparedStatement.RETURN_GENERATED_KEYS);
+      PreparedStatement insertUser = this.conn.prepareStatement("INSERT INTO User(UserName, Email, DisplayName, CookieID, Password) VALUES (?,?,?,?,SHA2((?), 256))", PreparedStatement.RETURN_GENERATED_KEYS);
       insertUser.setString(1, username);
       insertUser.setString(2, email);
       insertUser.setString(3, displayName);
@@ -431,7 +431,7 @@ public class DAO
       updateUser.setString(1, username);
       updateUser.setInt(2, userID);
 
-      updateUser.executeQuery();
+      updateUser.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -457,7 +457,7 @@ public class DAO
       updateUser.setString(1, email);
       updateUser.setInt(2, userID);
 
-      updateUser.executeQuery();
+      updateUser.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -483,7 +483,7 @@ public class DAO
       updateUser.setString(1, displayName);
       updateUser.setInt(2, userID);
 
-      updateUser.executeQuery();
+      updateUser.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -509,7 +509,7 @@ public class DAO
       updateUser.setString(1, cookieID);
       updateUser.setInt(2, userID);
 
-      updateUser.executeQuery();
+      updateUser.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -531,11 +531,11 @@ public class DAO
   {
     try
     {
-      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Password = UNHEX(SHA2((?), 256)) WHERE UserID = (?)");
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Password = SHA2((?), 256) WHERE UserID = (?)");
       updateUser.setString(1, password);
       updateUser.setInt(2, userID);
 
-      updateUser.executeQuery();
+      updateUser.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -637,7 +637,7 @@ public class DAO
       PreparedStatement deleteUser = this.conn.prepareStatement("DELETE FROM User WHERE UserID = (?)");
       deleteUser.setInt(1, userID);
 
-      deleteUser.executeQuery();
+      deleteUser.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -725,7 +725,7 @@ public class DAO
 			      rs.getString("Description"), 
 			      rs.getDate("StartDate"),
 			      rs.getDate("TargetDate"),
-			      rs.getInt("ManagerID"), 
+			      rs.getInt("Manager"), 
 			      stringToProjectStatus(rs.getString("Status")));
       }// if
       else
@@ -757,7 +757,7 @@ public class DAO
       updateProject.setString(1, title);
       updateProject.setInt(2, projectID);
 
-      updateProject.executeQuery();
+      updateProject.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -783,7 +783,7 @@ public class DAO
       updateProject.setString(1, description);
       updateProject.setInt(2, projectID);
 
-      updateProject.executeQuery();
+      updateProject.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -809,7 +809,7 @@ public class DAO
       updateProject.setDate(1, startDate);
       updateProject.setInt(2, projectID);
 
-      updateProject.executeQuery();
+      updateProject.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -835,7 +835,7 @@ public class DAO
       updateProject.setDate(1, targetDate);
       updateProject.setInt(2, projectID);
 
-      updateProject.executeQuery();
+      updateProject.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -861,7 +861,7 @@ public class DAO
       updateProject.setInt(1, managerID);
       updateProject.setInt(2, projectID);
 
-      updateProject.executeQuery();
+      updateProject.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -887,7 +887,7 @@ public class DAO
       updateProject.setString(1, status.toString());
       updateProject.setInt(2, projectID);
 
-      updateProject.executeQuery();
+      updateProject.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -911,7 +911,7 @@ public class DAO
       PreparedStatement deleteProject = this.conn.prepareStatement("DELETE FROM Project WHERE ProjectID = (?)");
       deleteProject.setInt(1, projectID);
 
-      deleteProject.executeQuery();
+      deleteProject.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -1093,7 +1093,7 @@ public class DAO
       updateTask.setString(1, priority.toString());
       updateTask.setInt(2, taskID);
 
-      updateTask.executeQuery();
+      updateTask.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -1119,7 +1119,7 @@ public class DAO
       updateTask.setBoolean(1, hasDependency);
       updateTask.setInt(2, taskID);
 
-      updateTask.executeQuery();
+      updateTask.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -1145,7 +1145,7 @@ public class DAO
       updateTask.setTimestamp(1, deadline);
       updateTask.setInt(2, taskID);
 
-      updateTask.executeQuery();
+      updateTask.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -1171,7 +1171,7 @@ public class DAO
       updateTask.setString(1, title);
       updateTask.setInt(2, taskID);
 
-      updateTask.executeQuery();
+      updateTask.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -1197,7 +1197,7 @@ public class DAO
       updateTask.setString(1, notes);
       updateTask.setInt(2, taskID);
 
-      updateTask.executeQuery();
+      updateTask.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -1223,7 +1223,7 @@ public class DAO
       updateTask.setString(1, description);
       updateTask.setInt(2, taskID);
 
-      updateTask.executeQuery();
+      updateTask.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -1249,7 +1249,7 @@ public class DAO
       updateTask.setString(1, scope);
       updateTask.setInt(2, taskID);
 
-      updateTask.executeQuery();
+      updateTask.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -1275,7 +1275,7 @@ public class DAO
       updateTask.setString(1, status.toString());
       updateTask.setInt(2, taskID);
 
-      updateTask.executeQuery();
+      updateTask.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -1299,7 +1299,7 @@ public class DAO
       PreparedStatement deleteTask = this.conn.prepareStatement("DELETE FROM Task WHERE TaskID = (?)");
       deleteTask.setInt(1, taskID);
 
-      deleteTask.executeQuery();
+      deleteTask.executeUpdate();
     }// try
     catch(Exception e)
     {
@@ -1433,7 +1433,7 @@ public class DAO
     
     try
     {
-      PreparedStatement insertProjectUser = this.conn.prepareStatement("INSERT INTO ProjectUser(ProjectID, TaskID, Commits, Specialization, Contributions) VALUES (?,?,?,?,?)");
+      PreparedStatement insertProjectUser = this.conn.prepareStatement("INSERT INTO ProjectUser(ProjectID, UserID, Commits, Specialization, Contributions) VALUES (?,?,?,?,?)");
       insertProjectUser.setInt(1, projectID);
       insertProjectUser.setInt(2, userID);
       insertProjectUser.setString(3, commits);
