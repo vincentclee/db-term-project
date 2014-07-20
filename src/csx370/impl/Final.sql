@@ -15,12 +15,12 @@ USE `mydb` ;
 -- Table `mydb`.`User`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`User` (
- UNIQUE `UserID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
- Unique `UserName` VARCHAR(200) NULL,
- UNIQUE `Email` VARCHAR(200) NULL,
-  UNIQUE `DisplayName` VARCHAR(200) NULL,
-  `Password` VARCHAR(100) NULL,
-  `CookieID` VARCHAR(200) NULL,
+ `UserID` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
+ `UserName` VARCHAR(200) NULL UNIQUE,
+ `Email` VARCHAR(200) NULL UNIQUE,
+ `DisplayName` VARCHAR(200) NULL,
+ `Password` VARCHAR(100) NULL,
+ `CookieID` VARCHAR(200) NULL UNIQUE,
   PRIMARY KEY (`UserID`))
 ENGINE = InnoDB;
 
@@ -37,7 +37,7 @@ CREATE UNIQUE INDEX `CookieID_UNIQUE` ON `mydb`.`User` (`CookieID` ASC);
 -- Table `mydb`.`Project`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Project` (
-  `ProjectID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ProjectID` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
   `Title` VARCHAR(200) NULL,
   `Description` VARCHAR(200) NULL,
   `StartDate` DATE NULL,
@@ -86,7 +86,7 @@ CREATE UNIQUE INDEX `ProjectID_UNIQUE` ON `mydb`.`ProjectUser` (`ProjectID` ASC)
 -- Table `mydb`.`Task`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Task` (
-  `TaskID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `TaskID` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
   `Priority` ENUM('Low','Normal','High','Urgent') NULL DEFAULT 'Normal',
   `HasDependency` BOOLEAN NULL,
   `Deadline` TIMESTAMP NULL,
@@ -108,14 +108,14 @@ CREATE TABLE IF NOT EXISTS `mydb`.`ProjectTask` (
   `ProjectID` INT UNSIGNED NOT NULL,
   `TaskID` INT UNSIGNED NULL,
   PRIMARY KEY (`ProjectID`),
-  CONSTRAINT `ProjectID`
-    FOREIGN KEY ()
-    REFERENCES `mydb`.`Project` ()
+  CONSTRAINT `ProjectID2`
+    FOREIGN KEY (`ProjectID`)
+    REFERENCES `mydb`.`Project` (`ProjectID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `TaskID`
-    FOREIGN KEY ()
-    REFERENCES `mydb`.`Task` ()
+    FOREIGN KEY (`TaskID`)
+    REFERENCES `mydb`.`Task` (`TaskID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -128,12 +128,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`UserTask` (
   `UserID` INT UNSIGNED NULL,
   `TaskID` INT UNSIGNED NULL,
   CONSTRAINT `UserID`
-    FOREIGN KEY (`UserID`)
+    FOREIGN KEY (`UserID2`)
     REFERENCES `mydb`.`User` (`UserID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `TaskID`
-    FOREIGN KEY (`TaskID`)
+    FOREIGN KEY (`TaskID2`)
     REFERENCES `mydb`.`Task` (`TaskID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -148,7 +148,7 @@ CREATE INDEX `TaskID_idx` ON `mydb`.`UserTask` (`TaskID` ASC);
 -- Table `mydb`.`Log`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Log` (
-  `LogID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `LogID` INT UNSIGNED NOT NULL UNIQUE AUTO_INCREMENT,
   `RemoteAddr` VARCHAR(255) NULL,
   `RemoteHost` VARCHAR(255) NULL,
   `RemotePort` VARCHAR(255) NULL,
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`TaskDependencies` (
   `TaskID` INT UNSIGNED NOT NULL,
   `DependentTask` INT UNSIGNED NULL,
   PRIMARY KEY (`TaskID`),
-  CONSTRAINT `TaskID`
+  CONSTRAINT `TaskID3`
     FOREIGN KEY (`TaskID`)
     REFERENCES `mydb`.`Task` (`TaskID`)
     ON DELETE NO ACTION
