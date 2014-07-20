@@ -300,6 +300,15 @@ public class DAOTest extends TestCase
     assertTrue("40", task1.equals(task2));    
   }// testGetTask
 
+  public void testGetProjectTaskBoard()
+  {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // TODO
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    fail("not yet implemented");
+  }// testGetProjectTaskBoard
+
   public void testGetTasksForProject()
   {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -311,38 +320,37 @@ public class DAOTest extends TestCase
 
   public void testTaskUpdates()
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // priority
-    // dependency
-    // deadline
-    // title
-    // notes
-    // description
-    // scope
-    // status
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(100321l), "to be changed", 
+				"changey", "changey changey", "changey changey changey", TaskStatus.IN_PROGRESS);
+    int task1ID = task1.getTaskID();
     
-    fail("not yet implemented");
+    dao.updateTaskPriority(task1ID, Priority.URGENT);
+    dao.updateTaskDependency(task1ID, true);
+    dao.updateTaskTitle(task1ID, "new title");
+    dao.updateTaskNotes(task1ID, "new notes");
+    dao.updateTaskDescription(task1ID, "new desc");
+    dao.updateTaskScope(task1ID, "new scope");
+    dao.updateTaskStatus(task1ID, TaskStatus.COMPLETE);
+    
+    Task task1Updated = dao.getTask(task1ID);
+    
+    assertEquals("41", task1ID, task1Updated.getTaskID());
+    assertEquals("42", Priority.URGENT.toString(), task1Updated.getPriority());
+    assertTrue("43", task1Updated.hasDependency());
+    assertEquals("44", "new title", task1Updated.getTitle());
+    assertEquals("45", "new notes", task1Updated.getNotes());
+    assertEquals("46", "new desc", task1Updated.getDescription());
+    assertEquals("47", "new scope", task1Updated.getScope());
+    assertEquals("48", TaskStatus.COMPLETE.toString(), task1Updated.getStatus());
   }// testTaskUpdates
     
   public void testDeleteTask()
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    fail("not yet implemented");
+    Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(1456721l), "lorem", 
+				"ipsum", "spacefiller", "text", TaskStatus.IN_PROGRESS);
+    dao.deleteTask(task1.getTaskID());
+    assertEquals("49", -1, dao.getTask(task1.getTaskID()).getTaskID());
   }// testDeleteTask
-
-  public void testAddUserToTask()
-  {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    fail("not yet implemented");
-  }// testAddUserToTask
 
   public void testRemoveUserFromTask()
   {
@@ -353,15 +361,6 @@ public class DAOTest extends TestCase
     fail("not yet implemented");
   }// testRemoveUserFromTask
 
-  public void testAddTaskToProject()
-  {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    fail("not yet implemented");
-  }// testAddTaskToProject
-
   public void testRemoveTaskFromProject()
   {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -371,14 +370,15 @@ public class DAOTest extends TestCase
     fail("not yet implemented");
   }// testRemoveTaskFromProject
 
-  public void testAddUserToProject()
+  public void testRemoveUserFromProject()
   {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     fail("not yet implemented");
-  }// testAddUserToProject
+  }// testRemoveUserFromProject
+
 
   public void testUserProjectUpdates()
   {
@@ -391,25 +391,6 @@ public class DAOTest extends TestCase
     
     fail("not yet implemented");
   }// testUpdateTaskStatus
-
-
-  public void testRemoveUserFromProject()
-  {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    fail("not yet implemented");
-  }// testRemoveUserFromProject
-
-  public void testAddTaskDependency()
-  {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    fail("not yet implemented");
-  }// testAddTaskDependency
 
   public void testRemoveTaskDependency()
   {
