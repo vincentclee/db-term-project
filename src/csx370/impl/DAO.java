@@ -8,8 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.sql.Date;
-/*import javax.servlet.http.Cookie;
-  import csx370.util.CookieUtil;*/
+import javax.servlet.http.Cookie;
+import csx370.util.CookieUtil;
 
 
 /**
@@ -72,7 +72,7 @@ public class DAO
    * @param password the password given by the user
    * @return User object with user's details upon success, null upon failed attempt
    */
-/*  public User authenticate(String username, String password)
+  public User authenticate(String username, String password)
   {
     // user object to return
     User user = null;
@@ -124,7 +124,7 @@ public class DAO
 
     return user;
   }// authenticate
-*/
+
   /**
    * Create a new user account in the DB with the given details and return a User
    * object detailing the newly created user
