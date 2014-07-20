@@ -66,7 +66,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`ProjectUser` (
   `Commits` INT UNSIGNED NULL,
   `Contributions` DECIMAL(2,2) NULL,
   `Specialization` ENUM('Test','Backend','Frontend','Management') NULL,
-  PRIMARY KEY (`ProjectID`),
   CONSTRAINT `UserID`
     FOREIGN KEY (`UserID`)
     REFERENCES `mydb`.`User` (`UserID`)
@@ -107,7 +106,6 @@ CREATE UNIQUE INDEX `TaskID_UNIQUE` ON `mydb`.`Task` (`TaskID` ASC);
 CREATE TABLE IF NOT EXISTS `mydb`.`ProjectTask` (
   `ProjectID` INT UNSIGNED NOT NULL,
   `TaskID` INT UNSIGNED NULL,
-  PRIMARY KEY (`ProjectID`),
   CONSTRAINT `ProjectID2`
     FOREIGN KEY (`ProjectID`)
     REFERENCES `mydb`.`Project` (`ProjectID`)
@@ -168,7 +166,6 @@ CREATE UNIQUE INDEX `LogID_UNIQUE` ON `mydb`.`Log` (`LogID` ASC);
 CREATE TABLE IF NOT EXISTS `mydb`.`TaskDependencies` (
   `TaskID` INT UNSIGNED NOT NULL,
   `DependentTask` INT UNSIGNED NULL,
-  PRIMARY KEY (`TaskID`),
   CONSTRAINT `TaskID3`
     FOREIGN KEY (`TaskID`)
     REFERENCES `mydb`.`Task` (`TaskID`)
