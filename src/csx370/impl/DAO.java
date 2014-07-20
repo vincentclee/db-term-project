@@ -79,7 +79,7 @@ public class DAO
 
     try
     {
-      PreparedStatement usernameAuthenticate = this.conn.prepareStatement("SELECT * FROM User WHERE UserName = (?) AND Password = UNHEX(SHA2(?))");
+      PreparedStatement usernameAuthenticate = this.conn.prepareStatement("SELECT * FROM User WHERE UserName = (?) AND Password = UNHEX(SHA2((?), 256))");
       usernameAuthenticate.setString(1, username);
       usernameAuthenticate.setString(2, password);
       
@@ -144,7 +144,7 @@ public class DAO
     try
     {
       // insert info into db
-      PreparedStatement insertUser = this.conn.prepareStatement("INSERT INTO User(UserName, Email, DisplayName, CookieID, Password) VALUES (?,?,?,?,UNHEX(SHA2(?)))");
+      PreparedStatement insertUser = this.conn.prepareStatement("INSERT INTO User(UserName, Email, DisplayName, CookieID, Password) VALUES (?,?,?,?,UNHEX(SHA2((?), 256)))", PreparedStatement.RETURN_GENERATED_KEYS);
       insertUser.setString(1, username);
       insertUser.setString(2, email);
       insertUser.setString(3, displayName);
@@ -154,13 +154,9 @@ public class DAO
       insertUser.executeUpdate();
 
       // get userID from freshly inserted row
-      int userID;
-      PreparedStatement selectUser = this.conn.prepareStatement("SELECT UserID FROM User WHERE UserName = (?)");
-      selectUser.setString(1, username);
-
-      ResultSet rs = selectUser.executeQuery();
+      ResultSet rs = insertUser.getGeneratedKeys();
       rs.next();
-      userID = rs.getInt("UserID");
+      int userID = rs.getInt(1);
       
       // create user object to return
       user = new User(userID, username, email, displayName, cookieID);
@@ -535,7 +531,7 @@ public class DAO
   {
     try
     {
-      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Password = UNHEX(SHA2(?)) WHERE UserID = (?)");
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Password = UNHEX(SHA2((?), 256)) WHERE UserID = (?)");
       updateUser.setString(1, password);
       updateUser.setInt(2, userID);
 
@@ -677,7 +673,7 @@ public class DAO
     try
     {
       // insert info into db
-      PreparedStatement insertProject = this.conn.prepareStatement("INSERT INTO Project(Title, Description, StartDate, TargetDate, Manager, Status) VALUES (?,?,?,?,?,?)");
+      PreparedStatement insertProject = this.conn.prepareStatement("INSERT INTO Project(Title, Description, StartDate, TargetDate, Manager, Status) VALUES (?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
       insertProject.setString(1, title);
       insertProject.setString(2, description);
       insertProject.setDate(3, startDate);
@@ -688,18 +684,9 @@ public class DAO
       insertProject.executeUpdate();
 
       // get projectID from freshly inserted row
-      int projectID;
-      PreparedStatement selectProject = this.conn.prepareStatement("SELECT ProjectID FROM Project WHERE Title = (?) AND Description = (?) AND StartDate = (?) AND TargetDate = (?) AND Manager = (?) AND Status = (?)");
-      selectProject.setString(1, title);
-      selectProject.setString(2, description);
-      insertProject.setDate(3, startDate);
-      insertProject.setDate(4, targetDate);
-      insertProject.setInt(5, managerID);
-      insertProject.setString(6, status.toString());
-
-      ResultSet rs = selectProject.executeQuery();
+      ResultSet rs = insertProject.getGeneratedKeys();
       rs.next();
-      projectID = rs.getInt("ProjectID");
+      int projectID = rs.getInt(1);
       
       // create project object to return
       project = new Project(projectID, title, description, startDate, targetDate, managerID, status);
@@ -963,7 +950,8 @@ public class DAO
     
     try
     {
-      PreparedStatement insertTask = this.conn.prepareStatement("INSERT INTO Task(Priority, HasDependency, Deadline, Title, Notes, Description, Scope, Status) VALUES (?,?,?,?,?,?,?,?)");
+      PreparedStatement insertTask = this.conn.prepareStatement("INSERT INTO Task(Priority, HasDependency, Deadline, Title, Notes, Description, Scope, Status) VALUES (?,?,?,?,?,?,?,?)"
+								, PreparedStatement.RETURN_GENERATED_KEYS);
       insertTask.setString(1, priority.toString());
       insertTask.setBoolean(2, hasDependency);
       insertTask.setTimestamp(3, deadline);
@@ -976,20 +964,9 @@ public class DAO
       insertTask.executeUpdate();
 
       // get taskID from freshly inserted row
-      int taskID;
-      PreparedStatement selectTask = this.conn.prepareStatement("SELECT TaskID FROM Task WHERE Priority = (?) AND HasDependency = (?) AND Deadline = (?) AND Title = (?) AND Notes = (?) AND Description = (?) AND Scope = (?) AND Status = (?)");
-      selectTask.setString(1, priority.toString());
-      selectTask.setBoolean(2, hasDependency);
-      selectTask.setTimestamp(3, deadline);
-      selectTask.setString(4, title);
-      selectTask.setString(5, notes);
-      selectTask.setString(6, description);
-      selectTask.setString(7, scope);
-      selectTask.setString(8, status.toString());
-
-      ResultSet rs = selectTask.executeQuery();
+      ResultSet rs = insertTask.getGeneratedKeys();
       rs.next();
-      taskID = rs.getInt("TaskID");
+      int taskID = rs.getInt(1);
 
       // create task object to return
       task = new Task(taskID, hasDependency, priority, deadline, title, notes, description, scope, status);
@@ -1728,6 +1705,7 @@ public class DAO
   {
     try
     {
+      this.conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
       this.conn.prepareStatement("TRUNCATE TABLE User").executeUpdate();
       this.conn.prepareStatement("TRUNCATE TABLE Project").executeUpdate();
       this.conn.prepareStatement("TRUNCATE TABLE Task").executeUpdate();
@@ -1736,7 +1714,7 @@ public class DAO
       this.conn.prepareStatement("TRUNCATE TABLE ProjectUser").executeUpdate();
       this.conn.prepareStatement("TRUNCATE TABLE Log").executeUpdate();
       this.conn.prepareStatement("TRUNCATE TABLE TaskDependencies").executeUpdate();
-      
+      this.conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();
     }// try
     catch(Exception e)
     {

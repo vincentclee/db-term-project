@@ -205,32 +205,32 @@ public class DAOTest extends TestCase
 
     // lists the functions should return
     List<Project> al = new ArrayList<Project>();
-    al.add(project1);
-    al.add(project3);
+    al.add(proj1);
+    al.add(proj3);
     
     List<Project> bob = new ArrayList<Project>();
-    bob.add(project1);
+    bob.add(proj1);
 
     List<Project> cal = new ArrayList<Project>();
-    cal.add(project2);
+    cal.add(proj2);
 
     List<Project> don = new ArrayList<Project>();
-    don.add(project3);
+    don.add(proj3);
 
     List<Project> elvis = new ArrayList<Project>();
-    elvis.add(project2);
-    elvis.add(project3);
+    elvis.add(proj2);
+    elvis.add(proj3);
 
     User user6 = dao.createUser("falco2", "falco@2", "falco1232", "vnq;orngp34809dwnv2", "falafel2");
     List<Project> empty = new ArrayList<Project>();
     
     // by id
-    assertEquals("20", al, dao.getProjectsByID(user1.getUserID()));
-    assertEquals("21", bob, dao.getProjectsByID(user2.getUserID()));
-    assertEquals("22", cal, dao.getProjectsByID(user3.getUserID()));
-    assertEquals("23", don, dao.getProjectsByID(user3.getUserID()));
-    assertEquals("24", elvis, dao.getProjectsByID(user5.getUserID()));
-    assertEquals("25", empty, dao.getProjectsByID(user6.getUserID()));
+    assertEquals("20", al, dao.getProjectsByUserID(user1.getUserID()));
+    assertEquals("21", bob, dao.getProjectsByUserID(user2.getUserID()));
+    assertEquals("22", cal, dao.getProjectsByUserID(user3.getUserID()));
+    assertEquals("23", don, dao.getProjectsByUserID(user3.getUserID()));
+    assertEquals("24", elvis, dao.getProjectsByUserID(user5.getUserID()));
+    assertEquals("25", empty, dao.getProjectsByUserID(user6.getUserID()));
     
     // by cookieid
     assertEquals("26", al, dao.getProjectsByCookieID(user1.getCookieID()));
@@ -290,7 +290,7 @@ public class DAOTest extends TestCase
 
   public void testGetTask()
   {
-    Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(321l), "step1: cut a hole in the box", 
+    Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(100321l), "step1: cut a hole in the box", 
 				"need scissors", "also, a box", "words words words", TaskStatus.IN_PROGRESS);
     Task task2 = dao.getTask(task1.getTaskID());
     assertEquals("40", task1, task2);    
