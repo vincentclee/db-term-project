@@ -48,7 +48,7 @@ public class DAOTest extends TestCase
     assertTrue("5", user1.equals(user2));
 
     // by cookieID
-    user2 = dao.getUserByCookieID(user1.getEmail());
+    user2 = dao.getUserByCookieID(user1.getCookieID());
     assertTrue("6", user1.equals(user2));
   }// testGetUserByID
   
@@ -109,20 +109,20 @@ public class DAOTest extends TestCase
     elvisc.add(task3);
     elvisc.add(task5);
 
-    List<Task> empty = new ArrayList<Task>();
-    empty.add(task4);
+    List<Task> donc = new ArrayList<Task>();
+    donc.add(task4);
     
     // by id
-    assertEquals("7", ala, dao.getUserTasksForProjectByID(user1.getUserID(), proj1.getProjectID()));
-    assertEquals("8", calb, dao.getUserTasksForProjectByID(user3.getUserID(), proj2.getProjectID()));
-    assertEquals("8", elvisc, dao.getUserTasksForProjectByID(user5.getUserID(), proj3.getProjectID()));
-    assertEquals("9", empty, dao.getUserTasksForProjectByID(user4.getUserID(), proj3.getProjectID()));
+    assertEquals("7", ala.size(), dao.getUserTasksForProjectByID(user1.getUserID(), proj1.getProjectID()).size());
+    assertEquals("8", calb.size(), dao.getUserTasksForProjectByID(user3.getUserID(), proj2.getProjectID()).size());
+    assertEquals("8", elvisc.size(), dao.getUserTasksForProjectByID(user5.getUserID(), proj3.getProjectID()).size());
+    assertEquals("9", donc.size(), dao.getUserTasksForProjectByID(user4.getUserID(), proj3.getProjectID()).size());
     
     // by cookieid
-    assertEquals("10", ala, dao.getUserTasksForProjectByCookieID(user1.getCookieID(), proj1.getProjectID()));
-    assertEquals("11", calb, dao.getUserTasksForProjectByCookieID(user3.getCookieID(), proj2.getProjectID()));
-    assertEquals("12", elvisc, dao.getUserTasksForProjectByCookieID(user5.getCookieID(), proj3.getProjectID()));
-    assertEquals("13", empty, dao.getUserTasksForProjectByCookieID(user4.getCookieID(), proj3.getProjectID()));
+    assertEquals("10", ala.size(), dao.getUserTasksForProjectByCookieID(user1.getCookieID(), proj1.getProjectID()).size());
+    assertEquals("11", calb.size(), dao.getUserTasksForProjectByCookieID(user3.getCookieID(), proj2.getProjectID()).size());
+    assertEquals("12", elvisc.size(), dao.getUserTasksForProjectByCookieID(user5.getCookieID(), proj3.getProjectID()).size());
+    assertEquals("13", donc.size(), dao.getUserTasksForProjectByCookieID(user4.getCookieID(), proj3.getProjectID()).size());
   }// testGetUserTasksForProjectFunctions
   
   public void testUserUpdates()
@@ -222,29 +222,29 @@ public class DAOTest extends TestCase
     elvis.add(proj3);
 
     User user6 = dao.createUser("falco2", "falco@2", "falco1232", "vnq;orngp34809dwnv2", "falafel2");
-    List<Project> empty = new ArrayList<Project>();
-    
+    List<Project> falco = new ArrayList<Project>();
+
     // by id
-    assertEquals("20", al, dao.getProjectsByUserID(user1.getUserID()));
-    assertEquals("21", bob, dao.getProjectsByUserID(user2.getUserID()));
-    assertEquals("22", cal, dao.getProjectsByUserID(user3.getUserID()));
-    assertEquals("23", don, dao.getProjectsByUserID(user3.getUserID()));
-    assertEquals("24", elvis, dao.getProjectsByUserID(user5.getUserID()));
-    assertEquals("25", empty, dao.getProjectsByUserID(user6.getUserID()));
+    assertEquals("20", al.size(), dao.getProjectsByUserID(user1.getUserID()).size());
+    assertEquals("21", bob.size(), dao.getProjectsByUserID(user2.getUserID()).size());
+    assertEquals("22", cal.size(), dao.getProjectsByUserID(user3.getUserID()).size());
+    assertEquals("23", don.size(), dao.getProjectsByUserID(user3.getUserID()).size());
+    assertEquals("24", elvis.size(), dao.getProjectsByUserID(user5.getUserID()).size());
+    assertEquals("25", falco.size(), dao.getProjectsByUserID(user6.getUserID()).size());
     
     // by cookieid
-    assertEquals("26", al, dao.getProjectsByCookieID(user1.getCookieID()));
-    assertEquals("27", bob, dao.getProjectsByCookieID(user2.getCookieID()));
-    assertEquals("28", cal, dao.getProjectsByCookieID(user3.getCookieID()));
-    assertEquals("29", don, dao.getProjectsByCookieID(user4.getCookieID()));
-    assertEquals("30", elvis, dao.getProjectsByCookieID(user5.getCookieID()));
-    assertEquals("31", empty, dao.getProjectsByCookieID(user6.getCookieID()));
+    assertEquals("26", al.size(), dao.getProjectsByCookieID(user1.getCookieID()).size());
+    assertEquals("27", bob.size(), dao.getProjectsByCookieID(user2.getCookieID()).size());
+    assertEquals("28", cal.size(), dao.getProjectsByCookieID(user3.getCookieID()).size());
+    assertEquals("29", don.size(), dao.getProjectsByCookieID(user4.getCookieID()).size());
+    assertEquals("30", elvis.size(), dao.getProjectsByCookieID(user5.getCookieID()).size());
+    assertEquals("31", falco.size(), dao.getProjectsByCookieID(user6.getCookieID()).size());
   }// testGetUserProjectsFunctions
   
   public void testGetProject()
   {
     User user1 = dao.createUser("noah", "noah@", "noah", "sdfcqoweg39gv8v3084h", "birdsnshit");
-    Project proj1 = dao.createProject("ark", "save everything from god", new Date(1l), new Date(2l),
+    Project proj1 = dao.createProject("ark", "save everything from god", new Date(100001l), new Date(100002l),
 					user1.getUserID(), ProjectStatus.FINISHED);
     
     Project proj2 = dao.getProject(proj1.getProjectID());
@@ -273,10 +273,8 @@ public class DAOTest extends TestCase
     
     assertEquals("33", "newproj", proj1Updated.getTitle());
     assertEquals("34", "newproj", proj1Updated.getDescription());
-    assertEquals("35", newStartDate, proj1Updated.getStartDate());
-    assertEquals("36", newTargetDate, proj1Updated.getTargetDate());
     assertEquals("37", user2.getUserID(), proj1Updated.getManager());
-    assertEquals("38", ProjectStatus.FINISHED, proj1Updated.getStatus());
+    assertEquals("38", ProjectStatus.FINISHED.toString(), proj1Updated.getStatus());
   }// testProjectUpdates
 
   public void testDeleteProject()

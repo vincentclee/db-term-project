@@ -597,7 +597,7 @@ public class DAO
     
     try
     {
-      PreparedStatement selectProjects = this.conn.prepareStatement("SELECT * FROM (ProjectUser NATURAL JOIN Project) WHERE CookieID = (?)");
+      PreparedStatement selectProjects = this.conn.prepareStatement("SELECT * FROM (User NATURAL JOIN ProjectUser NATURAL JOIN Project) WHERE CookieID = (?)");
       selectProjects.setString(1, cookieID);
 
       ResultSet rs = selectProjects.executeQuery();
