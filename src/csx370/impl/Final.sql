@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`ProjectUser` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE UNIQUE INDEX `ProjectID_UNIQUE` ON `mydb`.`ProjectUser` (`ProjectID` ASC);
+CREATE INDEX `ProjectID_idx` ON `mydb`.`ProjectUser` (`ProjectID` ASC);
 
 
 -- -----------------------------------------------------
