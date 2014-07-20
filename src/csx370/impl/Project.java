@@ -49,6 +49,11 @@ public class Project
    */
   public boolean equals(Project other)
   {
+    if(other == null)
+    {
+      return false;
+    }// if
+
     return (this.projectID == other.projectID && this.title.equals(other.title) &&
 	    this.description.equals(other.description) && 
 	    this.manager == other.manager && this.status.equals(other.status));

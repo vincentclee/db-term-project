@@ -28,7 +28,12 @@ public class DAOTest extends TestCase
     assertNull("1", dao.authenticate("username", "password"));
     User user1 = dao.createUser("username", "1", "2", "3", "password");
     User user2 = dao.authenticate("username", "password");
-    assertTrue("2", user1.equals(user2));
+
+    assertEquals("1a", user1.getUserID(), user2.getUserID());
+    assertEquals("1b", user1.getUsername(), user2.getUsername());
+    assertEquals("1c", user1.getEmail(), user2.getEmail());
+    assertEquals("1d", user1.getDisplayName(), user2.getDisplayName());
+    assertFalse("1e", user1.getCookieID().equals(user2.getCookieID()));
   }// testAuthenticate
     
   public void testGetUserFunctions()
@@ -135,13 +140,14 @@ public class DAOTest extends TestCase
     dao.updateUserCookieID(user1ID, "asdf1234");
     dao.updateUserPassword(user1ID, "lsad");
 
+    assertEquals("13a", "asdf1234", dao.getUserByID(user1ID).getCookieID());
+    
     assertNull("14", dao.authenticate("spock", "llap"));
     
     User user1Updated = dao.authenticate("antispock", "lsad");
     assertEquals("15", user1ID, user1Updated.getUserID());
     assertEquals("16", "antispock@", user1Updated.getEmail());
     assertEquals("17", "antispock", user1Updated.getDisplayName());
-    assertEquals("18", "asdf1234", user1Updated.getCookieID());
   }// testUserUpdates
 
   public void testDeleteUser()

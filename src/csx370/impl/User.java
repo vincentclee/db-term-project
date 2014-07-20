@@ -36,6 +36,11 @@ public class User
  */
   public boolean equals(User other)
   {
+    if(other == null)
+    {
+      return false;
+    }// if
+
     return (this.userID == other.userID && this.username.equals(other.username) &&
 	    this.email.equals(other.email) && this.displayName.equals(other.displayName) &&
 	    this.cookieID.equals(other.cookieID));

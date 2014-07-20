@@ -55,6 +55,11 @@ public class Task
    */
   public boolean equals(Task other)
   {
+    if(other == null)
+    {
+      return false;
+    }// if
+
     return (this.taskID == other.taskID && this.hasDependency == other.hasDependency &&
 	    this.priority == other.priority && this.title.equals(other.title) && 
 	    this.notes.equals(other.notes) && this.description.equals(other.description) && 
