@@ -48,6 +48,21 @@ public class Task
   }// ctor
 
   /**
+   * Check if two Task objects contain the same info.
+   *
+   * @param other the Task to compare against this one
+   * @return true if the task objects contain the same info, false if otherwise
+   */
+  public boolean equals(Task other)
+  {
+    return (this.taskID == other.taskID && this.hasDependency == this.hasDependency &&
+	    this.priority == other.priority && this.deadline.equals(other.deadline) &&
+	    this.title.equals(other.title) && this.notes.equals(other.notes) &&
+	    this.description.equals(other.description) && this.scope.equals(other.scope) &&
+      this.status == other.status);
+  }// equals
+
+  /**
    * @return the taskID
    */
   public int getTaskID() {

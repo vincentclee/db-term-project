@@ -178,7 +178,7 @@ public class DAO
    * Get info about the user identified by their id
    *
    * @param userID the user's id
-   * @return a user object containing information about the user or null if an error occured
+   * @return a user object containing information about the user or null if an error occured. if the query returns no users, an object with a userID of -1 will be returned.
    */  
   public User getUserByID(int userID)
   {
@@ -200,6 +200,10 @@ public class DAO
 			rs.getString("DisplayName"),
 			rs.getString("CookieID"));
       }// if
+      else
+      {
+	user = new User(-1, "", "", "", "");
+      }// else
     }// try
     catch(Exception e)
     {
@@ -214,7 +218,7 @@ public class DAO
    * Get info about the user identified by their username
    *
    * @param username the user's username
-   * @return a user object containing information about the user or null if an error occured
+   * @return a user object containing information about the user or null if an error occured. if the query returns no users, an object with a userID of -1 will be returned.
    */  
   public User getUserByUsername(String username)
   {
@@ -236,6 +240,10 @@ public class DAO
 			rs.getString("DisplayName"),
 			rs.getString("CookieID"));
       }// if
+      else
+      {
+	user = new User(-1, "", "", "", "");
+      }// else
     }// try
     catch(Exception e)
     {
@@ -250,7 +258,7 @@ public class DAO
    * Get info about the user identified by their email
    *
    * @param email the user's email
-   * @return a user object containing information about the user or null if an error occured
+   * @return a user object containing information about the user or null if an error occured. if the query returns no users, an object with a userID of -1 will be returned.
    */  
   public User getUserByEmail(String email)
   {
@@ -272,6 +280,10 @@ public class DAO
 			rs.getString("DisplayName"),
 			rs.getString("CookieID"));
       }// if
+      else
+      {
+	user = new User(-1, "", "", "", "");
+      }// else
     }// try
     catch(Exception e)
     {
@@ -286,7 +298,7 @@ public class DAO
    * Get info about the user identified by their cookieID
    *
    * @param cookieID the user's cookieID
-   * @return a user object containing information about the user or null if an error occured
+   * @return a user object containing information about the user or null if an error occured. if the query returns no users, an object with a userID of -1 will be returned.
    */  
   public User getUserByCookieID(String cookieID)
   {
@@ -308,6 +320,10 @@ public class DAO
 			rs.getString("DisplayName"),
 			cookieID);
       }// if
+      else
+      {
+	user = new User(-1, "", "", "", "");
+      }// else
     }// try
     catch(Exception e)
     {
@@ -646,7 +662,7 @@ public class DAO
    * @param targetDate
    * @param managerID
    * @param status
-   * @return a Project object containing all info about this project from the Project table or null if an error occured
+   * @return a Project object containing all info about this project from the Project table or null if an error occured.
    */
   public Project createProject(String title, String description, Date startDate, Date targetDate, int managerID, ProjectStatus status)
   {
@@ -701,7 +717,7 @@ public class DAO
    * Retrieve from the db the project specified by the given id
    *
    * @param projectID the project's id
-   * @return a Project object containing information about the project or null if an error occured
+   * @return a Project object containing information about the project or null if an error occured. if the query returns no projects, an object with a projectID of -1 will be returned.
    */
   public Project getProject(int projectID)
   {
@@ -724,8 +740,11 @@ public class DAO
 			      rs.getDate("TargetDate"),
 			      rs.getInt("ManagerID"), 
 			      stringToProjectStatus(rs.getString("Status")));
-
       }// if
+      else
+      {
+	project = new Project(-1, "", "", null, null, -1, ProjectStatus.NOT_STARTED);
+      }// else
     }// try
     catch(Exception e)
     {
@@ -988,7 +1007,7 @@ public class DAO
    * Retrieve from the db the task specified by the given id
    *
    * @param taskID the task's id
-   * @return a Task object containing information about the task or null if an error occured
+   * @return a Task object containing information about the task or null if an error occured. if the query returns no tasks, an object with a taskID of -1 will be returned.
    */
   public Task getTask(int taskID)
   {
@@ -1015,6 +1034,10 @@ public class DAO
 			stringToTaskStatus(rs.getString("Status")));
 
       }// if
+      else
+      {
+	task = new Task(-1, false, Priority.LOW, null, "", "", "", "", TaskStatus.BLOCKED);
+      }// else
     }// try
     catch(Exception e)
     {

@@ -42,6 +42,19 @@ public class Project
   }// ctor
 
   /**
+   * Check if two Project objects contain the same info.
+   *
+   * @param other the Project to compare against this one
+   * @return true if the project objects contain the same info, false if otherwise
+   */
+  public boolean equals(Project other)
+  {
+    return (this.projectID == other.projectID && this.title.equals(other.title) &&
+	    this.description.equals(other.description) && this.startDate.equals(other.startDate) &&
+	    this.manager == other.manager && this.status.equals(other.status));
+  }// equals
+
+  /**
    * @return the projectID
    */
   public int getProjectID() {
