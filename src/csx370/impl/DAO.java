@@ -1673,8 +1673,8 @@ public class DAO
   }// removeUserFromProject
 
   /**
-   * Create a dependency between two tasks.  The main task is dependent on dependent task,
-   * meaning the dependent task must be completed before the main task can be completed.
+   * Create a dependency between two tasks.  The dependent task is dependent on the main task,
+   * meaning the main task must be completed before the dependent task can be completed.
    *
    * @param mainTaskID the id of the main task
    * @param dependentTaskID the id of the dependency task
@@ -1700,8 +1700,78 @@ public class DAO
   }// addTaskDependency
 
   /**
-   * Remove a dependency between two tasks.  The main task is dependent on dependent task,
-   * meaning the dependent task must be completed before the main task can be completed.
+   * Get a list of dependent tasks waiting directly on the given task. This 
+   * does not include transitive dependencies.
+   *
+   * @param taskID the id of the task whose dependencies you want
+   * @return the list of dependent tasks waiting on the given task or null if an error occurred.
+   */
+  public List<Task> getDependentTasks(int taskID)
+  {
+    List<Task> taskList = null;
+    
+    try
+    {
+      PreparedStatement selectTasks = this.conn.prepareStatement("SELECT * FROM TaskDependencies WHERE TaskID = (?)");
+      selectTasks.setInt(1, taskID);
+      
+      ResultSet rs = selectTasks.executeQuery();
+      
+      taskList = new ArrayList<Task>();      
+      
+      // iterate through returned items and add to list
+      while(rs.next())
+      {
+	taskList.add(this.getTask(rs.getInt("DependentTask")));
+      }// while
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving dependent tasks: " + e.getMessage());
+      taskList = null;
+    }// catch
+
+    return taskList;
+  }// getDependentTasks
+
+  /**
+   * Get a list of tasks that the given task is directly dependent on. This
+   * does not include transitive dependencies.
+   *
+   * @param taskID the id of the task being blocked
+   * @return the list of tasks the given task is waiting on or null if an error occurred
+   */
+  public List<Task> getBlockingTasks(int dependentTaskID)
+  {
+    List<Task> taskList = null;
+    
+    try
+    {
+      PreparedStatement selectTasks = this.conn.prepareStatement("SELECT * FROM TaskDependencies WHERE DependentTask = (?)");
+      selectTasks.setInt(1, dependentTaskID);
+      
+      ResultSet rs = selectTasks.executeQuery();
+      
+      taskList = new ArrayList<Task>();
+
+      // iterate through returned items and add to list
+      while(rs.next())
+      {
+	taskList.add(this.getTask(rs.getInt("TaskID")));
+      }// while
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving blocked tasks: " + e.getMessage());
+      taskList = null;
+    }// catch
+
+    return taskList;
+  }// getBlockedTasks
+
+  /**
+   * Remove a dependency between two tasks.  The dependent task is dependent on the main task,
+   * meaning the main task must be completed before the dependent task can be completed.
    *
    * @param mainTaskID the id of the main task
    * @param dependentTaskID the id of the dependent task

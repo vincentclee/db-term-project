@@ -453,13 +453,6 @@ public class DAOTest extends TestCase
 
   public void testUserProjectUpdates()
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // commits
-    // specialization
-    // contributions
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     User user1 = dao.createUser("arn46", "g45nj3", "4n2wq", "hh24dfcqoweg3808hv3084h", "b346j3");
     Project proj1 = dao.createProject("gr4ogrtb", "h345h2we", new Date(12353462442l), new Date(532346342l),
 				      user1.getUserID(), ProjectStatus.STARTED);
@@ -476,13 +469,44 @@ public class DAOTest extends TestCase
     assertEquals("56", "new contributions", dao.getContributions(project1ID, user1ID));
   }// testUpdateTaskStatus
 
+  public void testDependencyGetters()
+  {
+    Task task1 = dao.createTask(Priority.HIGH, true, new Timestamp(1000123l), "triangleA", 
+				"tyui", "rtyu", "iop[", TaskStatus.IN_PROGRESS);
+    Task task2 = dao.createTask(Priority.NORMAL, false, new Timestamp(1000234l), "circleA", 
+				"cvbn", "iop[", "rtyu", TaskStatus.BLOCKED);
+    Task task4 = dao.createTask(Priority.URGENT, true, new Timestamp(1000456l), "squareA", 
+				"sdfg", "qwer", "asdf", TaskStatus.COMPLETE);
+    Task task5 = dao.createTask(Priority.HIGH, false, new Timestamp(1000567l), "starA", 
+				"sdfg","tyui", "asdf", TaskStatus.WAITING);
+
+    dao.addTaskDependency(task2.getTaskID(), task1.getTaskID());
+    dao.addTaskDependency(task2.getTaskID(), task4.getTaskID());
+    dao.addTaskDependency(task5.getTaskID(), task4.getTaskID());
+
+    assertEquals("57", 2, dao.getDependentTasks(task2.getTaskID()).size());
+    assertEquals("58", 1, dao.getDependentTasks(task5.getTaskID()).size());
+    assertEquals("59", 0, dao.getDependentTasks(task4.getTaskID()).size());
+
+    assertEquals("60", 2, dao.getBlockingTasks(task4.getTaskID()).size());
+    assertEquals("61", 1, dao.getBlockingTasks(task1.getTaskID()).size());
+    assertEquals("62", 0, dao.getBlockingTasks(task5.getTaskID()).size());
+  }// testDependencyGetters
+
   public void testRemoveTaskDependency()
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    fail("not yet implemented");
+    Task task1 = dao.createTask(Priority.HIGH, true, new Timestamp(1000123l), "triangleB", 
+				"tyui", "rtyu", "iop[", TaskStatus.IN_PROGRESS);
+    Task task2 = dao.createTask(Priority.NORMAL, false, new Timestamp(1000234l), "circleB", 
+				"cvbn", "iop[", "rtyu", TaskStatus.BLOCKED);
+
+    dao.addTaskDependency(task1.getTaskID(), task2.getTaskID());
+
+    assertEquals("63", 1, dao.getDependentTasks(task1.getTaskID()).size());
+
+    dao.removeTaskDependency(task1.getTaskID(), task2.getTaskID());
+
+    assertEquals("64", 0, dao.getDependentTasks(task1.getTaskID()).size());
   }// testRemoveTaskDependency
 
   public void tearDown()
