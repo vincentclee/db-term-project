@@ -102,31 +102,17 @@ public class DAOTest extends TestCase
     dao.addUserToTask(task4.getTaskID(), user4.getUserID());
     dao.addUserToTask(task5.getTaskID(), user5.getUserID());
     
-    // lists the functions should return
-    List<Task> ala = new ArrayList<Task>();
-    ala.add(task1);
-    ala.add(task2);
-
-    List<Task> calb = new ArrayList<Task>();
-
-    List<Task> elvisc = new ArrayList<Task>();
-    elvisc.add(task3);
-    elvisc.add(task5);
-
-    List<Task> donc = new ArrayList<Task>();
-    donc.add(task4);
-    
     // by id
-    assertEquals("7", ala.size(), dao.getUserTasksForProjectByID(user1.getUserID(), proj1.getProjectID()).size());
-    assertEquals("8", calb.size(), dao.getUserTasksForProjectByID(user3.getUserID(), proj2.getProjectID()).size());
-    assertEquals("8", elvisc.size(), dao.getUserTasksForProjectByID(user5.getUserID(), proj3.getProjectID()).size());
-    assertEquals("9", donc.size(), dao.getUserTasksForProjectByID(user4.getUserID(), proj3.getProjectID()).size());
+    assertEquals("7", 2, dao.getUserTasksForProjectByID(user1.getUserID(), proj1.getProjectID()).size());
+    assertEquals("8", 0, dao.getUserTasksForProjectByID(user3.getUserID(), proj2.getProjectID()).size());
+    assertEquals("8", 2, dao.getUserTasksForProjectByID(user5.getUserID(), proj3.getProjectID()).size());
+    assertEquals("9", 1, dao.getUserTasksForProjectByID(user4.getUserID(), proj3.getProjectID()).size());
     
     // by cookieid
-    assertEquals("10", ala.size(), dao.getUserTasksForProjectByCookieID(user1.getCookieID(), proj1.getProjectID()).size());
-    assertEquals("11", calb.size(), dao.getUserTasksForProjectByCookieID(user3.getCookieID(), proj2.getProjectID()).size());
-    assertEquals("12", elvisc.size(), dao.getUserTasksForProjectByCookieID(user5.getCookieID(), proj3.getProjectID()).size());
-    assertEquals("13", donc.size(), dao.getUserTasksForProjectByCookieID(user4.getCookieID(), proj3.getProjectID()).size());
+    assertEquals("10", 2, dao.getUserTasksForProjectByCookieID(user1.getCookieID(), proj1.getProjectID()).size());
+    assertEquals("11", 0, dao.getUserTasksForProjectByCookieID(user3.getCookieID(), proj2.getProjectID()).size());
+    assertEquals("12", 2, dao.getUserTasksForProjectByCookieID(user5.getCookieID(), proj3.getProjectID()).size());
+    assertEquals("13", 1, dao.getUserTasksForProjectByCookieID(user4.getCookieID(), proj3.getProjectID()).size());
   }// testGetUserTasksForProjectFunctions
   
   public void testUserUpdates()
@@ -158,17 +144,12 @@ public class DAOTest extends TestCase
 
   public void testGetUserProjectsFunctions()
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // by id
-    // by cookieid
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
     User user1 = dao.createUser("al2", "al@2", "al1232", "cnvqoweg3808hv3084h2", "apples2");
     User user2 = dao.createUser("bob2", "bob@2", "bob1232", "vnqowginp23488nvqns2", "bananas2");
     User user3 = dao.createUser("cal2", "cal@2", "cal1232", "q[orinv3048nnrogq3n4p082", "cherries2");
     User user4 = dao.createUser("don2", "don@2", "don1232", "nvqpo3480384ngore082", "dates2");
     User user5 = dao.createUser("elvis2", "elvis@2", "elvis1232", "angpqoi4[0234808432", "enema2");
+    User user6 = dao.createUser("falco2", "falco@2", "falco1232", "vnq;orngp34809dwnv2", "falafel2");
 
     Project proj1 = dao.createProject("a2", "asdf2", new Date(1232l), new Date(2342l),
 				      user1.getUserID(), ProjectStatus.NOT_STARTED);
@@ -208,42 +189,20 @@ public class DAOTest extends TestCase
     dao.addUserToTask(task4.getTaskID(), user4.getUserID());
     dao.addUserToTask(task5.getTaskID(), user5.getUserID());
 
-    // lists the functions should return
-    List<Project> al = new ArrayList<Project>();
-    al.add(proj1);
-    al.add(proj3);
-    
-    List<Project> bob = new ArrayList<Project>();
-    bob.add(proj1);
-
-    List<Project> cal = new ArrayList<Project>();
-    cal.add(proj2);
-
-    List<Project> don = new ArrayList<Project>();
-    don.add(proj3);
-
-    List<Project> elvis = new ArrayList<Project>();
-    elvis.add(proj2);
-    elvis.add(proj3);
-
-    User user6 = dao.createUser("falco2", "falco@2", "falco1232", "vnq;orngp34809dwnv2", "falafel2");
-    List<Project> falco = new ArrayList<Project>();
-
-    // by id
-    assertEquals("20", al.size(), dao.getProjectsByUserID(user1.getUserID()).size());
-    assertEquals("21", bob.size(), dao.getProjectsByUserID(user2.getUserID()).size());
-    assertEquals("22", cal.size(), dao.getProjectsByUserID(user3.getUserID()).size());
-    assertEquals("23", don.size(), dao.getProjectsByUserID(user3.getUserID()).size());
-    assertEquals("24", elvis.size(), dao.getProjectsByUserID(user5.getUserID()).size());
-    assertEquals("25", falco.size(), dao.getProjectsByUserID(user6.getUserID()).size());
+    assertEquals("20", 2, dao.getProjectsByUserID(user1.getUserID()).size());
+    assertEquals("21", 1, dao.getProjectsByUserID(user2.getUserID()).size());
+    assertEquals("22", 1, dao.getProjectsByUserID(user3.getUserID()).size());
+    assertEquals("23", 1, dao.getProjectsByUserID(user3.getUserID()).size());
+    assertEquals("24", 2, dao.getProjectsByUserID(user5.getUserID()).size());
+    assertEquals("25", 0, dao.getProjectsByUserID(user6.getUserID()).size());
     
     // by cookieid
-    assertEquals("26", al.size(), dao.getProjectsByCookieID(user1.getCookieID()).size());
-    assertEquals("27", bob.size(), dao.getProjectsByCookieID(user2.getCookieID()).size());
-    assertEquals("28", cal.size(), dao.getProjectsByCookieID(user3.getCookieID()).size());
-    assertEquals("29", don.size(), dao.getProjectsByCookieID(user4.getCookieID()).size());
-    assertEquals("30", elvis.size(), dao.getProjectsByCookieID(user5.getCookieID()).size());
-    assertEquals("31", falco.size(), dao.getProjectsByCookieID(user6.getCookieID()).size());
+    assertEquals("26", 2, dao.getProjectsByCookieID(user1.getCookieID()).size());
+    assertEquals("27", 1, dao.getProjectsByCookieID(user2.getCookieID()).size());
+    assertEquals("28", 1, dao.getProjectsByCookieID(user3.getCookieID()).size());
+    assertEquals("29", 1, dao.getProjectsByCookieID(user4.getCookieID()).size());
+    assertEquals("30", 2, dao.getProjectsByCookieID(user5.getCookieID()).size());
+    assertEquals("31", 0, dao.getProjectsByCookieID(user6.getCookieID()).size());
   }// testGetUserProjectsFunctions
   
   public void testGetProject()
@@ -301,20 +260,107 @@ public class DAOTest extends TestCase
 
   public void testGetProjectTaskBoard()
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    User user1 = dao.createUser("al4", "al@4", "al1244", "cnvqoweg4808hv4084h4", "apples4");
+    User user2 = dao.createUser("bob4", "bob@4", "bob1444", "vnqowginp44488nvqns4", "bananas4");
+    User user3 = dao.createUser("cal4", "cal@4", "cal1444", "q[orinv4048nnrogq4n4p084", "cherries4");
+    User user4 = dao.createUser("don4", "don@4", "don1444", "nvqpo4480484ngore084", "dates4");
+    User user5 = dao.createUser("elvis4", "elvis@4", "elvis1444", "angpqoi4[0444808444", "enema4");
 
-    fail("not yet implemented");
+    Project proj1 = dao.createProject("a4", "asdf4", new Date(1444l), new Date(4444l),
+				      user1.getUserID(), ProjectStatus.NOT_STARTED);
+    Project proj2 = dao.createProject("b4", "bnm,4", new Date(4454l), new Date(4564l), 
+				      user4.getUserID(), ProjectStatus.IN_PROGRESS);
+    Project proj3 = dao.createProject("c4", "cvbn4", new Date(5674l), new Date(6784l), 
+				      user4.getUserID(), ProjectStatus.NOT_STARTED);
+
+    Task task1 = dao.createTask(Priority.HIGH, true, new Timestamp(10001444l), "triangle4", 
+				"tyui4", "rtyu4", "iop[4", TaskStatus.IN_PROGRESS);
+    Task task2 = dao.createTask(Priority.NORMAL, false, new Timestamp(10004444l), "circle4", 
+				"cvbn4", "iop[4", "rtyu4", TaskStatus.BLOCKED);
+    Task task3 = dao.createTask(Priority.LOW, false, new Timestamp(10004454l), "x4", 
+				"xcvb4", "xcvb4", "xcvb4", TaskStatus.QUEUED);
+    Task task4 = dao.createTask(Priority.URGENT, true, new Timestamp(10004564l), "square4", 
+				"sdfg4", "qwer4", "asdf4", TaskStatus.COMPLETE);
+    Task task5 = dao.createTask(Priority.HIGH, false, new Timestamp(10005674l), "star4", 
+				"sdfg4","tyui4", "asdf4", TaskStatus.WAITING);
+
+    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user2.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user3.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user5.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user1.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user4.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user5.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    
+    dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
+    dao.addTaskToProject(proj1.getProjectID(), task2.getTaskID());
+    dao.addTaskToProject(proj3.getProjectID(), task3.getTaskID());
+    dao.addTaskToProject(proj3.getProjectID(), task4.getTaskID());
+    dao.addTaskToProject(proj3.getProjectID(), task5.getTaskID());
+
+    dao.addUserToTask(task1.getTaskID(), user1.getUserID());
+    dao.addUserToTask(task2.getTaskID(), user1.getUserID());
+    dao.addUserToTask(task3.getTaskID(), user5.getUserID());
+    dao.addUserToTask(task4.getTaskID(), user4.getUserID());
+    dao.addUserToTask(task5.getTaskID(), user5.getUserID());
+
+    TaskBoard tb = dao.getProjectTaskBoard(user1.getCookieID(), proj1.getProjectID());
+    assertEquals("40a1", 1, tb.getInProgressTasks().size());
+    assertEquals("40a2", 1, tb.getBlockedTasks().size());
+    assertEquals("40a3", 0, tb.getQueuedTasks().size());
+    assertEquals("40a4", 0, tb.getCompletedTasks().size());
+    assertEquals("40a5", 0, tb.getWaitingTasks().size());
   }// testGetProjectTaskBoard
 
   public void testGetTasksForProject()
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    User user1 = dao.createUser("al3", "al@3", "al1233", "cnvqoweg3808hv3084h3", "apples3");
+    User user2 = dao.createUser("bob3", "bob@3", "bob1333", "vnqowginp33488nvqns3", "bananas3");
+    User user3 = dao.createUser("cal3", "cal@3", "cal1333", "q[orinv3048nnrogq3n4p083", "cherries3");
+    User user4 = dao.createUser("don3", "don@3", "don1333", "nvqpo3480384ngore083", "dates3");
+    User user5 = dao.createUser("elvis3", "elvis@3", "elvis1333", "angpqoi4[0334808433", "enema3");
 
-    fail("not yet implemented");
+    Project proj1 = dao.createProject("a3", "asdf3", new Date(1333l), new Date(3343l),
+				      user1.getUserID(), ProjectStatus.NOT_STARTED);
+    Project proj2 = dao.createProject("b3", "bnm,3", new Date(3453l), new Date(4563l), 
+				      user3.getUserID(), ProjectStatus.IN_PROGRESS);
+    Project proj3 = dao.createProject("c3", "cvbn3", new Date(5673l), new Date(6783l), 
+				      user4.getUserID(), ProjectStatus.NOT_STARTED);
+
+    Task task1 = dao.createTask(Priority.HIGH, true, new Timestamp(10001333l), "triangle3", 
+				"tyui3", "rtyu3", "iop[3", TaskStatus.IN_PROGRESS);
+    Task task2 = dao.createTask(Priority.NORMAL, false, new Timestamp(10003343l), "circle3", 
+				"cvbn3", "iop[3", "rtyu3", TaskStatus.BLOCKED);
+    Task task3 = dao.createTask(Priority.LOW, false, new Timestamp(10003453l), "x3", 
+				"xcvb3", "xcvb3", "xcvb3", TaskStatus.QUEUED);
+    Task task4 = dao.createTask(Priority.URGENT, true, new Timestamp(10004563l), "square3", 
+				"sdfg3", "qwer3", "asdf3", TaskStatus.COMPLETE);
+    Task task5 = dao.createTask(Priority.HIGH, false, new Timestamp(10005673l), "star3", 
+				"sdfg3","tyui3", "asdf3", TaskStatus.WAITING);
+
+    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user2.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user3.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user5.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user1.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user4.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user5.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    
+    dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
+    dao.addTaskToProject(proj1.getProjectID(), task2.getTaskID());
+    dao.addTaskToProject(proj3.getProjectID(), task3.getTaskID());
+    dao.addTaskToProject(proj3.getProjectID(), task4.getTaskID());
+    dao.addTaskToProject(proj3.getProjectID(), task5.getTaskID());
+
+    dao.addUserToTask(task1.getTaskID(), user1.getUserID());
+    dao.addUserToTask(task2.getTaskID(), user1.getUserID());
+    dao.addUserToTask(task3.getTaskID(), user5.getUserID());
+    dao.addUserToTask(task4.getTaskID(), user4.getUserID());
+    dao.addUserToTask(task5.getTaskID(), user5.getUserID());
+    
+    assertEquals("40a", 2, dao.getTasksForProject(proj1.getProjectID()).size());
+    assertEquals("40b", 0, dao.getTasksForProject(proj2.getProjectID()).size());
+    assertEquals("40c", 3, dao.getTasksForProject(proj3.getProjectID()).size());
   }// testGetTasksForProject
 
   public void testTaskUpdates()
@@ -391,7 +437,7 @@ public class DAOTest extends TestCase
   {
     User user1 = dao.createUser("nj5wdv", "erj46@", "ernerm", "sdnht14jg3808hv3084h", "qqejrnern");
     Project proj1 = dao.createProject("tests n stuff", "n stuff", new Date(1235344l), new Date(234634l),
-					user1.getUserID(), ProjectStatus.STARTED);
+				      user1.getUserID(), ProjectStatus.STARTED);
     Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(1452721l), "blah", 
 				"blah", "blah", "blah", TaskStatus.IN_PROGRESS);
     dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "herp", Specialization.BACKEND, "derp");
@@ -414,7 +460,20 @@ public class DAOTest extends TestCase
     // contributions
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    fail("not yet implemented");
+    User user1 = dao.createUser("arn46", "g45nj3", "4n2wq", "hh24dfcqoweg3808hv3084h", "b346j3");
+    Project proj1 = dao.createProject("gr4ogrtb", "h345h2we", new Date(12353462442l), new Date(532346342l),
+				      user1.getUserID(), ProjectStatus.STARTED);
+    int user1ID = user1.getUserID();
+    int project1ID = proj1.getProjectID();
+    dao.addUserToProject(user1ID, project1ID, "commits", Specialization.FRONTEND, "ontributions");
+
+    dao.updateSpecialization(project1ID, user1ID, Specialization.BACKEND);
+    dao.updateCommits(project1ID, user1ID, "new commits");
+    dao.updateContributions(project1ID, user1ID, "new contributions");
+
+    assertEquals("56", "new commits", dao.getCommits(project1ID, user1ID));
+    assertEquals("56", Specialization.BACKEND.toString(), dao.getSpecialization(project1ID, user1ID));
+    assertEquals("56", "new contributions", dao.getContributions(project1ID, user1ID));
   }// testUpdateTaskStatus
 
   public void testRemoveTaskDependency()
@@ -425,15 +484,6 @@ public class DAOTest extends TestCase
     
     fail("not yet implemented");
   }// testRemoveTaskDependency
-
-  public void createLog()
-  {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    fail("not yet implemented");
-  }// createLog  
 
   public void tearDown()
   {

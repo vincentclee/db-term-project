@@ -22,7 +22,6 @@ public class DAO
 {
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   // TODO
-  // update to use real login info when available
   // change commits and contributions to the right types
   ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1451,6 +1450,117 @@ public class DAO
     
     return 0;
   }// addUserToProject
+
+  /**
+   * Retrive the commits on the specified project made by the specified user
+   *
+   * @param projectID the id of the project
+   * @param userID the id of the user
+   * @return the users commits for this project or null if there was an error. returns "-1" if the project/user combo does not exist.
+   */
+  public String getCommits(int projectID, int userID)
+  {
+    String commits = null;
+
+    try
+    {
+      PreparedStatement selectProjectUser = this.conn.prepareStatement("SELECT * FROM ProjectUser WHERE ProjectID = (?) AND UserID = (?)");
+      selectProjectUser.setInt(1, projectID);
+      selectProjectUser.setInt(2, userID);
+
+      ResultSet rs = selectProjectUser.executeQuery();
+      if(rs.next())
+      {
+	commits = rs.getString("Commits");
+      }// if
+      else
+      {
+	commits = "-1";
+      }//
+
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving user project data: " + e.getMessage());
+      commits = null;
+    }// catch
+    
+    return commits;
+  }// getCommits
+
+  /**
+   * Retrive the specialization on the specified project of the specified user
+   *
+   * @param projectID the id of the project
+   * @param userID the id of the user
+   * @return the users specialization for this project or null if there was an error. returns "-1" if the project/user combo does not exist.
+   */
+  public String getSpecialization(int projectID, int userID)
+  {
+    String specialization = null;
+
+    try
+    {
+      PreparedStatement selectProjectUser = this.conn.prepareStatement("SELECT * FROM ProjectUser WHERE ProjectID = (?) AND UserID = (?)");
+      selectProjectUser.setInt(1, projectID);
+      selectProjectUser.setInt(2, userID);
+
+      ResultSet rs = selectProjectUser.executeQuery();
+      if(rs.next())
+      {
+	specialization = rs.getString("Specialization");
+      }// if
+      else
+      {
+	specialization = "-1";
+      }//
+
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving user project data: " + e.getMessage());
+      specialization = null;
+    }// catch
+    
+    return specialization;
+  }// getSpecialization
+
+  /**
+   * Retrive the contributions on the specified project made by the specified user
+   *
+   * @param projectID the id of the project
+   * @param userID the id of the user
+   * @return the users contributions for this project or null if there was an error. returns "-1" if the project/user combo does not exist.
+   */
+  public String getContributions(int projectID, int userID)
+  {
+    String contributions = null;
+
+    try
+    {
+      PreparedStatement selectProjectUser = this.conn.prepareStatement("SELECT * FROM ProjectUser WHERE ProjectID = (?) AND UserID = (?)");
+      selectProjectUser.setInt(1, projectID);
+      selectProjectUser.setInt(2, userID);
+
+      ResultSet rs = selectProjectUser.executeQuery();
+      if(rs.next())
+      {
+	contributions = rs.getString("Contributions");
+      }// if
+      else
+      {
+	contributions = "-1";
+      }//
+
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving user project data: " + e.getMessage());
+      contributions = null;
+    }// catch
+    
+    return contributions;
+  }// getContributions
 
   /**
    * Update the commits on the specified project made by the specified user
