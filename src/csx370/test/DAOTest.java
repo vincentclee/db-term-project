@@ -16,7 +16,6 @@ public class DAOTest extends TestCase
 {
   private DAO dao;
 
-  @Before
   public void setUp()
   {
     dao = new DAO(false);
@@ -354,31 +353,57 @@ public class DAOTest extends TestCase
 
   public void testRemoveUserFromTask()
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    User user1 = dao.createUser("nj5wdv", "erj46@", "ernerm", "sdnht14jg3808hv3084h", "qqejrnern");
+    Project proj1 = dao.createProject("tests n stuff", "n stuff", new Date(1235344l), new Date(234634l),
+					user1.getUserID(), ProjectStatus.STARTED);
+    Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(1452721l), "blah", 
+				"blah", "blah", "blah", TaskStatus.IN_PROGRESS);
+    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "herp", Specialization.BACKEND, "derp");
+    dao.addUserToTask(task1.getTaskID(), user1.getUserID());
+    dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
 
-    fail("not yet implemented");
+    assertEquals("50", 1, dao.getUserTasksForProjectByID(user1.getUserID(), proj1.getProjectID()).size());
+
+    dao.removeUserFromTask(task1.getTaskID(), user1.getUserID());
+
+    assertEquals("51", 0, dao.getUserTasksForProjectByID(user1.getUserID(), proj1.getProjectID()).size());
   }// testRemoveUserFromTask
 
   public void testRemoveTaskFromProject()
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    User user1 = dao.createUser("nj5wdv2", "erj46@2", "ernerm2", "sdnht14jg3808hv3084h2", "qqejrnern2");
+    Project proj1 = dao.createProject("tests n stuff2", "n stuff2", new Date(12353442l), new Date(2346342l),
+					user1.getUserID(), ProjectStatus.STARTED);
+    Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(14527212l), "blah2", 
+				"blah2", "blah2", "blah2", TaskStatus.IN_PROGRESS);
+    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "herp2", Specialization.BACKEND, "derp2");
+    dao.addUserToTask(task1.getTaskID(), user1.getUserID());
+    dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
 
-    fail("not yet implemented");
+    assertEquals("52", 1, dao.getTasksForProject(proj1.getProjectID()).size());
+
+    dao.removeTaskFromProject(proj1.getProjectID(), task1.getTaskID());
+
+    assertEquals("53", 0, dao.getTasksForProject(proj1.getProjectID()).size());
   }// testRemoveTaskFromProject
 
   public void testRemoveUserFromProject()
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    User user1 = dao.createUser("nj5wdv", "erj46@", "ernerm", "sdnht14jg3808hv3084h", "qqejrnern");
+    Project proj1 = dao.createProject("tests n stuff", "n stuff", new Date(1235344l), new Date(234634l),
+					user1.getUserID(), ProjectStatus.STARTED);
+    Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(1452721l), "blah", 
+				"blah", "blah", "blah", TaskStatus.IN_PROGRESS);
+    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "herp", Specialization.BACKEND, "derp");
+    dao.addUserToTask(task1.getTaskID(), user1.getUserID());
+    dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
+    
+    assertEquals("54", 1, dao.getProjectsByUserID(user1.getUserID()).size());
+    
+    dao.removeUserFromProject(proj1.getProjectID(), user1.getUserID());
 
-    fail("not yet implemented");
+    assertEquals("55", 0, dao.getProjectsByUserID(user1.getUserID()).size());
   }// testRemoveUserFromProject
-
 
   public void testUserProjectUpdates()
   {
@@ -410,7 +435,6 @@ public class DAOTest extends TestCase
     fail("not yet implemented");
   }// createLog  
 
-  @After
   public void tearDown()
   {
     dao.close();
