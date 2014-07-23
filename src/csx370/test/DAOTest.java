@@ -25,7 +25,7 @@ public class DAOTest extends TestCase
   public void testAuthenticate()
   {
     assertNull("1", dao.authenticate("username", "password"));
-    User user1 = dao.createUser("username", "1", "2", "3", "password");
+    User user1 = dao.createUser("username", "1", "2", "password");
     User user2 = dao.authenticate("username", "password");
 
     assertEquals("1a", user1.getUserID(), user2.getUserID());
@@ -37,7 +37,7 @@ public class DAOTest extends TestCase
     
   public void testGetUserFunctions()
   {
-    User user1 = dao.createUser("spongebob", "sb@kp.com", "squarepants", "a1b2c3", "gary");
+    User user1 = dao.createUser("spongebob", "sb@kp.com", "squarepants", "gary");
     
     // by ID
     User user2 = dao.getUserByID(user1.getUserID());
@@ -58,11 +58,11 @@ public class DAOTest extends TestCase
   
   public void testGetUserTasksForProjectFunctions()
   {
-    User user1 = dao.createUser("al", "al@", "al123", "cnvqoweg3808hv3084h", "apples");
-    User user2 = dao.createUser("bob", "bob@", "bob123", "vnqowginp23488nvqns", "bananas");
-    User user3 = dao.createUser("cal", "cal@", "cal123", "q[orinv3048nnrogq3n4p08", "cherries");
-    User user4 = dao.createUser("don", "don@", "don123", "nvqpo3480384ngore08", "dates");
-    User user5 = dao.createUser("elvis", "elvis@", "elvis123", "angpqoi4[023480843", "enema");
+    User user1 = dao.createUser("al", "al@", "al123", "apples");
+    User user2 = dao.createUser("bob", "bob@", "bob123", "bananas");
+    User user3 = dao.createUser("cal", "cal@", "cal123", "cherries");
+    User user4 = dao.createUser("don", "don@", "don123", "dates");
+    User user5 = dao.createUser("elvis", "elvis@", "elvis123", "enema");
 
     Project proj1 = dao.createProject("a", "asdf", new Date(123l), new Date(234l),
 				      user1.getUserID(), ProjectStatus.NOT_STARTED);
@@ -117,7 +117,7 @@ public class DAOTest extends TestCase
   
   public void testUserUpdates()
   {
-    User user1 = dao.createUser("spock", "spock@", "spock", "sdfcqoweg3808hv3084h", "llap");
+    User user1 = dao.createUser("spock", "spock@", "spock", "llap");
     int user1ID = user1.getUserID();
     dao.updateUsername(user1ID, "antispock");
     dao.updateUserEmail(user1ID, "antispock@");
@@ -137,19 +137,19 @@ public class DAOTest extends TestCase
 
   public void testDeleteUser()
   {
-    User user1 = dao.createUser("leonardo", "donatello", "rafael", ";lavksvpoij49094gq", "michaelangelo");
+    User user1 = dao.createUser("leonardo", "donatello", "rafael", "michaelangelo");
     dao.deleteUser(user1.getUserID());
     assertNull("19", dao.authenticate("leonardo", "michaelangelo"));
   }// testDeleteUser
 
   public void testGetUserProjectsFunctions()
   {
-    User user1 = dao.createUser("al2", "al@2", "al1232", "cnvqoweg3808hv3084h2", "apples2");
-    User user2 = dao.createUser("bob2", "bob@2", "bob1232", "vnqowginp23488nvqns2", "bananas2");
-    User user3 = dao.createUser("cal2", "cal@2", "cal1232", "q[orinv3048nnrogq3n4p082", "cherries2");
-    User user4 = dao.createUser("don2", "don@2", "don1232", "nvqpo3480384ngore082", "dates2");
-    User user5 = dao.createUser("elvis2", "elvis@2", "elvis1232", "angpqoi4[0234808432", "enema2");
-    User user6 = dao.createUser("falco2", "falco@2", "falco1232", "vnq;orngp34809dwnv2", "falafel2");
+    User user1 = dao.createUser("al2", "al@2", "al1232", "apples2");
+    User user2 = dao.createUser("bob2", "bob@2", "bob1232", "bananas2");
+    User user3 = dao.createUser("cal2", "cal@2", "cal1232", "cherries2");
+    User user4 = dao.createUser("don2", "don@2", "don1232", "dates2");
+    User user5 = dao.createUser("elvis2", "elvis@2", "elvis1232", "enema2");
+    User user6 = dao.createUser("falco2", "falco@2", "falco1232", "falafel2");
 
     Project proj1 = dao.createProject("a2", "asdf2", new Date(1232l), new Date(2342l),
 				      user1.getUserID(), ProjectStatus.NOT_STARTED);
@@ -207,7 +207,7 @@ public class DAOTest extends TestCase
   
   public void testGetProject()
   {
-    User user1 = dao.createUser("noah", "noah@", "noah", "sdfcqoweg39gv8v3084h", "birdsnshit");
+    User user1 = dao.createUser("noah", "noah@", "noah", "birdsnshit");
     Project proj1 = dao.createProject("ark", "save everything from god", new Date(100001l), new Date(100002l),
 					user1.getUserID(), ProjectStatus.FINISHED);
     
@@ -217,12 +217,12 @@ public class DAOTest extends TestCase
 
   public void testProjectUpdates()
   {
-    User user1 = dao.createUser("man1", "man1@", "man1", "sdaerhqjg3808hv3084h", "man1");
+    User user1 = dao.createUser("man1", "man1@", "man1", "man1");
     Project proj1 = dao.createProject("proj", "proj", new Date(135l), new Date(246l),
 					user1.getUserID(), ProjectStatus.IN_PROGRESS);
     int proj1ID = proj1.getProjectID();
 
-    User user2 = dao.createUser("man2", "man2@", "man2", "sdaerhqjg38082384h", "man2");
+    User user2 = dao.createUser("man2", "man2@", "man2", "man2");
     Date newStartDate = new Date(159l);
     Date newTargetDate = new Date(260l);
     
@@ -243,7 +243,7 @@ public class DAOTest extends TestCase
 
   public void testDeleteProject()
   {
-    User user1 = dao.createUser("fookinprawn", "asdfsdfg@", "effin a man", "n35ndqjg3808hv3084h", "guest");
+    User user1 = dao.createUser("fookinprawn", "asdfsdfg@", "effin a man", "guest");
     Project proj1 = dao.createProject("be excellent to each other", "au rule", new Date(135344l), new Date(24634l),
 					user1.getUserID(), ProjectStatus.STARTED);
     dao.deleteProject(proj1.getProjectID());
@@ -260,11 +260,11 @@ public class DAOTest extends TestCase
 
   public void testGetProjectTaskBoard()
   {
-    User user1 = dao.createUser("al4", "al@4", "al1244", "cnvqoweg4808hv4084h4", "apples4");
-    User user2 = dao.createUser("bob4", "bob@4", "bob1444", "vnqowginp44488nvqns4", "bananas4");
-    User user3 = dao.createUser("cal4", "cal@4", "cal1444", "q[orinv4048nnrogq4n4p084", "cherries4");
-    User user4 = dao.createUser("don4", "don@4", "don1444", "nvqpo4480484ngore084", "dates4");
-    User user5 = dao.createUser("elvis4", "elvis@4", "elvis1444", "angpqoi4[0444808444", "enema4");
+    User user1 = dao.createUser("al4", "al@4", "al1244", "apples4");
+    User user2 = dao.createUser("bob4", "bob@4", "bob1444", "bananas4");
+    User user3 = dao.createUser("cal4", "cal@4", "cal1444", "cherries4");
+    User user4 = dao.createUser("don4", "don@4", "don1444", "dates4");
+    User user5 = dao.createUser("elvis4", "elvis@4", "elvis1444", "enema4");
 
     Project proj1 = dao.createProject("a4", "asdf4", new Date(1444l), new Date(4444l),
 				      user1.getUserID(), ProjectStatus.NOT_STARTED);
@@ -314,11 +314,11 @@ public class DAOTest extends TestCase
 
   public void testGetTasksForProject()
   {
-    User user1 = dao.createUser("al3", "al@3", "al1233", "cnvqoweg3808hv3084h3", "apples3");
-    User user2 = dao.createUser("bob3", "bob@3", "bob1333", "vnqowginp33488nvqns3", "bananas3");
-    User user3 = dao.createUser("cal3", "cal@3", "cal1333", "q[orinv3048nnrogq3n4p083", "cherries3");
-    User user4 = dao.createUser("don3", "don@3", "don1333", "nvqpo3480384ngore083", "dates3");
-    User user5 = dao.createUser("elvis3", "elvis@3", "elvis1333", "angpqoi4[0334808433", "enema3");
+    User user1 = dao.createUser("al3", "al@3", "al1233", "apples3");
+    User user2 = dao.createUser("bob3", "bob@3", "bob1333", "bananas3");
+    User user3 = dao.createUser("cal3", "cal@3", "cal1333", "cherries3");
+    User user4 = dao.createUser("don3", "don@3", "don1333", "dates3");
+    User user5 = dao.createUser("elvis3", "elvis@3", "elvis1333", "enema3");
 
     Project proj1 = dao.createProject("a3", "asdf3", new Date(1333l), new Date(3343l),
 				      user1.getUserID(), ProjectStatus.NOT_STARTED);
@@ -399,7 +399,7 @@ public class DAOTest extends TestCase
 
   public void testRemoveUserFromTask()
   {
-    User user1 = dao.createUser("nj5wdv", "erj46@", "ernerm", "sdnht14jg3808hv3084h", "qqejrnern");
+    User user1 = dao.createUser("nj5wdv", "erj46@", "ernerm", "qqejrnern");
     Project proj1 = dao.createProject("tests n stuff", "n stuff", new Date(1235344l), new Date(234634l),
 					user1.getUserID(), ProjectStatus.STARTED);
     Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(1452721l), "blah", 
@@ -417,7 +417,7 @@ public class DAOTest extends TestCase
 
   public void testRemoveTaskFromProject()
   {
-    User user1 = dao.createUser("nj5wdv2", "erj46@2", "ernerm2", "sdnht14jg3808hv3084h2", "qqejrnern2");
+    User user1 = dao.createUser("nj5wdv2", "erj46@2", "ernerm2", "qqejrnern2");
     Project proj1 = dao.createProject("tests n stuff2", "n stuff2", new Date(12353442l), new Date(2346342l),
 					user1.getUserID(), ProjectStatus.STARTED);
     Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(14527212l), "blah2", 
@@ -435,7 +435,7 @@ public class DAOTest extends TestCase
 
   public void testRemoveUserFromProject()
   {
-    User user1 = dao.createUser("nj5wdv", "erj46@", "ernerm", "sdnht14jg3808hv3084h", "qqejrnern");
+    User user1 = dao.createUser("132nj5wdv", "ererj46@", "erqwnerm", "qqejrneqwvrn");
     Project proj1 = dao.createProject("tests n stuff", "n stuff", new Date(1235344l), new Date(234634l),
 				      user1.getUserID(), ProjectStatus.STARTED);
     Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(1452721l), "blah", 
@@ -453,7 +453,7 @@ public class DAOTest extends TestCase
 
   public void testUserProjectUpdates()
   {
-    User user1 = dao.createUser("arn46", "g45nj3", "4n2wq", "hh24dfcqoweg3808hv3084h", "b346j3");
+    User user1 = dao.createUser("arn46", "g45nj3", "4n2wq", "b346j3");
     Project proj1 = dao.createProject("gr4ogrtb", "h345h2we", new Date(12353462442l), new Date(532346342l),
 				      user1.getUserID(), ProjectStatus.STARTED);
     int user1ID = user1.getUserID();

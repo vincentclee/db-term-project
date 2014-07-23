@@ -88,7 +88,7 @@ public class DAO
       // if username query returns a row, then use it. otherwise, function will return null
       if(rsUsername.next())
       {
-	Cookie cookie;
+ 	Cookie cookie;
 	
 	// make new cookie and make sure it's not already in the db
 	ResultSet rsCopyCheck;
@@ -127,28 +127,42 @@ public class DAO
 
   /**
    * Create a new user account in the DB with the given details and return a User
-   * object detailing the newly created user
+   * object detailing the newly created user. Automatically generates a unique
+   * cookieID.
    *
    * @param username the unique username of the user
    * @param email the unique registration email of the user
    * @param displayName the non-unique display name of the user
-   * @param cookieID the user's cookieID
    * @param password the user's password
    * @return a user object containing all info about this user from the User table, or null if an error occured
    */
-  public User createUser(String username, String email, String displayName, String cookieID, String password)
+  public User createUser(String username, String email, String displayName, String password)
   {
     // user object to return
     User user =  null;
 
     try
     {
+      Cookie cookie;
+	
+      // make new cookie and make sure it's not already in the db
+      ResultSet rsCopyCheck;
+      do
+      {
+	cookie = CookieUtil.generateCookie();
+	
+	PreparedStatement copyCheck = this.conn.prepareStatement("SELECT * FROM User WHERE CookieID = (?)");
+	copyCheck.setString(1, cookie.getValue());
+	
+	rsCopyCheck = copyCheck.executeQuery();
+      }while(rsCopyCheck.next());
+
       // insert info into db
       PreparedStatement insertUser = this.conn.prepareStatement("INSERT INTO User(UserName, Email, DisplayName, CookieID, Password) VALUES (?,?,?,?,SHA2((?), 256))", PreparedStatement.RETURN_GENERATED_KEYS);
       insertUser.setString(1, username);
       insertUser.setString(2, email);
       insertUser.setString(3, displayName);
-      insertUser.setString(4, cookieID);
+      insertUser.setString(4, cookie.getValue());
       insertUser.setString(5, password);
       
       insertUser.executeUpdate();
@@ -159,7 +173,7 @@ public class DAO
       int userID = rs.getInt(1);
       
       // create user object to return
-      user = new User(userID, username, email, displayName, cookieID);
+      user = new User(userID, username, email, displayName, cookie.getValue());
     }// try
     catch(Exception e)
     {
@@ -1738,7 +1752,7 @@ public class DAO
    * Get a list of tasks that the given task is directly dependent on. This
    * does not include transitive dependencies.
    *
-   * @param taskID the id of the task being blocked
+   * @param dependentTaskID the id of the task being blocked
    * @return the list of tasks the given task is waiting on or null if an error occurred
    */
   public List<Task> getBlockingTasks(int dependentTaskID)
