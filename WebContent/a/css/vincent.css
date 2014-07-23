@@ -24,6 +24,20 @@ table#kanban-board th {
     margin: 0;
     padding: 0;
 }
+
+/* Remove dotted line around boxes */
+a:focus, a:active, 
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+select::-moz-focus-inner,
+input[type="file"] > input[type="button"]::-moz-focus-inner {
+    border: 0;
+    outline : 0;
+}
+/* End remove dotted line */
+
 .kdview .workspace {
 	height: 500px;
 	overflow-x: auto;
@@ -35,4 +49,13 @@ table#kanban-board th {
 	height:auto !important;
 	overflow-y:auto;
 	overflow-x:hidden;
+}
+.popup {
+	position:fixed; top:50%; left:50%;-webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); display:none;
+}
+
+/* Clickable */
+#koding-logo, #logout {
+	cursor: pointer;
 }

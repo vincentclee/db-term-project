@@ -5,13 +5,15 @@ import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import csx370.bo.User;
+import csx370.impl.DAO;
+import csx370.impl.User;
 import csx370.util.CookieUtil;
 
 /**
@@ -21,78 +23,66 @@ import csx370.util.CookieUtil;
 public class login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public login() {
-        super();
-    }
-    
+	/** @see HttpServlet#HttpServlet() */
+	public login() {super();}
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		DAO dao = new DAO();
+		
+		//User object
+		User user = null;
+		
+		//Get User's Cookie
+		Cookie cookie = CookieUtil.getCookie(request);
+		
+		//LOGGING
+		dao.createLog(request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort(), request.getServletPath(), "POST", (cookie == null) ?  null : cookie.getValue());
+		
 		//Input
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
-		request.getRemoteAddr();
-		request.getRemoteHost();
-		request.getRemotePort();
-		request.getRemoteUser();
-		request.getCookies();
-		request.getAuthType();
-		request.getProtocol();
-		request.getRequestedSessionId();
-		request.getUserPrincipal();
-		request.getServerName();
-		request.getServletContext();
-		request.getServletPath();
-		request.getRequestURI();
-		request.getRequestURL();
+		//Authentication username and password based
+		if (username != null && password != null) {
+			user= dao.authenticate(username, password);
+		} 
+		//Cookie based auth
+		else if (cookie != null && user == null) {
+			user = dao.getUserByCookieID(cookie.getValue());
+		}
 		
-		System.out.println();
-		System.out.println(request.getRemoteAddr());
-		System.out.println(request.getRemoteHost());
-		System.out.println(request.getRemotePort());
-		System.out.println(request.getRemoteUser());
-		System.out.println(request.getCookies());
-		System.out.println(request.getAuthType());
-		System.out.println(request.getProtocol());
-		System.out.println(request.getRequestedSessionId());
-		System.out.println(request.getUserPrincipal());
-		System.out.println(request.getServerName());
-		System.out.println(request.getServletContext());
-		System.out.println(request.getServletPath());
-		System.out.println(request.getRequestURI());
-		System.out.println(request.getRequestURL());
+		//Default User
+		if (user == null) {
+			user = new User();
+		}
 		
-//		User user = someMethodNameHere(username, password);
-		/*
-		 * Database can't id can't start with 0. 
-		 *  
-		 * Return a null User object if no match of username/password
-		 * 
-		 * either username/password, can sometimes be null
-		 * 
-		 * CookieUtil.generateCookie().getValue()
-		 * 
-		 * cookie.getValue() will get the value of the cookie
-		 */
+		//Close DB connection
+		dao.close();
 		
-		
+		//////////////////////////////////////////////
 		//Output
-//		PrintWriter printWriter = response.getWriter();
-//		Gson gson = new Gson();
-//		if (user == null) {
-//			printWriter.print(gson.toJson(new User())); //{"userId":0,"username":"","displayname":"","email":""}
-//		} else {
-//			response.addCookie(user.getCookie());
-//			
-//			//remove the cookie
-//			user.setCookie(null);
-//			
-//			printWriter.print(gson.toJson(user)); //{"userId":2,"username":"vincentlee","displayname":"Vincent Lee","email":"vlee@ktunnel.com.tr"}
-//		}
+		//////////////////////////////////////////////
+		PrintWriter printWriter = response.getWriter();
+		Gson gson = new Gson();
+		
+		//Set Cookie
+		if (user.getCookieID() != null) {
+			response.addCookie(CookieUtil.createCookie(user.getCookieID()));
+		}
+		user.setCookieID(null);
+		
+		//kill the userID
+		if (user.getUserID() != -1) {
+			user.setUserID(0);
+		}
+		
+		System.out.println(gson.toJson(user));
+		
+		//Send Data
+		printWriter.print(gson.toJson(user));
 	}
-}// curl http://localhost:8080/db-term-project/login --data "username=value1" -X POST
+} // curl http://localhost:8080/db-term-project/login --data "username=jpub&password=1234" -X POST
+//jpub','1234

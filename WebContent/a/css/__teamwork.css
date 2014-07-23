@@ -3708,6 +3708,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     height: 115px;
     vertical-align: top;
     width: 115px;
+    color: white;
 }
 .tw-playground-item p {
     color: #969696;
