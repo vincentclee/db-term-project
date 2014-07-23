@@ -1,36 +1,36 @@
-package csx370.impl;
+package csx370.impl.entities;
 
-public enum Specialization
+public enum Priority
 {
-  TEST
+  LOW
   {
     public String toString()
     {
-      return "Test";
+      return "Low";
     }
   },
     
-  BACKEND
+  NORMAL
   {
     public String toString()
     {
-      return "Backend";
+      return "Normal";
     }
   },
    
-  FRONTEND
+  HIGH
   {
     public String toString()
     {
-      return "Frontend";
+      return "High";
     }
   },
     
-  MANAGEMENT
+  URGENT  
   {
     public String toString()
     {
-      return "Management";
+      return "Urgent";
     }
   }
-}// Specialization
+}// Priority

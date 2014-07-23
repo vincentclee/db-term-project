@@ -1,4 +1,4 @@
 /**
  * JSON interconnect
  */
-package csx370.json;
+package csx370.impl.json;

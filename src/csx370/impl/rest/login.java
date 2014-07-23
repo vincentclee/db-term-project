@@ -1,4 +1,4 @@
-package csx370.rest;
+package csx370.impl.rest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import csx370.bo.User;
-import csx370.util.CookieUtil;
+import csx370.impl.entities.User;
+import csx370.impl.util.CookieUtil;
 
 /**
  * Servlet implementation class login

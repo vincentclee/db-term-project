@@ -1,4 +1,4 @@
-package csx370.impl;
+package csx370.impl.entities;
 
 import java.sql.Timestamp;
 

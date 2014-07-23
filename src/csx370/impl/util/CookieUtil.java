@@ -1,4 +1,4 @@
-package csx370.util;
+package csx370.impl.util;
 
 import java.util.UUID;
 
