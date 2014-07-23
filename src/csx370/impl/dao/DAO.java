@@ -673,7 +673,8 @@ public class DAO {
 	 * @return returns true if successfully updated
 	 */
 	public boolean updateProjectManager(int projectID, int managerID) {
-		return updateProject(projectID, Integer.valueOf(managerID), Integer.class);
+		return updateProject(projectID, Integer.valueOf(managerID),
+				Integer.class);
 	}// updateProjectManager
 
 	/**
@@ -689,11 +690,12 @@ public class DAO {
 		return updateProject(projectID, status, ProjectStatus.class);
 	}// updateProjectStatus
 
-	private boolean updateProject(int projectID, Object queryParameter, Class parameterType) {
+	private boolean updateProject(int projectID, Object queryParameter,
+			Class parameterType) {
 		try {
 			PreparedStatement updateProject = this.conn
 					.prepareStatement(DAOQueries.UPDATE_PROJECT);
-			
+
 			if (parameterType == String.class) {
 				updateProject.setString(1, (String) queryParameter);
 			} else if (parameterType == Integer.class) {
@@ -701,9 +703,10 @@ public class DAO {
 			} else if (parameterType == Date.class) {
 				updateProject.setDate(1, (Date) queryParameter);
 			} else if (parameterType == ProjectStatus.class) {
-				updateProject.setString(1, ((ProjectStatus) queryParameter).toString());
+				updateProject.setString(1,
+						((ProjectStatus) queryParameter).toString());
 			}
-			
+
 			updateProject.setInt(2, projectID);
 
 			updateProject.executeUpdate();
@@ -716,28 +719,28 @@ public class DAO {
 
 		return true;
 	}
-	
+
 	/**
 	 * Delete the project with the given id
 	 *
 	 * @param projectID
 	 *            the id of the project to delete
-	 * @return 0 for successful delete, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int deleteProject(int projectID) {
+	public boolean deleteProject(int projectID) {
 		try {
 			PreparedStatement deleteProject = this.conn
-					.prepareStatement("DELETE FROM Project WHERE ProjectID = (?)");
+					.prepareStatement(DAOQueries.DELETE_PROJECT);
 			deleteProject.setInt(1, projectID);
 
 			deleteProject.executeUpdate();
 		}// try
 		catch (Exception e) {
 			System.err.println("Error deleting project: " + e.getMessage());
-			return -1;
+			return false;
 		}// catch
 
-		return 0;
+		return true;
 	}// deleteProject
 
 	/**
@@ -767,10 +770,9 @@ public class DAO {
 		Task task = null;
 
 		try {
-			PreparedStatement insertTask = this.conn
-					.prepareStatement(
-							"INSERT INTO Task(Priority, HasDependency, Deadline, Title, Notes, Description, Scope, Status) VALUES (?,?,?,?,?,?,?,?)",
-							PreparedStatement.RETURN_GENERATED_KEYS);
+			PreparedStatement insertTask = this.conn.prepareStatement(
+					DAOQueries.CREATE_TASK,
+					PreparedStatement.RETURN_GENERATED_KEYS);
 			insertTask.setString(1, priority.toString());
 			insertTask.setBoolean(2, hasDependency);
 			insertTask.setTimestamp(3, deadline);
@@ -785,11 +787,18 @@ public class DAO {
 			// get taskID from freshly inserted row
 			ResultSet rs = insertTask.getGeneratedKeys();
 			rs.next();
-			int taskID = rs.getInt(1);
 
 			// create task object to return
-			task = new Task(taskID, hasDependency, priority, deadline, title,
-					notes, description, scope, status);
+			task = new Task(rs.getInt(DAOColumns.TASK_TASKID),
+					Boolean.getBoolean(rs
+							.getString(DAOColumns.TASK_HAS_DEPENDENCY)),
+					stringToPriority(rs.getString(DAOColumns.TASK_PRIORITY)),
+					rs.getTimestamp(DAOColumns.TASK_DEADLINE),
+					rs.getString(DAOColumns.TASK_TITLE),
+					rs.getString(DAOColumns.TASK_NOTES),
+					rs.getString(DAOColumns.TASK_DESCRIPTION),
+					rs.getString(DAOColumns.TASK_SCOPE),
+					stringToTaskStatus(rs.getString(DAOColumns.TASK_STATUS)));
 		}// try
 		catch (Exception e) {
 			System.err.println("Error creating task: " + e.getMessage());
@@ -814,19 +823,23 @@ public class DAO {
 
 		try {
 			PreparedStatement selectTask = this.conn
-					.prepareStatement("SELECT * FROM Task WHERE TaskID = (?)");
+					.prepareStatement(DAOQueries.GET_TASK);
 			selectTask.setInt(1, taskID);
 
 			ResultSet rs = selectTask.executeQuery();
 			if (rs.next()) {
 				// if a task with the specified id exists, make the task object
 				// with its data
-				task = new Task(taskID, rs.getBoolean("HasDependency"),
-						stringToPriority(rs.getString("Priority")),
-						rs.getTimestamp("Deadline"), rs.getString("Title"),
-						rs.getString("Notes"), rs.getString("Description"),
-						rs.getString("Scope"),
-						stringToTaskStatus(rs.getString("Status")));
+				task = new Task(
+						rs.getInt(DAOColumns.TASK_TASKID),
+						rs.getBoolean(DAOColumns.TASK_HAS_DEPENDENCY),
+						stringToPriority(rs.getString(DAOColumns.TASK_PRIORITY)),
+						rs.getTimestamp(DAOColumns.TASK_DEADLINE),
+						rs.getString(DAOColumns.TASK_TITLE),
+						rs.getString(DAOColumns.TASK_NOTES),
+						rs.getString(DAOColumns.TASK_DESCRIPTION),
+						rs.getString(DAOColumns.TASK_SCOPE),
+						stringToTaskStatus(rs.getString(DAOColumns.TASK_STATUS)));
 
 			}// if
 			else {
@@ -854,7 +867,7 @@ public class DAO {
 
 		try {
 			PreparedStatement selectTasks = this.conn
-					.prepareStatement("SELECT * FROM (ProjectTask NATURAL JOIN Task) WHERE ProjectID = (?)");
+					.prepareStatement(DAOQueries.GET_PROJECT_TASKS);
 			selectTasks.setInt(1, projectID);
 
 			ResultSet rs = selectTasks.executeQuery();
@@ -862,13 +875,16 @@ public class DAO {
 			// iterate through returned items and add to list
 			taskList = new ArrayList<Task>();
 			while (rs.next()) {
-				taskList.add(new Task(rs.getInt("TaskID"), rs
-						.getBoolean("HasDependency"), stringToPriority(rs
-						.getString("Priority")), rs.getTimestamp("Deadline"),
-						rs.getString("Title"), rs.getString("Notes"), rs
-								.getString("Description"), rs
-								.getString("Scope"), stringToTaskStatus(rs
-								.getString("Status"))));
+				taskList.add(new Task(
+						rs.getInt(DAOColumns.TASK_TASKID),
+						rs.getBoolean(DAOColumns.TASK_HAS_DEPENDENCY),
+						stringToPriority(rs.getString(DAOColumns.TASK_PRIORITY)),
+						rs.getTimestamp(DAOColumns.TASK_DEADLINE),
+						rs.getString(DAOColumns.TASK_TITLE),
+						rs.getString(DAOColumns.TASK_NOTES),
+						rs.getString(DAOColumns.TASK_DESCRIPTION),
+						rs.getString(DAOColumns.TASK_SCOPE),
+						stringToTaskStatus(rs.getString(DAOColumns.TASK_STATUS))));
 			}// while
 		}// try
 		catch (Exception e) {
@@ -892,7 +908,7 @@ public class DAO {
 	 *         specified project
 	 */
 	public TaskBoard getProjectTaskBoard(String cookieID, int projectID) {
-		return new TaskBoard(this.getUserTasksForProjectByCookieID(cookieID,
+		return new TaskBoard(getUserTasksForProjectByCookieID(cookieID,
 				projectID));
 	}// getProjectTaskBoard
 
@@ -903,23 +919,10 @@ public class DAO {
 	 *            the id of the task to update
 	 * @param priority
 	 *            the new priority of the task
-	 * @return 0 for successful update, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int updateTaskPriority(int taskID, Priority priority) {
-		try {
-			PreparedStatement updateTask = this.conn
-					.prepareStatement("UPDATE Task SET Priority = (?) WHERE TaskID = (?)");
-			updateTask.setString(1, priority.toString());
-			updateTask.setInt(2, taskID);
-
-			updateTask.executeUpdate();
-		}// try
-		catch (Exception e) {
-			System.err.println("Error updating task info: " + e.getMessage());
-			return -1;
-		}// catch
-
-		return 0;
+	public boolean updateTaskPriority(int taskID, Priority priority) {
+		return updateTask(taskID, priority, Priority.class);
 	}// updateTaskPriority
 
 	/**
@@ -929,23 +932,10 @@ public class DAO {
 	 *            the id of the task to update
 	 * @param hasDependency
 	 *            true if the task has a dependency, false if otherwise
-	 * @return 0 for successful update, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int updateTaskDependency(int taskID, boolean hasDependency) {
-		try {
-			PreparedStatement updateTask = this.conn
-					.prepareStatement("UPDATE Task SET HasDependency = (?) WHERE TaskID = (?)");
-			updateTask.setBoolean(1, hasDependency);
-			updateTask.setInt(2, taskID);
-
-			updateTask.executeUpdate();
-		}// try
-		catch (Exception e) {
-			System.err.println("Error updating task info: " + e.getMessage());
-			return -1;
-		}// catch
-
-		return 0;
+	public boolean updateTaskDependency(int taskID, boolean hasDependency) {
+		return updateTask(taskID, Boolean.valueOf(hasDependency), Boolean.class);
 	}// updateTaskDependency
 
 	/**
@@ -955,23 +945,10 @@ public class DAO {
 	 *            the id of the task to update
 	 * @param deadline
 	 *            the new deadline of the task
-	 * @return 0 for successful update, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int updateTaskDeadline(int taskID, Timestamp deadline) {
-		try {
-			PreparedStatement updateTask = this.conn
-					.prepareStatement("UPDATE Task SET Deadline = (?) WHERE TaskID = (?)");
-			updateTask.setTimestamp(1, deadline);
-			updateTask.setInt(2, taskID);
-
-			updateTask.executeUpdate();
-		}// try
-		catch (Exception e) {
-			System.err.println("Error updating task info: " + e.getMessage());
-			return -1;
-		}// catch
-
-		return 0;
+	public boolean updateTaskDeadline(int taskID, Timestamp deadline) {
+		return updateTask(taskID, deadline, Timestamp.class);
 	}// updateTaskDeadline
 
 	/**
@@ -981,23 +958,10 @@ public class DAO {
 	 *            the id of the task to update
 	 * @param title
 	 *            the new title of the task
-	 * @return 0 for successful update, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int updateTaskTitle(int taskID, String title) {
-		try {
-			PreparedStatement updateTask = this.conn
-					.prepareStatement("UPDATE Task SET Title = (?) WHERE TaskID = (?)");
-			updateTask.setString(1, title);
-			updateTask.setInt(2, taskID);
-
-			updateTask.executeUpdate();
-		}// try
-		catch (Exception e) {
-			System.err.println("Error updating task info: " + e.getMessage());
-			return -1;
-		}// catch
-
-		return 0;
+	public boolean updateTaskTitle(int taskID, String title) {
+		return updateTask(taskID, title, String.class);
 	}// updateTaskTitle
 
 	/**
@@ -1007,23 +971,10 @@ public class DAO {
 	 *            the id of the task to update
 	 * @param notes
 	 *            the new notes of the task
-	 * @return 0 for successful update, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int updateTaskNotes(int taskID, String notes) {
-		try {
-			PreparedStatement updateTask = this.conn
-					.prepareStatement("UPDATE Task SET Notes = (?) WHERE TaskID = (?)");
-			updateTask.setString(1, notes);
-			updateTask.setInt(2, taskID);
-
-			updateTask.executeUpdate();
-		}// try
-		catch (Exception e) {
-			System.err.println("Error updating task info: " + e.getMessage());
-			return -1;
-		}// catch
-
-		return 0;
+	public boolean updateTaskNotes(int taskID, String notes) {
+		return updateTask(taskID, notes, String.class);
 	}// updateTaskNotes
 
 	/**
@@ -1033,23 +984,10 @@ public class DAO {
 	 *            the id of the task to update
 	 * @param description
 	 *            the new description of the task
-	 * @return 0 for successful update, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int updateTaskDescription(int taskID, String description) {
-		try {
-			PreparedStatement updateTask = this.conn
-					.prepareStatement("UPDATE Task SET Description = (?) WHERE TaskID = (?)");
-			updateTask.setString(1, description);
-			updateTask.setInt(2, taskID);
-
-			updateTask.executeUpdate();
-		}// try
-		catch (Exception e) {
-			System.err.println("Error updating task info: " + e.getMessage());
-			return -1;
-		}// catch
-
-		return 0;
+	public boolean updateTaskDescription(int taskID, String description) {
+		return updateTask(taskID, description, String.class);
 	}// updateTaskDescription
 
 	/**
@@ -1059,23 +997,10 @@ public class DAO {
 	 *            the id of the task to update
 	 * @param scope
 	 *            the new scope of the task
-	 * @return 0 for successful update, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int updateTaskScope(int taskID, String scope) {
-		try {
-			PreparedStatement updateTask = this.conn
-					.prepareStatement("UPDATE Task SET Scope = (?) WHERE TaskID = (?)");
-			updateTask.setString(1, scope);
-			updateTask.setInt(2, taskID);
-
-			updateTask.executeUpdate();
-		}// try
-		catch (Exception e) {
-			System.err.println("Error updating task info: " + e.getMessage());
-			return -1;
-		}// catch
-
-		return 0;
+	public boolean updateTaskScope(int taskID, String scope) {
+		return updateTask(taskID, scope, String.class);
 	}// updateTaskScope
 
 	/**
@@ -1085,46 +1010,62 @@ public class DAO {
 	 *            the id of the task to update
 	 * @param status
 	 *            the new status of the task
-	 * @return 0 for successful update, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int updateTaskStatus(int taskID, TaskStatus status) {
+	public boolean updateTaskStatus(int taskID, TaskStatus status) {
+		return updateTask(taskID, status, TaskStatus.class);
+	}// updateTaskStatus
+
+	public boolean updateTask(int taskID, Object queryParameter, Class parameterType) {
 		try {
 			PreparedStatement updateTask = this.conn
-					.prepareStatement("UPDATE Task SET Status = (?) WHERE TaskID = (?)");
-			updateTask.setString(1, status.toString());
+					.prepareStatement(DAOQueries.UPDATE_TASK);
+			
+			if (parameterType == String.class) {
+				updateTask.setString(1, (String) queryParameter);
+			} else if (parameterType == TaskStatus.class) {
+				updateTask.setString(1, ((String) queryParameter).toString());
+			} else if (parameterType == Timestamp.class) {
+				updateTask.setTimestamp(1, (Timestamp) queryParameter);
+			} else if (parameterType == Boolean.class) {
+				updateTask.setString(1, ((Boolean) queryParameter).toString());
+			} else if (parameterType == Priority.class) {
+				updateTask.setString(1, ((Priority) queryParameter).toString());
+			}
+			
 			updateTask.setInt(2, taskID);
 
 			updateTask.executeUpdate();
 		}// try
 		catch (Exception e) {
 			System.err.println("Error updating task info: " + e.getMessage());
-			return -1;
+			return true;
 		}// catch
 
-		return 0;
-	}// updateTaskStatus
-
+		return false;
+	}
+	
 	/**
 	 * Delete the task with the given id
 	 *
 	 * @param taskID
 	 *            the id of the task to delete
-	 * @return 0 for successful delete, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int deleteTask(int taskID) {
+	public boolean deleteTask(int taskID) {
 		try {
 			PreparedStatement deleteTask = this.conn
-					.prepareStatement("DELETE FROM Task WHERE TaskID = (?)");
+					.prepareStatement(DAOQueries.DELETE_TASK);
 			deleteTask.setInt(1, taskID);
 
 			deleteTask.executeUpdate();
 		}// try
 		catch (Exception e) {
 			System.err.println("Error deleting task: " + e.getMessage());
-			return -1;
+			return false;
 		}// catch
 
-		return 0;
+		return true;
 	}// deleteTask
 
 	/**
@@ -1721,25 +1662,11 @@ public class DAO {
 	 */
 	public int resetDB() {
 		try {
-			this.conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 0")
-					.executeUpdate();
-			this.conn.prepareStatement("TRUNCATE TABLE User").executeUpdate();
-			this.conn.prepareStatement("TRUNCATE TABLE Project")
-					.executeUpdate();
-			this.conn.prepareStatement("TRUNCATE TABLE Task").executeUpdate();
-			this.conn.prepareStatement("TRUNCATE TABLE ProjectTask")
-					.executeUpdate();
-			this.conn.prepareStatement("TRUNCATE TABLE UserTask")
-					.executeUpdate();
-			this.conn.prepareStatement("TRUNCATE TABLE ProjectUser")
-					.executeUpdate();
-			this.conn.prepareStatement("TRUNCATE TABLE Log").executeUpdate();
-			this.conn.prepareStatement("TRUNCATE TABLE TaskDependencies")
-					.executeUpdate();
-			this.conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 1")
-					.executeUpdate();
-		}// try
-		catch (Exception e) {
+
+			for (String statement : DAOQueries.RESET_DB) {
+				this.conn.prepareStatement(statement).executeUpdate();
+			}
+		} catch (Exception e) {
 			System.err.println("Error resetting database: " + e.getMessage());
 			return -1;
 		}// catch
