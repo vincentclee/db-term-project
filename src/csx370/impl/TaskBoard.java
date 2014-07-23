@@ -64,14 +64,17 @@ public class TaskBoard
         case "Waiting":
 	{
 	  waitingTasks.add(task);
+	  break;
 	}
         case "Queued":
 	{
 	  queuedTasks.add(task);
+	  break;
 	}
         case "Blocked":
 	{
 	  blockedTasks.add(task);
+	  break;
 	}
       }// switch
     }// for
