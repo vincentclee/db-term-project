@@ -27,6 +27,20 @@ public class DAOQueries {
 	public static final String UPDATE_TASK = "UPDATE Task SET Status = (?) WHERE TaskID = (?)";
 	public static final String DELETE_TASK = "DELETE FROM Task WHERE TaskID = (?)";
 	
+	public static final String ADD_USER_TO_TASK = "INSERT INTO UserTask(TaskID, UserID) VALUES (?,?)";
+	public static final String REMOVE_USER_FROM_TASK = "DELETE FROM UserTask WHERE TaskID = (?) AND UserID = (?)";
+	public static final String ADD_TASK_TO_PROJECT = "INSERT INTO ProjectTask(ProjectID, TaskID) VALUES (?,?)";
+	public static final String REMOVE_TASK_FROM_PROJECT = "DELETE FROM ProjectTask WHERE ProjectID = (?) AND TaskID = (?)";
+	public static final String ADD_USER_TO_PROJECT = "INSERT INTO ProjectUser(ProjectID, UserID, Commits, Specialization, Contributions) VALUES (?,?,?,?,?)";
+	public static final String REMOVE_USER_FROM_PROJECT = "DELETE FROM ProjectUser WHERE ProjectID = (?) AND UserID = (?)";
+	public static final String ADD_TASK_DEPENDENCY = "INSERT INTO TaskDependencies(TaskID, DependentTask) VALUES (?,?)";
+	
+	public static final String GET_TASK_DEPENDENCY = "SELECT * FROM TaskDependencies WHERE (?) = (?)";
+	public static final String REMOVE_TASK_DEPENDENCY = "DELETE FROM TaskDependencies WHERE TaskID = (?) AND DependentTask = (?)";
+	
+	public static final String CREATE_LOG = "INSERT INTO Log(RemoteAddr, RemoteHost, RemotePort, ServletPath, RequestType, RequestCookie, RequestTime) VALUES (?,?,?,?,?,?,?)";
+	
+	
 	public static final String[] RESET_DB = { "SET FOREIGN_KEY_CHECKS = 0",
 			"TRUNCATE TABLE User", "TRUNCATE TABLE Project",
 			"TRUNCATE TABLE Task", "TRUNCATE TABLE ProjectTask",

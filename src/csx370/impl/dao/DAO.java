@@ -1016,11 +1016,12 @@ public class DAO {
 		return updateTask(taskID, status, TaskStatus.class);
 	}// updateTaskStatus
 
-	public boolean updateTask(int taskID, Object queryParameter, Class parameterType) {
+	public boolean updateTask(int taskID, Object queryParameter,
+			Class parameterType) {
 		try {
 			PreparedStatement updateTask = this.conn
 					.prepareStatement(DAOQueries.UPDATE_TASK);
-			
+
 			if (parameterType == String.class) {
 				updateTask.setString(1, (String) queryParameter);
 			} else if (parameterType == TaskStatus.class) {
@@ -1032,7 +1033,7 @@ public class DAO {
 			} else if (parameterType == Priority.class) {
 				updateTask.setString(1, ((Priority) queryParameter).toString());
 			}
-			
+
 			updateTask.setInt(2, taskID);
 
 			updateTask.executeUpdate();
@@ -1044,7 +1045,7 @@ public class DAO {
 
 		return false;
 	}
-	
+
 	/**
 	 * Delete the task with the given id
 	 *
@@ -1075,12 +1076,12 @@ public class DAO {
 	 *            the taskID to connect to the given userID
 	 * @param userID
 	 *            the userID to connect to the given taskID
-	 * @return 0 for successful addition, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int addUserToTask(int taskID, int userID) {
+	public boolean addUserToTask(int taskID, int userID) {
 		try {
 			PreparedStatement insertUserTask = this.conn
-					.prepareStatement("INSERT INTO UserTask(TaskID, UserID) VALUES (?,?)");
+					.prepareStatement(DAOQueries.ADD_USER_TO_TASK);
 			insertUserTask.setInt(1, taskID);
 			insertUserTask.setInt(2, userID);
 
@@ -1088,10 +1089,10 @@ public class DAO {
 		}// try
 		catch (Exception e) {
 			System.err.println("Error adding user to task: " + e.getMessage());
-			return -1;
+			return false;
 		}// catch
 
-		return 0;
+		return true;
 	}// addUserToTask
 
 	/**
@@ -1102,12 +1103,12 @@ public class DAO {
 	 *            removed from
 	 * @param userID
 	 *            the userID to be removed from the task with the given taskID
-	 * @return 0 for successful removal, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int removeUserFromTask(int taskID, int userID) {
+	public boolean removeUserFromTask(int taskID, int userID) {
 		try {
 			PreparedStatement removeUserTask = this.conn
-					.prepareStatement("DELETE FROM UserTask WHERE TaskID = (?) AND UserID = (?)");
+					.prepareStatement(DAOQueries.REMOVE_USER_FROM_TASK);
 			removeUserTask.setInt(1, taskID);
 			removeUserTask.setInt(2, userID);
 
@@ -1116,10 +1117,10 @@ public class DAO {
 		catch (Exception e) {
 			System.err.println("Error removing user from task: "
 					+ e.getMessage());
-			return -1;
+			return false;
 		}// catch
 
-		return 0;
+		return true;
 	}// removeUserFromTask
 
 	/**
@@ -1129,12 +1130,12 @@ public class DAO {
 	 *            the projectID to connect to the given taskID
 	 * @param taskID
 	 *            the taskID to connect to the given projectID
-	 * @return 0 for successful addition, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int addTaskToProject(int projectID, int taskID) {
+	public boolean addTaskToProject(int projectID, int taskID) {
 		try {
 			PreparedStatement insertProjectTask = this.conn
-					.prepareStatement("INSERT INTO ProjectTask(ProjectID, TaskID) VALUES (?,?)");
+					.prepareStatement(DAOQueries.ADD_TASK_TO_PROJECT);
 			insertProjectTask.setInt(1, projectID);
 			insertProjectTask.setInt(2, taskID);
 
@@ -1143,14 +1144,14 @@ public class DAO {
 		catch (Exception e) {
 			System.err.println("Error adding task to project: "
 					+ e.getMessage());
-			return -1;
+			return false;
 		}// catch
 
-		return 0;
+		return true;
 	}// addTaskToProject
 
 	/**
-	 * Remove a task from a project, indentified by their respective IDs.
+	 * Remove a task from a project, identified by their respective IDs.
 	 *
 	 * @param projectID
 	 *            the projectID that the task with the given taskID is to be
@@ -1158,12 +1159,12 @@ public class DAO {
 	 * @param taskID
 	 *            the taskID to be removed from the project with the given
 	 *            projectID
-	 * @return 0 for successful removal, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int removeTaskFromProject(int projectID, int taskID) {
+	public boolean removeTaskFromProject(int projectID, int taskID) {
 		try {
 			PreparedStatement removeProjectTask = this.conn
-					.prepareStatement("DELETE FROM ProjectTask WHERE ProjectID = (?) AND TaskID = (?)");
+					.prepareStatement(DAOQueries.REMOVE_TASK_FROM_PROJECT);
 			removeProjectTask.setInt(1, projectID);
 			removeProjectTask.setInt(2, taskID);
 
@@ -1172,14 +1173,14 @@ public class DAO {
 		catch (Exception e) {
 			System.err.println("Error removing task from project: "
 					+ e.getMessage());
-			return -1;
+			return false;
 		}// catch
 
-		return 0;
+		return true;
 	}// removeTaskFromProject
 
 	/**
-	 * Connect user and a project, indentified by their respective IDs.
+	 * Connect user and a project, identified by their respective IDs.
 	 *
 	 * @param userID
 	 *            the userID to connect to the given projectID
@@ -1188,9 +1189,9 @@ public class DAO {
 	 * @param commits
 	 * @param specialization
 	 * @param contributions
-	 * @return 0 for successful addition, -1 if an error occurred
+	 * @return returns true if successfully inserted
 	 */
-	public int addUserToProject(int userID, int projectID, String commits,
+	public boolean addUserToProject(int userID, int projectID, String commits,
 			Specialization specialization, String contributions) {
 		// ///////////////////////////////////////////////////////////////////////////////////////////////////
 		// TODO
@@ -1199,7 +1200,7 @@ public class DAO {
 
 		try {
 			PreparedStatement insertProjectUser = this.conn
-					.prepareStatement("INSERT INTO ProjectUser(ProjectID, UserID, Commits, Specialization, Contributions) VALUES (?,?,?,?,?)");
+					.prepareStatement(DAOQueries.ADD_USER_TO_PROJECT);
 			insertProjectUser.setInt(1, projectID);
 			insertProjectUser.setInt(2, userID);
 			insertProjectUser.setString(3, commits);
@@ -1211,10 +1212,10 @@ public class DAO {
 		catch (Exception e) {
 			System.err.println("Error adding user to project: "
 					+ e.getMessage());
-			return -1;
+			return false;
 		}// catch
 
-		return 0;
+		return true;
 	}// addUserToProject
 
 	/**
@@ -1228,30 +1229,7 @@ public class DAO {
 	 *         returns "-1" if the project/user combo does not exist.
 	 */
 	public String getCommits(int projectID, int userID) {
-		String commits = null;
-
-		try {
-			PreparedStatement selectProjectUser = this.conn
-					.prepareStatement("SELECT * FROM ProjectUser WHERE ProjectID = (?) AND UserID = (?)");
-			selectProjectUser.setInt(1, projectID);
-			selectProjectUser.setInt(2, userID);
-
-			ResultSet rs = selectProjectUser.executeQuery();
-			if (rs.next()) {
-				commits = rs.getString("Commits");
-			}// if
-			else {
-				commits = "-1";
-			}//
-
-		}// try
-		catch (Exception e) {
-			System.err.println("Error retrieving user project data: "
-					+ e.getMessage());
-			commits = null;
-		}// catch
-
-		return commits;
+		return getData(projectID, userID, DAOColumns.PROJECTUSER_COMMITS);
 	}// getCommits
 
 	/**
@@ -1265,30 +1243,7 @@ public class DAO {
 	 *         error. returns "-1" if the project/user combo does not exist.
 	 */
 	public String getSpecialization(int projectID, int userID) {
-		String specialization = null;
-
-		try {
-			PreparedStatement selectProjectUser = this.conn
-					.prepareStatement("SELECT * FROM ProjectUser WHERE ProjectID = (?) AND UserID = (?)");
-			selectProjectUser.setInt(1, projectID);
-			selectProjectUser.setInt(2, userID);
-
-			ResultSet rs = selectProjectUser.executeQuery();
-			if (rs.next()) {
-				specialization = rs.getString("Specialization");
-			}// if
-			else {
-				specialization = "-1";
-			}//
-
-		}// try
-		catch (Exception e) {
-			System.err.println("Error retrieving user project data: "
-					+ e.getMessage());
-			specialization = null;
-		}// catch
-
-		return specialization;
+		return getData(projectID, userID, DAOColumns.PROJECTUSER_SPECIALIZATION);
 	}// getSpecialization
 
 	/**
@@ -1303,7 +1258,11 @@ public class DAO {
 	 *         error. returns "-1" if the project/user combo does not exist.
 	 */
 	public String getContributions(int projectID, int userID) {
-		String contributions = null;
+		return getData(projectID, userID, DAOColumns.PROJECTUSER_CONTRIBUTIONS);
+	}// getContributions
+
+	private String getData(int projectID, int userID, String colName) {
+		String data = null;
 
 		try {
 			PreparedStatement selectProjectUser = this.conn
@@ -1313,21 +1272,21 @@ public class DAO {
 
 			ResultSet rs = selectProjectUser.executeQuery();
 			if (rs.next()) {
-				contributions = rs.getString("Contributions");
+				data = rs.getString(colName);
 			}// if
 			else {
-				contributions = "-1";
+				data = "-1";
 			}//
 
 		}// try
 		catch (Exception e) {
 			System.err.println("Error retrieving user project data: "
 					+ e.getMessage());
-			contributions = null;
+			data = null;
 		}// catch
 
-		return contributions;
-	}// getContributions
+		return data;
+	}
 
 	/**
 	 * Update the commits on the specified project made by the specified user
@@ -1338,25 +1297,10 @@ public class DAO {
 	 *            the id of the user
 	 * @param commits
 	 *            the new commits
-	 * @return 0 for successful update, -1 if an error occurred
+	 * @return returns true if successfully inserted
 	 */
-	public int updateCommits(int projectID, int userID, String commits) {
-		try {
-			PreparedStatement updateProjectUser = this.conn
-					.prepareStatement("UPDATE ProjectUser SET Commits = (?) WHERE ProjectID = (?) AND UserID = (?)");
-			updateProjectUser.setString(1, commits);
-			updateProjectUser.setInt(2, projectID);
-			updateProjectUser.setInt(3, userID);
-
-			updateProjectUser.executeUpdate();
-		}// try
-		catch (Exception e) {
-			System.err.println("Error updating user project data: "
-					+ e.getMessage());
-			return -1;
-		}// catch
-
-		return 0;
+	public boolean updateCommits(int projectID, int userID, String commits) {
+		return updateProjectUser(projectID, userID, commits, DAOColumns.PROJECTUSER_COMMITS);
 	}// updateCommits
 
 	/**
@@ -1368,26 +1312,11 @@ public class DAO {
 	 *            the id of the user
 	 * @param specialization
 	 *            the user's new specialization
-	 * @return 0 for successful update, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int updateSpecialization(int projectID, int userID,
+	public boolean updateSpecialization(int projectID, int userID,
 			Specialization specialization) {
-		try {
-			PreparedStatement updateProjectUser = this.conn
-					.prepareStatement("UPDATE ProjectUser SET Specialization = (?) WHERE ProjectID = (?) AND UserID = (?)");
-			updateProjectUser.setString(1, specialization.toString());
-			updateProjectUser.setInt(2, projectID);
-			updateProjectUser.setInt(3, userID);
-
-			updateProjectUser.executeUpdate();
-		}// try
-		catch (Exception e) {
-			System.err.println("Error updating user project data: "
-					+ e.getMessage());
-			return -1;
-		}// catch
-
-		return 0;
+		return updateProjectUser(projectID, userID, specialization.toString(), DAOColumns.PROJECTUSER_SPECIALIZATION);
 	}// updateSpecialization
 
 	/**
@@ -1400,28 +1329,33 @@ public class DAO {
 	 *            the id of the user
 	 * @param contributions
 	 *            the new contributions
-	 * @return 0 for successful update, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int updateContributions(int projectID, int userID,
+	public boolean updateContributions(int projectID, int userID,
 			String contributions) {
+		return updateProjectUser(projectID, userID, contributions, DAOColumns.PROJECTUSER_CONTRIBUTIONS);
+	}// updateContributions
+
+	public boolean updateProjectUser(int projectID, int userID, String data, String colName) {
 		try {
 			PreparedStatement updateProjectUser = this.conn
-					.prepareStatement("UPDATE ProjectUser SET Contributions = (?) WHERE ProjectID = (?) AND UserID = (?)");
-			updateProjectUser.setString(1, contributions);
-			updateProjectUser.setInt(2, projectID);
-			updateProjectUser.setInt(3, userID);
+					.prepareStatement("UPDATE ProjectUser SET (?) = (?) WHERE ProjectID = (?) AND UserID = (?)");
+			updateProjectUser.setString(1, colName);
+			updateProjectUser.setString(2, data);
+			updateProjectUser.setInt(3, projectID);
+			updateProjectUser.setInt(4, userID);
 
 			updateProjectUser.executeUpdate();
 		}// try
 		catch (Exception e) {
 			System.err.println("Error updating user project data: "
 					+ e.getMessage());
-			return -1;
+			return false;
 		}// catch
 
-		return 0;
-	}// updateContributions
-
+		return true;
+	}
+	
 	/**
 	 * Remove a user from a project, indentified by their respective IDs.
 	 *
@@ -1431,12 +1365,12 @@ public class DAO {
 	 * @param userID
 	 *            the userID to be removed from the project with the given
 	 *            projectID
-	 * @return 0 for successful removal, -1 if an error occurred
+	 * @return returns true if successfully removed
 	 */
-	public int removeUserFromProject(int projectID, int userID) {
+	public boolean removeUserFromProject(int projectID, int userID) {
 		try {
 			PreparedStatement removeProjectUser = this.conn
-					.prepareStatement("DELETE FROM ProjectUser WHERE ProjectID = (?) AND UserID = (?)");
+					.prepareStatement(DAOQueries.REMOVE_USER_FROM_PROJECT);
 			removeProjectUser.setInt(1, projectID);
 			removeProjectUser.setInt(2, userID);
 
@@ -1445,10 +1379,10 @@ public class DAO {
 		catch (Exception e) {
 			System.err.println("Error removing user from project: "
 					+ e.getMessage());
-			return -1;
+			return false;
 		}// catch
 
-		return 0;
+		return true;
 	}// removeUserFromProject
 
 	/**
@@ -1460,12 +1394,12 @@ public class DAO {
 	 *            the id of the main task
 	 * @param dependentTaskID
 	 *            the id of the dependency task
-	 * @return 0 for successful addition, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int addTaskDependency(int mainTaskID, int dependentTaskID) {
+	public boolean addTaskDependency(int mainTaskID, int dependentTaskID) {
 		try {
 			PreparedStatement insertTaskDependencies = this.conn
-					.prepareStatement("INSERT INTO TaskDependencies(TaskID, DependentTask) VALUES (?,?)");
+					.prepareStatement(DAOQueries.ADD_TASK_DEPENDENCY);
 			insertTaskDependencies.setInt(1, mainTaskID);
 			insertTaskDependencies.setInt(2, dependentTaskID);
 
@@ -1474,10 +1408,10 @@ public class DAO {
 		catch (Exception e) {
 			System.err.println("Error adding task dependency: "
 					+ e.getMessage());
-			return -1;
+			return true;
 		}// catch
 
-		return 0;
+		return false;
 	}// addTaskDependency
 
 	/**
@@ -1490,29 +1424,7 @@ public class DAO {
 	 *         an error occurred.
 	 */
 	public List<Task> getDependentTasks(int taskID) {
-		List<Task> taskList = null;
-
-		try {
-			PreparedStatement selectTasks = this.conn
-					.prepareStatement("SELECT * FROM TaskDependencies WHERE TaskID = (?)");
-			selectTasks.setInt(1, taskID);
-
-			ResultSet rs = selectTasks.executeQuery();
-
-			taskList = new ArrayList<Task>();
-
-			// iterate through returned items and add to list
-			while (rs.next()) {
-				taskList.add(this.getTask(rs.getInt("DependentTask")));
-			}// while
-		}// try
-		catch (Exception e) {
-			System.err.println("Error retrieving dependent tasks: "
-					+ e.getMessage());
-			taskList = null;
-		}// catch
-
-		return taskList;
+		return getTasks(taskID, DAOColumns.TASKDEPENDENCIES_TASKID);
 	}// getDependentTasks
 
 	/**
@@ -1525,12 +1437,17 @@ public class DAO {
 	 *         error occurred
 	 */
 	public List<Task> getBlockingTasks(int dependentTaskID) {
+		return getTasks(dependentTaskID, DAOColumns.TASKDEPENDENCIES_DEPENDENT_TASK);
+	}// getBlockedTasks
+
+	private List<Task> getTasks(int taskID, String colName) {
 		List<Task> taskList = null;
 
 		try {
 			PreparedStatement selectTasks = this.conn
-					.prepareStatement("SELECT * FROM TaskDependencies WHERE DependentTask = (?)");
-			selectTasks.setInt(1, dependentTaskID);
+					.prepareStatement(DAOQueries.GET_TASK_DEPENDENCY);
+			selectTasks.setString(1, colName);
+			selectTasks.setInt(2, taskID);
 
 			ResultSet rs = selectTasks.executeQuery();
 
@@ -1538,7 +1455,7 @@ public class DAO {
 
 			// iterate through returned items and add to list
 			while (rs.next()) {
-				taskList.add(this.getTask(rs.getInt("TaskID")));
+				taskList.add(this.getTask(rs.getInt(DAOColumns.TASKDEPENDENCIES_TASKID)));
 			}// while
 		}// try
 		catch (Exception e) {
@@ -1548,8 +1465,8 @@ public class DAO {
 		}// catch
 
 		return taskList;
-	}// getBlockedTasks
-
+	}
+	
 	/**
 	 * Remove a dependency between two tasks. The dependent task is dependent on
 	 * the main task, meaning the main task must be completed before the
@@ -1559,12 +1476,12 @@ public class DAO {
 	 *            the id of the main task
 	 * @param dependentTaskID
 	 *            the id of the dependent task
-	 * @return 0 for successful removal, -1 if an error occurred
+	 * @return returns true if successfully updated
 	 */
-	public int removeTaskDependency(int mainTaskID, int dependentTaskID) {
+	public boolean removeTaskDependency(int mainTaskID, int dependentTaskID) {
 		try {
 			PreparedStatement deleteTaskDependencies = this.conn
-					.prepareStatement("DELETE FROM TaskDependencies WHERE TaskID = (?) AND DependentTask = (?)");
+					.prepareStatement(DAOQueries.REMOVE_TASK_DEPENDENCY);
 			deleteTaskDependencies.setInt(1, mainTaskID);
 			deleteTaskDependencies.setInt(2, dependentTaskID);
 
@@ -1573,10 +1490,10 @@ public class DAO {
 		catch (Exception e) {
 			System.err.println("Error removing task dependency: "
 					+ e.getMessage());
-			return -1;
+			return false;
 		}// catch
 
-		return 0;
+		return true;
 	}// removeTaskDependency
 
 	/**
@@ -1589,9 +1506,9 @@ public class DAO {
 	 * @param requestType
 	 * @param requestCookie
 	 * @param requestTime
-	 * @return 0 for successful addition, -1 if an error occurred
+	 * @return returns true if successfully created
 	 */
-	public int createLog(String remoteAddr, String remoteHost,
+	public boolean createLog(String remoteAddr, String remoteHost,
 			String remotePort, String servletPath, String requestType,
 			String requestCookie, Timestamp requestTime) {
 		// ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1602,7 +1519,7 @@ public class DAO {
 		try {
 			// insert log into db
 			PreparedStatement insertLog = this.conn
-					.prepareStatement("INSERT INTO Log(RemoteAddr, RemoteHost, RemotePort, ServletPath, RequestType, RequestCookie, RequestTime) VALUES (?,?,?,?,?,?,?)");
+					.prepareStatement(DAOQueries.CREATE_LOG);
 			insertLog.setString(1, remoteAddr);
 			insertLog.setString(2, remoteHost);
 			insertLog.setString(3, remotePort);
@@ -1615,10 +1532,10 @@ public class DAO {
 		}// try
 		catch (Exception e) {
 			System.err.println("Error creating log: " + e.getMessage());
-			return -1;
+			return false;
 		}// catch
 
-		return 0;
+		return true;
 	}// createLog
 
 	/**

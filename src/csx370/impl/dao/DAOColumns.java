@@ -27,4 +27,11 @@ public class DAOColumns {
 	public static final String PROJECT_MANAGER = "Manager";
 	public static final String PROJECT_STATUS = "Status";
 	
+	public static final String PROJECTUSER_CONTRIBUTIONS = "Contributions";
+	public static final String PROJECTUSER_SPECIALIZATION = "Specialization";
+	public static final String PROJECTUSER_COMMITS = "Commits";
+	
+	public static final String TASKDEPENDENCIES_DEPENDENT_TASK = "DependentTask";
+	public static final String TASKDEPENDENCIES_TASKID = "TaskID";
+	
 }
