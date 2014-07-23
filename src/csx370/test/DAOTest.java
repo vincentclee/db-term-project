@@ -1,6 +1,5 @@
 package csx370.test;
 
-import csx370.impl.*;
 import csx370.impl.dao.DAO;
 import csx370.impl.dao.DAOTarget;
 import csx370.impl.entities.Priority;
@@ -12,8 +11,6 @@ import csx370.impl.entities.TaskBoard;
 import csx370.impl.entities.TaskStatus;
 import csx370.impl.entities.User;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -28,9 +25,10 @@ public class DAOTest extends TestCase {
 	
 	private DAO dao;
 
-	private DAOTarget testTarget = new DAOTarget(DAOTarget.DB_TEST_URL, DAOTarget.DB_USER, DAOTarget.DB_PASS);
+	private DAOTarget testTarget;
 	
 	public void setUp() {
+		testTarget = new DAOTarget(DAOTarget.DB_TEST_URL, DAOTarget.DB_USER, DAOTarget.DB_PASS);
 		dao = new DAO(testTarget);
 		dao.resetDB();
 	}// setUp
