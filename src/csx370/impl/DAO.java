@@ -20,11 +20,6 @@ import csx370.util.CookieUtil;
  */
 public class DAO
 {
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  // TODO
-  // change commits and contributions to the right types
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-
   // db login info
   private final String DB_URL = "jdbc:mysql://localhost/mydb";
   private final String DB_USER = "root";
@@ -1433,26 +1428,15 @@ public class DAO
    *
    * @param userID the userID to connect to the given projectID
    * @param projectID the projectID to connect to the given taskID
-   * @param commits
-   * @param specialization
-   * @param contributions
    * @return 0 for successful addition, -1 if an error occurred
    */
-  public int addUserToProject(int userID, int projectID, String commits, Specialization specialization, String contributions)
+  public int addUserToProject(int userID, int projectID)
   {
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // update parameter comments
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     try
     {
-      PreparedStatement insertProjectUser = this.conn.prepareStatement("INSERT INTO ProjectUser(ProjectID, UserID, Commits, Specialization, Contributions) VALUES (?,?,?,?,?)");
+      PreparedStatement insertProjectUser = this.conn.prepareStatement("INSERT INTO ProjectUser(ProjectID, UserID) VALUES (?,?)");
       insertProjectUser.setInt(1, projectID);
       insertProjectUser.setInt(2, userID);
-      insertProjectUser.setString(3, commits);
-      insertProjectUser.setString(4, specialization.toString());
-      insertProjectUser.setString(5, contributions);
 
       insertProjectUser.executeUpdate();
     }// try
@@ -1464,201 +1448,6 @@ public class DAO
     
     return 0;
   }// addUserToProject
-
-  /**
-   * Retrive the commits on the specified project made by the specified user
-   *
-   * @param projectID the id of the project
-   * @param userID the id of the user
-   * @return the users commits for this project or null if there was an error. returns "-1" if the project/user combo does not exist.
-   */
-  public String getCommits(int projectID, int userID)
-  {
-    String commits = null;
-
-    try
-    {
-      PreparedStatement selectProjectUser = this.conn.prepareStatement("SELECT * FROM ProjectUser WHERE ProjectID = (?) AND UserID = (?)");
-      selectProjectUser.setInt(1, projectID);
-      selectProjectUser.setInt(2, userID);
-
-      ResultSet rs = selectProjectUser.executeQuery();
-      if(rs.next())
-      {
-	commits = rs.getString("Commits");
-      }// if
-      else
-      {
-	commits = "-1";
-      }//
-
-    }// try
-    catch(Exception e)
-    {
-      System.err.println("Error retrieving user project data: " + e.getMessage());
-      commits = null;
-    }// catch
-    
-    return commits;
-  }// getCommits
-
-  /**
-   * Retrive the specialization on the specified project of the specified user
-   *
-   * @param projectID the id of the project
-   * @param userID the id of the user
-   * @return the users specialization for this project or null if there was an error. returns "-1" if the project/user combo does not exist.
-   */
-  public String getSpecialization(int projectID, int userID)
-  {
-    String specialization = null;
-
-    try
-    {
-      PreparedStatement selectProjectUser = this.conn.prepareStatement("SELECT * FROM ProjectUser WHERE ProjectID = (?) AND UserID = (?)");
-      selectProjectUser.setInt(1, projectID);
-      selectProjectUser.setInt(2, userID);
-
-      ResultSet rs = selectProjectUser.executeQuery();
-      if(rs.next())
-      {
-	specialization = rs.getString("Specialization");
-      }// if
-      else
-      {
-	specialization = "-1";
-      }//
-
-    }// try
-    catch(Exception e)
-    {
-      System.err.println("Error retrieving user project data: " + e.getMessage());
-      specialization = null;
-    }// catch
-    
-    return specialization;
-  }// getSpecialization
-
-  /**
-   * Retrive the contributions on the specified project made by the specified user
-   *
-   * @param projectID the id of the project
-   * @param userID the id of the user
-   * @return the users contributions for this project or null if there was an error. returns "-1" if the project/user combo does not exist.
-   */
-  public String getContributions(int projectID, int userID)
-  {
-    String contributions = null;
-
-    try
-    {
-      PreparedStatement selectProjectUser = this.conn.prepareStatement("SELECT * FROM ProjectUser WHERE ProjectID = (?) AND UserID = (?)");
-      selectProjectUser.setInt(1, projectID);
-      selectProjectUser.setInt(2, userID);
-
-      ResultSet rs = selectProjectUser.executeQuery();
-      if(rs.next())
-      {
-	contributions = rs.getString("Contributions");
-      }// if
-      else
-      {
-	contributions = "-1";
-      }//
-
-    }// try
-    catch(Exception e)
-    {
-      System.err.println("Error retrieving user project data: " + e.getMessage());
-      contributions = null;
-    }// catch
-    
-    return contributions;
-  }// getContributions
-
-  /**
-   * Update the commits on the specified project made by the specified user
-   *
-   * @param projectID the id of the project
-   * @param userID the id of the user
-   * @param commits the new commits
-   * @return 0 for successful update, -1 if an error occurred
-   */
-  public int updateCommits(int projectID, int userID, String commits)
-  {
-    try
-    {
-      PreparedStatement updateProjectUser = this.conn.prepareStatement("UPDATE ProjectUser SET Commits = (?) WHERE ProjectID = (?) AND UserID = (?)");
-      updateProjectUser.setString(1, commits);
-      updateProjectUser.setInt(2, projectID);
-      updateProjectUser.setInt(3, userID);
-
-      updateProjectUser.executeUpdate();
-    }// try
-    catch(Exception e)
-    {
-      System.err.println("Error updating user project data: " + e.getMessage());
-      return -1;
-    }// catch
-    
-    return 0;
-  }// updateCommits
-
-  /**
-   * Update the given user's specialization on the specified project
-   *
-   * @param projectID the id of the project
-   * @param userID the id of the user
-   * @param specialization the user's new specialization
-   * @return 0 for successful update, -1 if an error occurred
-   */
-  public int updateSpecialization(int projectID, int userID, Specialization specialization)
-  {
-    try
-    {
-      PreparedStatement updateProjectUser = this.conn.prepareStatement("UPDATE ProjectUser SET Specialization = (?) WHERE ProjectID = (?) AND UserID = (?)");
-      updateProjectUser.setString(1, specialization.toString());
-      updateProjectUser.setInt(2, projectID);
-      updateProjectUser.setInt(3, userID);
-
-      updateProjectUser.executeUpdate();
-    }// try
-    catch(Exception e)
-    {
-      System.err.println("Error updating user project data: " + e.getMessage());
-      return -1;
-    }// catch
-    
-    return 0;
-  }// updateSpecialization
-
-  /**
-   * Update the contributions to the specified project made by the specified user
-   *
-   * @param projectID the id of the project
-   * @param userID the id of the user
-   * @param contributions the new contributions
-   * @return 0 for successful update, -1 if an error occurred
-   */
-  public int updateContributions(int projectID, int userID, String contributions)
-  {
-    try
-    {
-      PreparedStatement updateProjectUser = this.conn.prepareStatement("UPDATE ProjectUser SET Contributions = (?) WHERE ProjectID = (?) AND UserID = (?)");
-      updateProjectUser.setString(1, contributions);
-      updateProjectUser.setInt(2, projectID);
-      updateProjectUser.setInt(3, userID);
-
-      updateProjectUser.executeUpdate();
-    }// try
-    catch(Exception e)
-    {
-      System.err.println("Error updating user project data: " + e.getMessage());
-      return -1;
-    }// catch
-    
-    return 0;
-  }// updateContributions
 
   /**
    * Remove a user from a project, indentified by their respective IDs.
@@ -2029,39 +1818,4 @@ public class DAO
 
     return returnVal;
   }// stringToPriority
-
-  private Specialization stringToSpecialization(String s) throws Exception
-  {
-    Specialization returnVal = null;
-    
-    switch(s)
-    {
-      case "Test":
-      {
-	returnVal = Specialization.TEST;
-	break;
-      }
-      case "Backend":
-      {
-	returnVal = Specialization.BACKEND;
-	break;
-      }
-      case "Frontend":
-      {
-	returnVal = Specialization.FRONTEND;
-	break;
-      }
-      case "Management":
-      {
-	returnVal = Specialization.MANAGEMENT;
-	break;
-      }
-      default:
-      {
-	throw new Exception(s + " is not a valid state for a specialization");
-      }
-    }// switch
-
-    return returnVal;
-  }// stringToSpecialization
 }// DAO

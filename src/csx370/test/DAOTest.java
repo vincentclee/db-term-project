@@ -82,13 +82,13 @@ public class DAOTest extends TestCase
     Task task5 = dao.createTask(Priority.HIGH, false, new Timestamp(1000567l), "star", 
 				"sdfg","tyui", "asdf", TaskStatus.WAITING);
 
-    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user2.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user3.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user5.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user1.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user4.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user5.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user1.getUserID(), proj1.getProjectID());
+    dao.addUserToProject(user2.getUserID(), proj1.getProjectID());
+    dao.addUserToProject(user3.getUserID(), proj2.getProjectID());
+    dao.addUserToProject(user5.getUserID(), proj2.getProjectID());
+    dao.addUserToProject(user1.getUserID(), proj3.getProjectID());
+    dao.addUserToProject(user4.getUserID(), proj3.getProjectID());
+    dao.addUserToProject(user5.getUserID(), proj3.getProjectID());
     
     dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
     dao.addTaskToProject(proj1.getProjectID(), task2.getTaskID());
@@ -169,13 +169,13 @@ public class DAOTest extends TestCase
     Task task5 = dao.createTask(Priority.HIGH, false, new Timestamp(10005672l), "star2", 
 				"sdfg2","tyui2", "asdf2", TaskStatus.WAITING);
 
-    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user2.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user3.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user5.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user1.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user4.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user5.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user1.getUserID(), proj1.getProjectID());
+    dao.addUserToProject(user2.getUserID(), proj1.getProjectID());
+    dao.addUserToProject(user3.getUserID(), proj2.getProjectID());
+    dao.addUserToProject(user5.getUserID(), proj2.getProjectID());
+    dao.addUserToProject(user1.getUserID(), proj3.getProjectID());
+    dao.addUserToProject(user4.getUserID(), proj3.getProjectID());
+    dao.addUserToProject(user5.getUserID(), proj3.getProjectID());
     
     dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
     dao.addTaskToProject(proj1.getProjectID(), task2.getTaskID());
@@ -284,13 +284,13 @@ public class DAOTest extends TestCase
     Task task5 = dao.createTask(Priority.HIGH, false, new Timestamp(10005674l), "star4", 
 				"sdfg4","tyui4", "asdf4", TaskStatus.WAITING);
 
-    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user2.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user3.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user5.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user1.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user4.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user5.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user1.getUserID(), proj1.getProjectID());
+    dao.addUserToProject(user2.getUserID(), proj1.getProjectID());
+    dao.addUserToProject(user3.getUserID(), proj2.getProjectID());
+    dao.addUserToProject(user5.getUserID(), proj2.getProjectID());
+    dao.addUserToProject(user1.getUserID(), proj3.getProjectID());
+    dao.addUserToProject(user4.getUserID(), proj3.getProjectID());
+    dao.addUserToProject(user5.getUserID(), proj3.getProjectID());
     
     dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
     dao.addTaskToProject(proj1.getProjectID(), task2.getTaskID());
@@ -338,13 +338,13 @@ public class DAOTest extends TestCase
     Task task5 = dao.createTask(Priority.HIGH, false, new Timestamp(10005673l), "star3", 
 				"sdfg3","tyui3", "asdf3", TaskStatus.WAITING);
 
-    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user2.getUserID(), proj1.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user3.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user5.getUserID(), proj2.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user1.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user4.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
-    dao.addUserToProject(user5.getUserID(), proj3.getProjectID(), "asdf", Specialization.FRONTEND, "dfgh");
+    dao.addUserToProject(user1.getUserID(), proj1.getProjectID());
+    dao.addUserToProject(user2.getUserID(), proj1.getProjectID());
+    dao.addUserToProject(user3.getUserID(), proj2.getProjectID());
+    dao.addUserToProject(user5.getUserID(), proj2.getProjectID());
+    dao.addUserToProject(user1.getUserID(), proj3.getProjectID());
+    dao.addUserToProject(user4.getUserID(), proj3.getProjectID());
+    dao.addUserToProject(user5.getUserID(), proj3.getProjectID());
     
     dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
     dao.addTaskToProject(proj1.getProjectID(), task2.getTaskID());
@@ -404,7 +404,7 @@ public class DAOTest extends TestCase
 					user1.getUserID(), ProjectStatus.STARTED);
     Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(1452721l), "blah", 
 				"blah", "blah", "blah", TaskStatus.IN_PROGRESS);
-    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "herp", Specialization.BACKEND, "derp");
+    dao.addUserToProject(user1.getUserID(), proj1.getProjectID());
     dao.addUserToTask(task1.getTaskID(), user1.getUserID());
     dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
 
@@ -422,7 +422,7 @@ public class DAOTest extends TestCase
 					user1.getUserID(), ProjectStatus.STARTED);
     Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(14527212l), "blah2", 
 				"blah2", "blah2", "blah2", TaskStatus.IN_PROGRESS);
-    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "herp2", Specialization.BACKEND, "derp2");
+    dao.addUserToProject(user1.getUserID(), proj1.getProjectID());
     dao.addUserToTask(task1.getTaskID(), user1.getUserID());
     dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
 
@@ -440,7 +440,7 @@ public class DAOTest extends TestCase
 				      user1.getUserID(), ProjectStatus.STARTED);
     Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(1452721l), "blah", 
 				"blah", "blah", "blah", TaskStatus.IN_PROGRESS);
-    dao.addUserToProject(user1.getUserID(), proj1.getProjectID(), "herp", Specialization.BACKEND, "derp");
+    dao.addUserToProject(user1.getUserID(), proj1.getProjectID());
     dao.addUserToTask(task1.getTaskID(), user1.getUserID());
     dao.addTaskToProject(proj1.getProjectID(), task1.getTaskID());
     
@@ -450,24 +450,6 @@ public class DAOTest extends TestCase
 
     assertEquals("55", 0, dao.getProjectsByUserID(user1.getUserID()).size());
   }// testRemoveUserFromProject
-
-  public void testUserProjectUpdates()
-  {
-    User user1 = dao.createUser("arn46", "g45nj3", "4n2wq", "b346j3");
-    Project proj1 = dao.createProject("gr4ogrtb", "h345h2we", new Date(12353462442l), new Date(532346342l),
-				      user1.getUserID(), ProjectStatus.STARTED);
-    int user1ID = user1.getUserID();
-    int project1ID = proj1.getProjectID();
-    dao.addUserToProject(user1ID, project1ID, "commits", Specialization.FRONTEND, "ontributions");
-
-    dao.updateSpecialization(project1ID, user1ID, Specialization.BACKEND);
-    dao.updateCommits(project1ID, user1ID, "new commits");
-    dao.updateContributions(project1ID, user1ID, "new contributions");
-
-    assertEquals("56", "new commits", dao.getCommits(project1ID, user1ID));
-    assertEquals("56", Specialization.BACKEND.toString(), dao.getSpecialization(project1ID, user1ID));
-    assertEquals("56", "new contributions", dao.getContributions(project1ID, user1ID));
-  }// testUpdateTaskStatus
 
   public void testDependencyGetters()
   {
