@@ -661,21 +661,16 @@ public class DAO
    * Create a new project in the DB with the given details and return a Project 
    * object detailing the newly created project
    *
-   * @param title
-   * @param description
-   * @param startDate
-   * @param targetDate
-   * @param managerID
-   * @param status
+   * @param title the project title
+   * @param description a description of the project
+   * @param startDate the date of project creation
+   * @param targetDate the estimated date of project completion
+   * @param managerID userId of the user managing the project
+   * @param status the current status of the project
    * @return a Project object containing all info about this project from the Project table or null if an error occured.
    */
   public Project createProject(String title, String description, Date startDate, Date targetDate, int managerID, ProjectStatus status)
   {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // update parameter comments
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
     // project object to return
     Project project = null;
     
@@ -935,25 +930,20 @@ public class DAO
    * Create a new task in the DB with the given details and return a Task object
    * detailing the newly created task
    *
-   * @param priority
-   * @param hasDependency
-   * @param deadline
-   * @param title
-   * @param notes
-   * @param description
-   * @param scope
-   * @param status
+   * @param priority the task priority relative to other tasks
+   * @param hasDependency true if this task is waiting for another, false if otherwise
+   * @param deadline the task's deadline
+   * @param title the name of the task
+   * @param notes notes for the task
+   * @param description a description of the task
+   * @param scope the scope of the task
+   * @param status the current status of the task
    * @return a Task object containing all info about this task from the Task table or null if an error occured
    */
   public Task createTask(Priority priority, boolean hasDependency, 
 			 Timestamp deadline, String title, String notes, String description, 
 			 String scope, TaskStatus status)
   {
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // update parameter comments
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     // task object to return
     Task task = null;
     
@@ -1602,34 +1592,27 @@ public class DAO
   /**
    * Create an entry in the application log.
    *
-   * @param remoteAddr
-   * @param remoteHost
-   * @param remotePort
-   * @param servletPath
-   * @param requestType
-   * @param requestCookie
-   * @param requestTime
+   * @param remoteAddr the ip address of the client
+   * @param remoteHost the fully qualified name of the client
+   * @param remotePort the port number used by the client
+   * @param servletPath the part of this request's URL that calls the servlet
+   * @param requestType the type of HTTP request
+   * @param requestCookie the client's cookie
    * @return 0 for successful addition, -1 if an error occurred
    */
   public int createLog(String remoteAddr, String remoteHost, String remotePort, String servletPath, 
-		       String requestType, String requestCookie, Timestamp requestTime)
+		       String requestType, String requestCookie)
   {
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // update parameter comments
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
     try
     {
       // insert log into db
-      PreparedStatement insertLog = this.conn.prepareStatement("INSERT INTO Log(RemoteAddr, RemoteHost, RemotePort, ServletPath, RequestType, RequestCookie, RequestTime) VALUES (?,?,?,?,?,?,?)");
+      PreparedStatement insertLog = this.conn.prepareStatement("INSERT INTO Log(RemoteAddr, RemoteHost, RemotePort, ServletPath, RequestType, RequestCookie) VALUES (?,?,?,?,?,?)");
       insertLog.setString(1, remoteAddr);
       insertLog.setString(2, remoteHost);
       insertLog.setString(3, remotePort);
       insertLog.setString(4, servletPath);
       insertLog.setString(5, requestType);
       insertLog.setString(6, requestCookie);
-      insertLog.setTimestamp(7, requestTime);
       
       insertLog.executeUpdate();
     }// try
