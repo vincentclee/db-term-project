@@ -6,13 +6,14 @@ package csx370.impl;
 public class User
 {
   private int userID;
-  private String username, email, displayName, cookieID;
+  private String username, email, displayName, cookieID, avatar, message;
 
   public User() {
 	  userID = -1;
 	  username = "";
 	  email = "";
 	  displayName = "";
+	  avatar = "";
   }
   
   /**
@@ -24,7 +25,7 @@ public class User
    * @param displayName the non-unique display name of the user
    * @param cookieID the cookieID of the user
    */
-  public User(int userID, String username, String email, String displayName, String cookieID)
+  public User(int userID, String username, String email, String displayName, String cookieID, String avatar)
   {
     super();
     
@@ -33,6 +34,7 @@ public class User
     this.email = email;
     this.displayName = displayName;
     this.cookieID = cookieID;
+    this.avatar = avatar;
   }// ctor
 
 /**
@@ -100,6 +102,27 @@ public void setCookieID(String cookieID) {
  */
 public void setUserID(int userID) {
 	this.userID = userID;
+}
+
+/**
+ * @return the message
+ */
+public String getMessage() {
+	return message;
+}
+
+/**
+ * @param message the message to set
+ */
+public void setMessage(String message) {
+	this.message = message;
+}
+
+/**
+ * @return the avatar
+ */
+public String getAvatar() {
+	return avatar;
 }
   
   

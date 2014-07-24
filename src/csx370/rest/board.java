@@ -15,20 +15,21 @@ import com.google.gson.Gson;
 
 import csx370.impl.DAO;
 import csx370.impl.Project;
+import csx370.impl.Task;
+import csx370.impl.TaskBoard;
 import csx370.util.CookieUtil;
 
 /**
- * Servlet implementation class project
+ * Servlet implementation class board
  */
-@WebServlet("/project")
-public class project extends HttpServlet {
+@WebServlet("/board")
+public class board extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	/** @see HttpServlet#HttpServlet() */
-	public project() {super();}
+	public board() {super();}
 	
 	/**
-	 * List
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -41,14 +42,29 @@ public class project extends HttpServlet {
 		//LOGGING
 		dao.createLog(request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort(), request.getServletPath(), "GET", (cookie == null) ?  null : cookie.getValue());
 		
-		//If Cookie is null
-		if (cookie == null) {
+		//Input
+		String pIdStr = request.getParameter("pId");
+		int pid = 0;
+		System.out.println(pIdStr);
+		try {
+			pid = Integer.parseInt(pIdStr);
+		} catch (Exception e) {}
+		
+		//Invalid input
+		if (pid == 0 || cookie == null) {
 			printWriter.print("[]");
 			return;
 		}
+		System.out.println(cookie.getValue());
+		System.out.println(pid);
+		//Get Tasks for project
+		TaskBoard taskBoard = dao.getProjectTaskBoard(cookie.getValue(), pid);
 		
-		//Get projects
-		List<Project> projects = dao.getProjectsByCookieID(cookie.getValue());
+		System.out.println(taskBoard.getCompletedTasks());
+		System.out.println(taskBoard.getInProgressTasks());
+		System.out.println(taskBoard.getQueuedTasks());
+		System.out.println(taskBoard.getWaitingTasks());
+		System.out.println(taskBoard.getBlockedTasks());
 		
 		//Close DB connection
 		dao.close();
@@ -58,24 +74,9 @@ public class project extends HttpServlet {
 		//////////////////////////////////////////////
 		Gson gson = new Gson();
 		
-		//If null
-		if (projects == null) {
-			printWriter.print("[]");
-		} else {
-			//Remove Manager from projects
-			for (Project project : projects) {
-				project.setManager(0);
-			}
-			
-			System.out.println(gson.toJson(projects));
-			
-			//Send Data
-			printWriter.print(gson.toJson(projects));
-		}
 	}
 	
 	/**
-	 * Replace
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -83,7 +84,6 @@ public class project extends HttpServlet {
 	}
 	
 	/**
-	 * Create
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -91,7 +91,6 @@ public class project extends HttpServlet {
 	}
 	
 	/**
-	 * Delete
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -1,21 +1,17 @@
-var HOSTNAME = "http://localhost:8080/db-term-project/";
-var SITE_NAME = "Project Management";
-
 var USER;
 
 $(document).ready(function() {
+	//TODO: ERROOR
+	//this click to home, when clicking projects, registers two clicks
+	//need to soft unbind previous projects when refresh
+	
 	//Top left green box
 	$("#koding-logo").click(function() {
-		if (USER.userID == -1) {
-			window.location = "index.html";
-		} else {
+		if (USER.userID == 0) {
 			__projects();
+		} else {
+			window.location = "index.html";
 		}
-	});
-	
-	//Popup Close
-	$(".kdnotification").click(function() {
-		$(this).css("display", "none");
 	});
 	
 	//Logout
@@ -26,24 +22,9 @@ $(document).ready(function() {
 		});
 	});
 	
-	//set correct height on browser open
-	$("div.kdview .workspace").css("height", $(window).height() - 113);
-	
-	//Table Columns Overflow
-	$("div.table-column").css("max-height", $(window).height() - 156);
-	
 	//Initialize
 	init();
 });
-
-//dynamically resize height
-$(window).resize(function() {
-	$("div.kdview .workspace").css("height", $(window).height() - 113);
-	
-	//Table Columns Overflow
-	$("div.table-column").css("max-height", $(window).height() - 156);
-});
-
 
 //Initialize
 function init() {
@@ -73,8 +54,8 @@ function __login() {
 	//Load Login Screen
 	$(".kdview .workspace").load("login.html",
 		//Bind Form Button
-		$(document).delegate("#login-form", "submit", function(e) {
-			e.preventDefault();
+		$(document).delegate("#login-form", "submit", function(event) {
+			event.preventDefault();
 			
 			//Send Login request + Serialize the form
 			$.post(HOSTNAME + "login", $(this).serialize(), function(data) {
@@ -125,30 +106,27 @@ function __projects() {
 	$.getJSON(HOSTNAME + "project", function(data) {
 		$.each(data, function(index, value) {
 			//Create Div Block
-			var div = $("<div>", {id:value.projectID, class:"tw-playground-item"});
+			var div = $("<div>", {id:"p" + value.projectID, class:"tw-playground-item"});
 			$("<img>", {src:"https://teamworkcontent.s3.amazonaws.com/covers/togetherjs.png", alt:"MyImage"}).appendTo(div);
 			$("<p>", {text:value.title}).appendTo(div);
 			
 			//Attach Div to outer
 			div.appendTo(".kdview .workspace .tw-playgrounds");
+			
+			//Add a click for each div
+			$(document).delegate("#p" + value.projectID, "click", function() {
+				alert($(this).attr("id").substring(1));
+				$.getJSON(HOSTNAME + "board", "pId=" + $(this).attr("id").substring(1), function(data) {
+					
+				});
+			});
 		});
 	});
-	
-	
-	
-	
-	
-	
-	
-	
-//	$.getJSON(HOSTNAME + "project", function(data) {
-//		$.each(data, function(index, value) {
-//			alert(index + " " + value);
-//			$.each(value, function(index1, value1) {
-//				alert(index1 + " " + value1);
-//			});
-//		});
-//	});
+}
+
+//Kanban Board
+function __board() {
+	setup("My Projects", "My Projects");
 }
 
 //Wipe main canvas, page title, document title
@@ -158,11 +136,4 @@ function setup(pageT, documentT) {
 	
 	//Clear Main Area
 	$(".kdview .workspace").empty();
-}
-
-//Popup with message
-function popup(message) {
-	$(".kdnotification-title").text(message);
-	$(".kdnotification").show();
-	$(".kdnotification").delay(1000).fadeOut(); //1 sec
 }

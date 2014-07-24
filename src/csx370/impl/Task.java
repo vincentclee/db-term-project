@@ -128,4 +128,19 @@ public class Task
   public String getStatus() {
     return status;
   }
+
+/* (non-Javadoc)
+ * @see java.lang.Object#toString()
+ */
+@Override
+public String toString() {
+	return "Task [taskID=" + taskID + ", hasDependency=" + hasDependency
+			+ ", priority=" + priority + ", title=" + title + ", notes="
+			+ notes + ", description=" + description + ", scope=" + scope
+			+ ", status=" + status + ", deadline=" + deadline + "]";
+}
+  
+  
+  
+  
 }// Task

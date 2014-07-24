@@ -20,16 +20,10 @@ import csx370.util.CookieUtil;
  */
 public class DAO
 {
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  // TODO
-  // update to use real login info when available
-  // change commits and contributions to the right types
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-
   // db login info
-  private final String DB_URL = "jdbc:mysql://172.17.149.126/mydb";
-  private final String DB_USER = "root";
-  private final String DB_PASS = ")(*&^%$#@!";
+	  private final String DB_URL = "jdbc:mysql://172.17.149.126/mydb";
+	  private final String DB_USER = "root";
+	  private final String DB_PASS = ")(*&^%$#@!";
 
   private Connection conn;
 
@@ -89,7 +83,7 @@ public class DAO
       // if username query returns a row, then use it. otherwise, function will return null
       if(rsUsername.next())
       {
-	Cookie cookie;
+ 	Cookie cookie;
 	
 	// make new cookie and make sure it's not already in the db
 	ResultSet rsCopyCheck;
@@ -114,7 +108,8 @@ public class DAO
 			username,
 			rsUsername.getString("Email"), 
 			rsUsername.getString("DisplayName"),
-			cookie.getValue());
+			cookie.getValue(),
+			rsUsername.getString("Avatar"));
       }// if
     }// try
     catch(Exception e)
@@ -128,28 +123,42 @@ public class DAO
 
   /**
    * Create a new user account in the DB with the given details and return a User
-   * object detailing the newly created user
+   * object detailing the newly created user. Automatically generates a unique
+   * cookieID.
    *
    * @param username the unique username of the user
    * @param email the unique registration email of the user
    * @param displayName the non-unique display name of the user
-   * @param cookieID the user's cookieID
    * @param password the user's password
    * @return a user object containing all info about this user from the User table, or null if an error occured
    */
-  public User createUser(String username, String email, String displayName, String cookieID, String password)
+  public User createUser(String username, String email, String displayName, String password, String avatar)
   {
     // user object to return
     User user =  null;
 
     try
     {
+      Cookie cookie;
+	
+      // make new cookie and make sure it's not already in the db
+      ResultSet rsCopyCheck;
+      do
+      {
+	cookie = CookieUtil.generateCookie();
+	
+	PreparedStatement copyCheck = this.conn.prepareStatement("SELECT * FROM User WHERE CookieID = (?)");
+	copyCheck.setString(1, cookie.getValue());
+	
+	rsCopyCheck = copyCheck.executeQuery();
+      }while(rsCopyCheck.next());
+
       // insert info into db
-      PreparedStatement insertUser = this.conn.prepareStatement("INSERT INTO User(UserName, Email, DisplayName, CookieID, Password) VALUES (?,?,?,?,UNHEX(SHA2((?), 512)))", PreparedStatement.RETURN_GENERATED_KEYS);
+      PreparedStatement insertUser = this.conn.prepareStatement("INSERT INTO User(UserName, Email, DisplayName, CookieID, Password, Avatar) VALUES (?,?,?,?,UNHEX(SHA2((?), 512)), ?)", PreparedStatement.RETURN_GENERATED_KEYS);
       insertUser.setString(1, username);
       insertUser.setString(2, email);
       insertUser.setString(3, displayName);
-      insertUser.setString(4, cookieID);
+      insertUser.setString(4, cookie.getValue());
       insertUser.setString(5, password);
       
       insertUser.executeUpdate();
@@ -160,7 +169,7 @@ public class DAO
       int userID = rs.getInt(1);
       
       // create user object to return
-      user = new User(userID, username, email, displayName, cookieID);
+      user = new User(userID, username, email, displayName, cookie.getValue(), avatar);
     }// try
     catch(Exception e)
     {
@@ -195,11 +204,12 @@ public class DAO
 			rs.getString("UserName"),
 			rs.getString("Email"),
 			rs.getString("DisplayName"),
-			rs.getString("CookieID"));
+			rs.getString("CookieID"),
+			rs.getString("Avatar"));
       }// if
       else
       {
-	user = new User(-1, "", "", "", "");
+	user = new User();
       }// else
     }// try
     catch(Exception e)
@@ -235,11 +245,12 @@ public class DAO
 			username,
 			rs.getString("Email"),
 			rs.getString("DisplayName"),
-			rs.getString("CookieID"));
+			rs.getString("CookieID"),
+			rs.getString("Avatar"));
       }// if
       else
       {
-	user = new User(-1, "", "", "", "");
+	user = new User();
       }// else
     }// try
     catch(Exception e)
@@ -275,11 +286,12 @@ public class DAO
 			rs.getString("UserName"),
 			email,
 			rs.getString("DisplayName"),
-			rs.getString("CookieID"));
+			rs.getString("CookieID"),
+			rs.getString("Avatar"));
       }// if
       else
       {
-	user = new User(-1, "", "", "", "");
+	user = new User();
       }// else
     }// try
     catch(Exception e)
@@ -315,11 +327,12 @@ public class DAO
 			rs.getString("UserName"),
 			rs.getString("Email"),
 			rs.getString("DisplayName"),
-			cookieID);
+			cookieID,
+			rs.getString("Avatar"));
       }// if
       else
       {
-	user = new User(-1, "", "", "", "");
+	user = new User();
       }// else
     }// try
     catch(Exception e)
@@ -532,7 +545,7 @@ public class DAO
   {
     try
     {
-      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Password = SHA2((?), 256) WHERE UserID = (?)");
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Password = UNHEX(SHA2((?), 512)) WHERE UserID = (?)");
       updateUser.setString(1, password);
       updateUser.setInt(2, userID);
 
@@ -1420,26 +1433,15 @@ public class DAO
    *
    * @param userID the userID to connect to the given projectID
    * @param projectID the projectID to connect to the given taskID
-   * @param commits
-   * @param specialization
-   * @param contributions
    * @return 0 for successful addition, -1 if an error occurred
    */
-  public int addUserToProject(int userID, int projectID, String commits, Specialization specialization, String contributions)
+  public int addUserToProject(int userID, int projectID)
   {
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO
-    // update parameter comments
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     try
     {
-      PreparedStatement insertProjectUser = this.conn.prepareStatement("INSERT INTO ProjectUser(ProjectID, UserID, Commits, Specialization, Contributions) VALUES (?,?,?,?,?)");
+      PreparedStatement insertProjectUser = this.conn.prepareStatement("INSERT INTO ProjectUser(ProjectID, UserID) VALUES (?,?)");
       insertProjectUser.setInt(1, projectID);
       insertProjectUser.setInt(2, userID);
-      insertProjectUser.setString(3, commits);
-      insertProjectUser.setString(4, specialization.toString());
-      insertProjectUser.setString(5, contributions);
 
       insertProjectUser.executeUpdate();
     }// try
@@ -1451,90 +1453,6 @@ public class DAO
     
     return 0;
   }// addUserToProject
-
-  /**
-   * Update the commits on the specified project made by the specified user
-   *
-   * @param projectID the id of the project
-   * @param userID the id of the user
-   * @param commits the new commits
-   * @return 0 for successful update, -1 if an error occurred
-   */
-  public int updateCommits(int projectID, int userID, String commits)
-  {
-    try
-    {
-      PreparedStatement updateProjectUser = this.conn.prepareStatement("UPDATE ProjectUser SET Commits = (?) WHERE ProjectID = (?) AND UserID = (?)");
-      updateProjectUser.setString(1, commits);
-      updateProjectUser.setInt(2, projectID);
-      updateProjectUser.setInt(3, userID);
-
-      updateProjectUser.executeUpdate();
-    }// try
-    catch(Exception e)
-    {
-      System.err.println("Error updating user project data: " + e.getMessage());
-      return -1;
-    }// catch
-    
-    return 0;
-  }// updateCommits
-
-  /**
-   * Update the given user's specialization on the specified project
-   *
-   * @param projectID the id of the project
-   * @param userID the id of the user
-   * @param specialization the user's new specialization
-   * @return 0 for successful update, -1 if an error occurred
-   */
-  public int updateSpecialization(int projectID, int userID, Specialization specialization)
-  {
-    try
-    {
-      PreparedStatement updateProjectUser = this.conn.prepareStatement("UPDATE ProjectUser SET Specialization = (?) WHERE ProjectID = (?) AND UserID = (?)");
-      updateProjectUser.setString(1, specialization.toString());
-      updateProjectUser.setInt(2, projectID);
-      updateProjectUser.setInt(3, userID);
-
-      updateProjectUser.executeUpdate();
-    }// try
-    catch(Exception e)
-    {
-      System.err.println("Error updating user project data: " + e.getMessage());
-      return -1;
-    }// catch
-    
-    return 0;
-  }// updateSpecialization
-
-  /**
-   * Update the contributions to the specified project made by the specified user
-   *
-   * @param projectID the id of the project
-   * @param userID the id of the user
-   * @param contributions the new contributions
-   * @return 0 for successful update, -1 if an error occurred
-   */
-  public int updateContributions(int projectID, int userID, String contributions)
-  {
-    try
-    {
-      PreparedStatement updateProjectUser = this.conn.prepareStatement("UPDATE ProjectUser SET Contributions = (?) WHERE ProjectID = (?) AND UserID = (?)");
-      updateProjectUser.setString(1, contributions);
-      updateProjectUser.setInt(2, projectID);
-      updateProjectUser.setInt(3, userID);
-
-      updateProjectUser.executeUpdate();
-    }// try
-    catch(Exception e)
-    {
-      System.err.println("Error updating user project data: " + e.getMessage());
-      return -1;
-    }// catch
-    
-    return 0;
-  }// updateContributions
 
   /**
    * Remove a user from a project, indentified by their respective IDs.
@@ -1563,8 +1481,8 @@ public class DAO
   }// removeUserFromProject
 
   /**
-   * Create a dependency between two tasks.  The main task is dependent on dependent task,
-   * meaning the dependent task must be completed before the main task can be completed.
+   * Create a dependency between two tasks.  The dependent task is dependent on the main task,
+   * meaning the main task must be completed before the dependent task can be completed.
    *
    * @param mainTaskID the id of the main task
    * @param dependentTaskID the id of the dependency task
@@ -1590,8 +1508,78 @@ public class DAO
   }// addTaskDependency
 
   /**
-   * Remove a dependency between two tasks.  The main task is dependent on dependent task,
-   * meaning the dependent task must be completed before the main task can be completed.
+   * Get a list of dependent tasks waiting directly on the given task. This 
+   * does not include transitive dependencies.
+   *
+   * @param taskID the id of the task whose dependencies you want
+   * @return the list of dependent tasks waiting on the given task or null if an error occurred.
+   */
+  public List<Task> getDependentTasks(int taskID)
+  {
+    List<Task> taskList = null;
+    
+    try
+    {
+      PreparedStatement selectTasks = this.conn.prepareStatement("SELECT * FROM TaskDependencies WHERE TaskID = (?)");
+      selectTasks.setInt(1, taskID);
+      
+      ResultSet rs = selectTasks.executeQuery();
+      
+      taskList = new ArrayList<Task>();      
+      
+      // iterate through returned items and add to list
+      while(rs.next())
+      {
+	taskList.add(this.getTask(rs.getInt("DependentTask")));
+      }// while
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving dependent tasks: " + e.getMessage());
+      taskList = null;
+    }// catch
+
+    return taskList;
+  }// getDependentTasks
+
+  /**
+   * Get a list of tasks that the given task is directly dependent on. This
+   * does not include transitive dependencies.
+   *
+   * @param dependentTaskID the id of the task being blocked
+   * @return the list of tasks the given task is waiting on or null if an error occurred
+   */
+  public List<Task> getBlockingTasks(int dependentTaskID)
+  {
+    List<Task> taskList = null;
+    
+    try
+    {
+      PreparedStatement selectTasks = this.conn.prepareStatement("SELECT * FROM TaskDependencies WHERE DependentTask = (?)");
+      selectTasks.setInt(1, dependentTaskID);
+      
+      ResultSet rs = selectTasks.executeQuery();
+      
+      taskList = new ArrayList<Task>();
+
+      // iterate through returned items and add to list
+      while(rs.next())
+      {
+	taskList.add(this.getTask(rs.getInt("TaskID")));
+      }// while
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving blocked tasks: " + e.getMessage());
+      taskList = null;
+    }// catch
+
+    return taskList;
+  }// getBlockedTasks
+
+  /**
+   * Remove a dependency between two tasks.  The dependent task is dependent on the main task,
+   * meaning the main task must be completed before the dependent task can be completed.
    *
    * @param mainTaskID the id of the main task
    * @param dependentTaskID the id of the dependent task
@@ -1625,6 +1613,7 @@ public class DAO
    * @param servletPath
    * @param requestType
    * @param requestCookie
+   * @param requestTime
    * @return 0 for successful addition, -1 if an error occurred
    */
   public int createLog(String remoteAddr, String remoteHost, int remotePort, String servletPath, 
@@ -1833,39 +1822,4 @@ public class DAO
 
     return returnVal;
   }// stringToPriority
-
-  private Specialization stringToSpecialization(String s) throws Exception
-  {
-    Specialization returnVal = null;
-    
-    switch(s)
-    {
-      case "Test":
-      {
-	returnVal = Specialization.TEST;
-	break;
-      }
-      case "Backend":
-      {
-	returnVal = Specialization.BACKEND;
-	break;
-      }
-      case "Frontend":
-      {
-	returnVal = Specialization.FRONTEND;
-	break;
-      }
-      case "Management":
-      {
-	returnVal = Specialization.MANAGEMENT;
-	break;
-      }
-      default:
-      {
-	throw new Exception(s + " is not a valid state for a specialization");
-      }
-    }// switch
-
-    return returnVal;
-  }// stringToSpecialization
 }// DAO

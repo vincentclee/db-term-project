@@ -34,8 +34,7 @@ public class TaskBoard
   }// ctor
 
   /**
-   * Takes a list of tasks and separates them into lists of completed, in progress, 
-   * and waiting tasks.
+   * Takes a list of tasks and separates them into lists of all types.
    *
    * @param allTasks list of tasks to be separated
    */
@@ -65,14 +64,17 @@ public class TaskBoard
         case "Waiting":
 	{
 	  waitingTasks.add(task);
+	  break;
 	}
         case "Queued":
 	{
 	  queuedTasks.add(task);
+	  break;
 	}
         case "Blocked":
 	{
 	  blockedTasks.add(task);
+	  break;
 	}
       }// switch
     }// for
@@ -113,7 +115,7 @@ public class TaskBoard
   /**
    * @return list of blocked tasks
    */
-  public List<Task> blockedTasks()
+  public List<Task> getBlockedTasks()
   {
     return this.blockedTasks;
   }// getBlockedTasks
