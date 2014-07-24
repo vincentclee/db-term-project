@@ -39,7 +39,7 @@ public class DAO {
 	 *            The target to connect the DAO to.
 	 */
 	public DAO(DAOTarget target) {
-
+		
 		try {
 			// set up connection using DAOTarget
 			Class.forName(DAOQueries.JDBC_DRIVER);

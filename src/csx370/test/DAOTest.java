@@ -32,7 +32,7 @@ public class DAOTest extends TestCase {
 		dao = new DAO(testTarget);
 		dao.resetDB();
 	}// setUp
-
+	
 	public void testAuthenticate() {
 		assertNull("1", dao.authenticate("username", "password"));
 		User user1 = dao.createUser("username", "1", "2", "3", "password");
@@ -44,7 +44,7 @@ public class DAOTest extends TestCase {
 		assertEquals("1d", user1.getDisplayName(), user2.getDisplayName());
 		assertFalse("1e", user1.getCookieID().equals(user2.getCookieID()));
 	}// testAuthenticate
-
+	/*
 	public void testGetUserFunctions() {
 		User user1 = dao.createUser("spongebob", "sb@kp.com", "squarepants",
 				"a1b2c3", "gary");
@@ -660,4 +660,5 @@ public class DAOTest extends TestCase {
 	public void tearDown() {
 		dao.close();
 	}// tearDown
+	*/
 }// DAOTest

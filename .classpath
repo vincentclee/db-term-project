@@ -20,5 +20,6 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/Users/collin/Code/School/CSCI-6370/final-project/gson/google-gson-2.2.4/gson-2.2.4-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/collin/Code/School/CSCI-6370/final-project/mysql/mysql-connector-java-5.1.31-bin.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
