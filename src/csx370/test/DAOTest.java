@@ -74,13 +74,13 @@ public class DAOTest extends TestCase
     Task task1 = dao.createTask(Priority.HIGH, true, new Timestamp(1000123l), "triangle", 
 				"tyui", "rtyu", "iop[", TaskStatus.IN_PROGRESS);
     Task task2 = dao.createTask(Priority.NORMAL, false, new Timestamp(1000234l), "circle", 
-				"cvbn", "iop[", "rtyu", TaskStatus.BLOCKED);
+				"cvbn", "iop[", "rtyu", TaskStatus.STARTED);
     Task task3 = dao.createTask(Priority.LOW, false, new Timestamp(1000345l), "x", 
-				"xcvb", "xcvb", "xcvb", TaskStatus.QUEUED);
+				"xcvb", "xcvb", "xcvb", TaskStatus.STARTED);
     Task task4 = dao.createTask(Priority.URGENT, true, new Timestamp(1000456l), "square", 
 				"sdfg", "qwer", "asdf", TaskStatus.COMPLETE);
     Task task5 = dao.createTask(Priority.HIGH, false, new Timestamp(1000567l), "star", 
-				"sdfg","tyui", "asdf", TaskStatus.WAITING);
+				"sdfg","tyui", "asdf", TaskStatus.BACKLOG);
 
     dao.addUserToProject(user1.getUserID(), proj1.getProjectID());
     dao.addUserToProject(user2.getUserID(), proj1.getProjectID());
@@ -161,13 +161,13 @@ public class DAOTest extends TestCase
     Task task1 = dao.createTask(Priority.HIGH, true, new Timestamp(10001232l), "triangle2", 
 				"tyui2", "rtyu2", "iop[2", TaskStatus.IN_PROGRESS);
     Task task2 = dao.createTask(Priority.NORMAL, false, new Timestamp(10002342l), "circle2", 
-				"cvbn2", "iop[2", "rtyu2", TaskStatus.BLOCKED);
+				"cvbn2", "iop[2", "rtyu2", TaskStatus.STARTED);
     Task task3 = dao.createTask(Priority.LOW, false, new Timestamp(10003452l), "x2", 
-				"xcvb2", "xcvb2", "xcvb2", TaskStatus.QUEUED);
+				"xcvb2", "xcvb2", "xcvb2", TaskStatus.STARTED);
     Task task4 = dao.createTask(Priority.URGENT, true, new Timestamp(10004562l), "square2", 
 				"sdfg2", "qwer2", "asdf2", TaskStatus.COMPLETE);
     Task task5 = dao.createTask(Priority.HIGH, false, new Timestamp(10005672l), "star2", 
-				"sdfg2","tyui2", "asdf2", TaskStatus.WAITING);
+				"sdfg2","tyui2", "asdf2", TaskStatus.BACKLOG);
 
     dao.addUserToProject(user1.getUserID(), proj1.getProjectID());
     dao.addUserToProject(user2.getUserID(), proj1.getProjectID());
@@ -253,7 +253,7 @@ public class DAOTest extends TestCase
   public void testGetTask()
   {
     Task task1 = dao.createTask(Priority.HIGH, false, new Timestamp(100321l), "step1: cut a hole in the box", 
-				"need scissors", "also, a box", "words words words", TaskStatus.IN_PROGRESS);
+				"need scissors", "also, a box", "words words words", TaskStatus.TESTING);
     Task task2 = dao.getTask(task1.getTaskID());
     assertTrue("40", task1.equals(task2));    
   }// testGetTask
@@ -276,13 +276,13 @@ public class DAOTest extends TestCase
     Task task1 = dao.createTask(Priority.HIGH, true, new Timestamp(10001444l), "triangle4", 
 				"tyui4", "rtyu4", "iop[4", TaskStatus.IN_PROGRESS);
     Task task2 = dao.createTask(Priority.NORMAL, false, new Timestamp(10004444l), "circle4", 
-				"cvbn4", "iop[4", "rtyu4", TaskStatus.BLOCKED);
+				"cvbn4", "iop[4", "rtyu4", TaskStatus.STARTED);
     Task task3 = dao.createTask(Priority.LOW, false, new Timestamp(10004454l), "x4", 
-				"xcvb4", "xcvb4", "xcvb4", TaskStatus.QUEUED);
+				"xcvb4", "xcvb4", "xcvb4", TaskStatus.STARTED);
     Task task4 = dao.createTask(Priority.URGENT, true, new Timestamp(10004564l), "square4", 
 				"sdfg4", "qwer4", "asdf4", TaskStatus.COMPLETE);
     Task task5 = dao.createTask(Priority.HIGH, false, new Timestamp(10005674l), "star4", 
-				"sdfg4","tyui4", "asdf4", TaskStatus.WAITING);
+				"sdfg4","tyui4", "asdf4", TaskStatus.BACKLOG);
 
     dao.addUserToProject(user1.getUserID(), proj1.getProjectID());
     dao.addUserToProject(user2.getUserID(), proj1.getProjectID());
@@ -306,10 +306,11 @@ public class DAOTest extends TestCase
 
     TaskBoard tb = dao.getProjectTaskBoard(user1.getCookieID(), proj1.getProjectID());
     assertEquals("40a1", 1, tb.getInProgressTasks().size());
-    assertEquals("40a2", 1, tb.getBlockedTasks().size());
-    assertEquals("40a3", 0, tb.getQueuedTasks().size());
+    assertEquals("40a2", 1, tb.getStartedTasks().size());
+    assertEquals("40a3", 0, tb.getBacklogTasks().size());
     assertEquals("40a4", 0, tb.getCompletedTasks().size());
-    assertEquals("40a5", 0, tb.getWaitingTasks().size());
+    assertEquals("40a5", 0, tb.getPeerReviewTasks().size());
+    assertEquals("40a6", 0, tb.getTestingTasks().size());
   }// testGetProjectTaskBoard
 
   public void testGetTasksForProject()
@@ -330,13 +331,13 @@ public class DAOTest extends TestCase
     Task task1 = dao.createTask(Priority.HIGH, true, new Timestamp(10001333l), "triangle3", 
 				"tyui3", "rtyu3", "iop[3", TaskStatus.IN_PROGRESS);
     Task task2 = dao.createTask(Priority.NORMAL, false, new Timestamp(10003343l), "circle3", 
-				"cvbn3", "iop[3", "rtyu3", TaskStatus.BLOCKED);
+				"cvbn3", "iop[3", "rtyu3", TaskStatus.STARTED);
     Task task3 = dao.createTask(Priority.LOW, false, new Timestamp(10003453l), "x3", 
-				"xcvb3", "xcvb3", "xcvb3", TaskStatus.QUEUED);
+				"xcvb3", "xcvb3", "xcvb3", TaskStatus.TESTING);
     Task task4 = dao.createTask(Priority.URGENT, true, new Timestamp(10004563l), "square3", 
 				"sdfg3", "qwer3", "asdf3", TaskStatus.COMPLETE);
     Task task5 = dao.createTask(Priority.HIGH, false, new Timestamp(10005673l), "star3", 
-				"sdfg3","tyui3", "asdf3", TaskStatus.WAITING);
+				"sdfg3","tyui3", "asdf3", TaskStatus.PEER_REVIEW);
 
     dao.addUserToProject(user1.getUserID(), proj1.getProjectID());
     dao.addUserToProject(user2.getUserID(), proj1.getProjectID());
@@ -456,11 +457,11 @@ public class DAOTest extends TestCase
     Task task1 = dao.createTask(Priority.HIGH, true, new Timestamp(1000123l), "triangleA", 
 				"tyui", "rtyu", "iop[", TaskStatus.IN_PROGRESS);
     Task task2 = dao.createTask(Priority.NORMAL, false, new Timestamp(1000234l), "circleA", 
-				"cvbn", "iop[", "rtyu", TaskStatus.BLOCKED);
+				"cvbn", "iop[", "rtyu", TaskStatus.TESTING);
     Task task4 = dao.createTask(Priority.URGENT, true, new Timestamp(1000456l), "squareA", 
 				"sdfg", "qwer", "asdf", TaskStatus.COMPLETE);
     Task task5 = dao.createTask(Priority.HIGH, false, new Timestamp(1000567l), "starA", 
-				"sdfg","tyui", "asdf", TaskStatus.WAITING);
+				"sdfg","tyui", "asdf", TaskStatus.PEER_REVIEW);
 
     dao.addTaskDependency(task2.getTaskID(), task1.getTaskID());
     dao.addTaskDependency(task2.getTaskID(), task4.getTaskID());
@@ -480,7 +481,7 @@ public class DAOTest extends TestCase
     Task task1 = dao.createTask(Priority.HIGH, true, new Timestamp(1000123l), "triangleB", 
 				"tyui", "rtyu", "iop[", TaskStatus.IN_PROGRESS);
     Task task2 = dao.createTask(Priority.NORMAL, false, new Timestamp(1000234l), "circleB", 
-				"cvbn", "iop[", "rtyu", TaskStatus.BLOCKED);
+				"cvbn", "iop[", "rtyu", TaskStatus.PEER_REVIEW);
 
     dao.addTaskDependency(task1.getTaskID(), task2.getTaskID());
 

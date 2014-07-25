@@ -1012,7 +1012,7 @@ public class DAO
       }// if
       else
       {
-	task = new Task(-1, false, Priority.LOW, null, "", "", "", "", TaskStatus.BLOCKED);
+	task = new Task(-1, false, Priority.LOW, null, "", "", "", "", TaskStatus.BACKLOG);
       }// else
     }// try
     catch(Exception e)
@@ -1733,9 +1733,9 @@ public class DAO
 
     switch(s)
     {
-      case "Queued":
+      case "Backlog":
       {
-	returnVal = TaskStatus.QUEUED;
+	returnVal = TaskStatus.BACKLOG;
 	break;
       }
       case "In Progress":
@@ -1743,19 +1743,24 @@ public class DAO
 	returnVal = TaskStatus.IN_PROGRESS;
 	break;
       }
-      case "Waiting":
+      case "Started":
       {
-	returnVal = TaskStatus.WAITING;
+	returnVal = TaskStatus.STARTED;
 	break;
       }
-      case "Blocked":
+      case "Testing":
       {
-	returnVal = TaskStatus.BLOCKED;
+	returnVal = TaskStatus.TESTING;
 	break;
       }
       case "Complete":
       {
 	returnVal = TaskStatus.COMPLETE;
+	break;
+      }
+      case "Peer Review":
+      {
+	returnVal = TaskStatus.PEER_REVIEW;
 	break;
       }
       default:

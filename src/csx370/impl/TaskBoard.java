@@ -4,34 +4,16 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Container class holding lists of tasks separated by completeness
+ * Container class holding lists of tasks separated by development status
  */
 public class TaskBoard
 {
   private List<Task> completedTasks;
   private List<Task> inProgressTasks;
-  private List<Task> waitingTasks;
-  private List<Task> queuedTasks;
-  private List<Task> blockedTasks;
-
-  /**
-   * Pre-separated lists
-   *
-   * @param completedTasks list of tasks that are completed
-   * @param inProgressTasks list of tasks that are in progress
-   * @param waitingTasks list of tasks that are not being worked on yet
-   * @param queuedTasks list of tasks that are queued
-   * @param blockedTasks list of blocked tasks
-   */
-  public TaskBoard(List<Task> completedTasks, List<Task> inProgressTasks, List<Task> waitingTasks,
-		   List<Task> queuedTasks, List<Task> blockedTasks)
-  {
-    this.completedTasks = completedTasks;
-    this.inProgressTasks = inProgressTasks;
-    this.waitingTasks = waitingTasks;
-    this.queuedTasks = queuedTasks;
-    this.blockedTasks = blockedTasks;
-  }// ctor
+  private List<Task> backlogTasks;
+  private List<Task> startedTasks;
+  private List<Task> testingTasks;
+  private List<Task> peerReviewTasks;
 
   /**
    * Takes a list of tasks and separates them into lists of all types.
@@ -42,10 +24,11 @@ public class TaskBoard
   {
     this.completedTasks = new ArrayList<Task>();
     this.inProgressTasks = new ArrayList<Task>();
-    this.waitingTasks = new ArrayList<Task>();
-    this.queuedTasks = new ArrayList<Task>();
-    this.blockedTasks = new ArrayList<Task>();
-
+    this.backlogTasks = new ArrayList<Task>();
+    this.startedTasks = new ArrayList<Task>();
+    this.testingTasks = new ArrayList<Task>();
+    this.peerReviewTasks = new ArrayList<Task>();
+    
     // loop through list and separate out tasks
     for(Task task : allTasks)
     {
@@ -53,27 +36,32 @@ public class TaskBoard
       {
         case "Complete":
 	{
-	  completedTasks.add(task);
+	  this.completedTasks.add(task);
 	  break;
 	}
 	case "In Progress":
 	{
-	  inProgressTasks.add(task);
+	  this.inProgressTasks.add(task);
 	  break;
 	}
-        case "Waiting":
+        case "Backlog":
 	{
-	  waitingTasks.add(task);
+	  this.backlogTasks.add(task);
 	  break;
 	}
-        case "Queued":
+        case "Started":
 	{
-	  queuedTasks.add(task);
+	  this.startedTasks.add(task);
 	  break;
 	}
-        case "Blocked":
+        case "Testing":
 	{
-	  blockedTasks.add(task);
+	  this.testingTasks.add(task);
+	  break;
+	}
+	case "Peer Review":
+	{
+	  this.peerReviewTasks.add(task);
 	  break;
 	}
       }// switch
@@ -97,26 +85,34 @@ public class TaskBoard
   }// getInProgressTasks
 
   /**
-   * @return list of inactive tasks
+   * @return list of backlogged tasks
    */
-  public List<Task> getWaitingTasks()
+  public List<Task> getBacklogTasks()
   {
-    return this.waitingTasks;
-  }// getWaitingTasks
+    return this.backlogTasks;
+  }// getBacklogTasks
 
   /**
-   * @return list of queued tasks
+   * @return list of started tasks
    */
-  public List<Task> getQueuedTasks()
+  public List<Task> getStartedTasks()
   {
-    return this.queuedTasks;
-  }// getQueuedTasks
+    return this.startedTasks;
+  }// getStartedTasks
 
   /**
-   * @return list of blocked tasks
+   * @return list of tasks in testing
    */
-  public List<Task> getBlockedTasks()
+  public List<Task> getTestingTasks()
   {
-    return this.blockedTasks;
-  }// getBlockedTasks
+    return this.testingTasks;
+  }// getTestingTasks
+
+  /**
+   * @return list of tasks in peer review
+   */
+  public List<Task> getPeerReviewTasks()
+  {
+    return this.peerReviewTasks;
+  }// getPeerReviewTasks
 }// TaskBoard
