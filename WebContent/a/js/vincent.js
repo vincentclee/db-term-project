@@ -91,16 +91,18 @@ function __accountarea() {
 		//Avatar
 		$("#my-avatar").attr("src", USER.avatar);
 		
-		//Toggle User drop down menu
-		$(document).on("click", ".groups", function() {
-		     $(".kdview.group-switcher").toggleClass("active");
-		});
+//		//Toggle User drop down menu
+//		$(document).on("click", "a.groups", function() {
+//			$(".kdview.group-switcher").toggleClass("active");
+//		});
 		
 		//Close the drop down menu
 		$(document).on("click", function(e) {
 			//All except ".groups"
-			if (!$(e.target).is(".groups")) {
+			if (!$(e.target).is("a.groups")) {
 				$(".kdview.group-switcher").removeClass("active");
+		    } else {
+		    	$(".kdview.group-switcher").toggleClass("active");
 		    }
 		});
 		
@@ -205,7 +207,7 @@ function __task(task_id) {
 			
 			var x = $("#testID").offset().left;
 			var y = $("#testID").offset().top;
-			alert("x: " + x + " y:" + y);
+//			alert("x: " + x + " y:" + y);
 			
 //			$(".kdview .kdtooltip .just-text .placement-top .direction-center").css({top: y, left: x-3});
 			
@@ -213,7 +215,7 @@ function __task(task_id) {
 			
 			$("#member-tooltip").css('top', y-30);
 			$("#member-tooltip").css('left', x-(width/2)+15);
-			alert();
+//			alert();
 			
 			//Project Members
 			$.getJSON(HOSTNAME + "task_users", "tId=" + task_id, function(users) {
