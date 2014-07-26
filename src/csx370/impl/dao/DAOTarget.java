@@ -2,10 +2,10 @@ package csx370.impl.dao;
 
 public class DAOTarget {
 
-	public static final String DB_URL = "jdbc:mysql://localhost/mydb";
+	public static final String DB_REMOTE_URL = "jdbc:mysql://172.17.149.126/mydb";
 	public static final String DB_TEST_URL = "jdbc:mysql://localhost/mydbtest";
 	public static final String DB_USER = "root";
-	public static final String DB_PASS = "guest";
+	public static final String DB_PASS = ")(*&^%$#@!";
 
 	private final String mTarget;
 	private final String mUser;
