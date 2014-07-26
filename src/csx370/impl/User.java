@@ -16,6 +16,14 @@ public class User
 	  avatar = "";
   }
   
+
+  public User(String displayName, String avatar) {
+	  userID = 0;
+	  this.displayName = displayName;
+	  this.avatar = avatar;
+  }
+  
+  
   /**
    * Create a User object with the given info.
    *

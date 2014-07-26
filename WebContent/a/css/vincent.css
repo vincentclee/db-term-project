@@ -2,6 +2,7 @@ table#kanban-board th {
 	color: #1AAF5D;
 	font-size: 28px;
 	padding: 0 0 5px 0;
+	border-left: 2px solid #252E30;
 }
 .table-column {
 	max-height:100%;
@@ -9,6 +10,25 @@ table#kanban-board th {
 	overflow:auto;
 	overflow-x:hidden;
 }
+
+table#kanban-board h1 {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+table#kanban-board td {
+	min-width: 250px;
+	
+	border-left: 2px solid #252E30;
+}
+table#kanban-board td:first-child {
+	border-left: none;
+}
+
+/* table { border: none; border-collapse: collapse; }
+table td {  } */
+
+
 #login {
 	width: 30%;
 	margin: 60px auto;
@@ -55,7 +75,32 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
     transform: translate(-50%, -50%); display:none;
 }
 
+.description-notes {
+    color: #7A8285;
+    font-size: 15px;
+    margin: 0 30px;
+    text-align: left;
+}
+.description-notes ol {
+	list-style: decimal outside;
+}
+.description-notes ul {
+	list-style: disc outside;
+}
+
+#separator {
+	background-color: #CECECE;
+	height: 1px;
+	margin: 42px auto;
+	opacity: 0.2;
+	width: auto;
+}
+
+.avatarviewimg {
+	opacity: 1;
+}
+
 /* Clickable */
-#koding-logo, #logout {
+#koding-logo, #logout, .terminal-bottom-message {
 	cursor: pointer;
 }

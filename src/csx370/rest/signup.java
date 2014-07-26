@@ -135,14 +135,14 @@ public class signup extends HttpServlet {
 		//Password Match Check
 		/////////////////////////////////////////////
 		if (!password.equals(confirmPassword)) {
-			user.setMessage("Passwords to not match");
+			user.setMessage("Passwords do not match");
 			printWriter.print(gson.toJson(user));
 			dao.close(); //Close DB connection
 			return;
 		}
 		
 		//Create the user
-		user = dao.createUser(username, email, name, password, null);
+		user = dao.createUser(username, email, name, password, "http://vincentclee.github.io/project-management/a/avatar/default.png");
 		
 		//User is null
 		if (user == null) {

@@ -2,11 +2,11 @@ package csx370.impl;
 
 public enum TaskStatus
 {
-  QUEUED
+  BACKLOG
   {
     public String toString()
     {
-      return "Queued";
+      return "Backlog";
     }
   },
     
@@ -18,19 +18,19 @@ public enum TaskStatus
     }
   },
    
-  WAITING
+  STARTED
   {
     public String toString()
     {
-      return "Waiting";
+      return "Started";
     }
   },
     
-  BLOCKED 
+  TESTING 
   {
     public String toString()
     {
-      return "Blocked";
+      return "Testing";
     }
   },
 
@@ -39,6 +39,14 @@ public enum TaskStatus
     public String toString()
     {
       return "Complete";
+    }
+  },
+    
+  PEER_REVIEW
+  {
+    public String toString()
+    {
+      return "Peer Review";
     }
   }
 }// TaskStatus

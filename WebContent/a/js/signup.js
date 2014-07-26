@@ -31,8 +31,3 @@ function titles(mainTitle) {
 	$("#page-title").text(mainTitle); //Page Title
 	document.title = mainTitle; //Document Title
 }
-
-//Signup Canvas
-function __signup() {
-	
-}

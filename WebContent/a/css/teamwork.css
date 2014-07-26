@@ -796,7 +796,7 @@ li.vm-loader-item .terminal-session-stack li:hover {
     letter-spacing: 0.06em;
     line-height: 18px;
     margin: 0 10px 0;
-    width: 300px;
+    width: 250px;
     padding: 14px;
 }
 .terminal-bottom-message a {

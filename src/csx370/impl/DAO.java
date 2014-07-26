@@ -160,6 +160,7 @@ public class DAO
       insertUser.setString(3, displayName);
       insertUser.setString(4, cookie.getValue());
       insertUser.setString(5, password);
+      insertUser.setString(6, avatar);
       
       insertUser.executeUpdate();
 
@@ -994,6 +995,7 @@ public class DAO
     return task;
   }// createTask
 
+
   /**
    * Retrieve from the db the task specified by the given id
    *
@@ -1027,7 +1029,7 @@ public class DAO
       }// if
       else
       {
-	task = new Task(-1, false, Priority.LOW, null, "", "", "", "", TaskStatus.BLOCKED);
+	task = new Task(-1, false, Priority.LOW, null, "", "", "", "", TaskStatus.BACKLOG);
       }// else
     }// try
     catch(Exception e)
@@ -1039,6 +1041,68 @@ public class DAO
     return task;
   }// getTask
 
+  /**
+   * Retrieve from the db the task specified by the given id
+   *
+   * @param taskID the task's id
+   * @return a Task object containing information about the task or null if an error occured. if the query returns no tasks, an object with a taskID of -1 will be returned.
+   */
+  public Task getTaskByCookieID(String cookieID, int taskID)
+  {
+    // task object to return, will stay null if no task is found
+    Task task =  null;
+
+    try
+    {
+    	PreparedStatement validate = this.conn.prepareStatement("SELECT TaskID FROM User NATURAL JOIN UserTask WHERE CookieID=? AND TaskID=?");
+    	validate.setString(1, cookieID);
+    	validate.setInt(2, taskID);
+    	
+    	ResultSet rss = validate.executeQuery();
+    	if (!rss.next()) {
+    		return task;
+    	}
+    	
+    	
+    	return getTask(taskID);
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error retrieving task info: " + e.getMessage());
+      task = null;
+    }// catch
+
+    return task;
+  }// getTask
+
+	public List<User> getUsersOnTask(String cookieID, int taskID) {
+		List<User> users = new ArrayList<User>();
+
+		try {
+			PreparedStatement validate = this.conn.prepareStatement("SELECT TaskID FROM User NATURAL JOIN UserTask WHERE CookieID=? AND TaskID=?");
+			validate.setString(1, cookieID);
+			validate.setInt(2, taskID);
+			
+			ResultSet rss = validate.executeQuery();
+			if (!rss.next()) {
+				return users;
+			}
+			
+			PreparedStatement statement = this.conn.prepareStatement("SELECT DisplayName, Avatar FROM User NATURAL JOIN UserTask WHERE TaskID=?");
+			statement.setInt(1, taskID);
+			
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				users.add(new User(rs.getString("DisplayName"), rs.getString("Avatar")));
+			}
+			
+		} catch (Exception e) {
+			System.err.println("getUsersOnTask: " + taskID);
+		}
+		return users;
+	}
+  
+  
   /**
    * Retrieve all tasks associated with the specified project
    *
@@ -1754,9 +1818,9 @@ public class DAO
 
     switch(s)
     {
-      case "Queued":
+      case "Backlog":
       {
-	returnVal = TaskStatus.QUEUED;
+	returnVal = TaskStatus.BACKLOG;
 	break;
       }
       case "In Progress":
@@ -1764,19 +1828,24 @@ public class DAO
 	returnVal = TaskStatus.IN_PROGRESS;
 	break;
       }
-      case "Waiting":
+      case "Started":
       {
-	returnVal = TaskStatus.WAITING;
+	returnVal = TaskStatus.STARTED;
 	break;
       }
-      case "Blocked":
+      case "Testing":
       {
-	returnVal = TaskStatus.BLOCKED;
+	returnVal = TaskStatus.TESTING;
 	break;
       }
       case "Complete":
       {
 	returnVal = TaskStatus.COMPLETE;
+	break;
+      }
+      case "Peer Review":
+      {
+	returnVal = TaskStatus.PEER_REVIEW;
 	break;
       }
       default:

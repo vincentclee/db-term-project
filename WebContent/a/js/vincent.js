@@ -1,10 +1,6 @@
 var USER;
 
 $(document).ready(function() {
-	//TODO: ERROOR
-	//this click to home, when clicking projects, registers two clicks
-	//need to soft unbind previous projects when refresh
-	
 	//Top left green box
 	$("#koding-logo").click(function() {
 		if (USER.userID == 0) {
@@ -18,7 +14,7 @@ $(document).ready(function() {
 	$("#logout").click(function() {
 		$.post(HOSTNAME + "logout", $(this).serialize(), function(data) {
 			USER = null;
-			window.location = "index.html";
+			window.location = "index.html"; //Go to homepage
 		});
 	});
 	
@@ -36,9 +32,19 @@ function init() {
 		if (USER.userID == -1) {
 			__login();
 		} else if (USER.userID == 0) {
+			__accountarea();
 			__projects();
 		}
 	});
+}
+
+//Wipe main canvas, page title, document title
+function setup(page_title, document_title) {
+	$("#page-title").text(page_title); //Page Title
+	document.title = document_title + " | " + SITE_NAME; //Document Title
+	
+	//Clear Main Area
+	$(".kdview .workspace").empty();
 }
 
 //Login Canvas
@@ -52,9 +58,9 @@ function __login() {
 	$(".account-area").empty();
 	
 	//Load Login Screen
-	$(".kdview .workspace").load("login.html",
+	$(".kdview .workspace").load("login-p.html",
 		//Bind Form Button
-		$(document).delegate("#login-form", "submit", function(event) {
+		$(document).on("submit", "#login-form", function(event) {
 			event.preventDefault();
 			
 			//Send Login request + Serialize the form
@@ -64,6 +70,7 @@ function __login() {
 				if (USER.userID == -1) {
 					popup("Access Denied!");
 				} else if (USER.userID == 0) {
+					__accountarea();
 					__projects();
 				}
 			});
@@ -71,33 +78,42 @@ function __login() {
 	);
 }
 
-//Projects Canvas
-function __projects() {
-	setup("My Projects", "My Projects");
-	
+//Account Area
+function __accountarea() {
 	//Load Account Area
-	$(".account-area").load("account-area.html", function () {
+	$(".account-area").load("account-area-p.html", function () {
 		//Display Name
 		$("#el-15").text(USER.displayName);
 		
 		//Username
 		$("#el-12").text(USER.username);
 		
+		//Avatar
+		$("#my-avatar").attr("src", USER.avatar);
+		
 		//Toggle User drop down menu
-		$(document).delegate("a.groups", "click", function() {
-		     $("div.kdview.group-switcher").toggleClass("active");
+		$(document).on("click", ".groups", function() {
+		     $(".kdview.group-switcher").toggleClass("active");
 		});
 		
 		//Close the drop down menu
-		$(document).delegate(".kdview .application-page", "click", function() {
-		     $("div.kdview.group-switcher").removeClass("active");
+		$(document).on("click", function(e) {
+			//All except ".groups"
+			if (!$(e.target).is(".groups")) {
+				$(".kdview.group-switcher").removeClass("active");
+		    }
 		});
 		
 		//Top Right Search Open
-		$(document).delegate("#fatih-launcher", "click", function() {
-			$("div.account-area").toggleClass("search-open");
+		$(document).on("click", "#fatih-launcher", function() {
+			$(".account-area").toggleClass("search-open");
 		});
 	});
+}
+
+//Projects Canvas
+function __projects() {
+	setup("My Projects", "My Projects");
 	
 	//Load Projects Holder
 	$("<div>", {class: "tw-playgrounds"}).appendTo(".kdview .workspace");
@@ -110,30 +126,100 @@ function __projects() {
 			$("<img>", {src:"https://teamworkcontent.s3.amazonaws.com/covers/togetherjs.png", alt:"MyImage"}).appendTo(div);
 			$("<p>", {text:value.title}).appendTo(div);
 			
+			//Add a click for each div
+			$(div).one("click", function() {
+				//removes all click handlers
+				$(".kdview .workspace").off("click", "**");
+								
+				//Setup page for board
+				setup($(this).find("p").text(), $(this).find("p").text());
+				
+				//Go to Kanban Board
+				__board($(this).attr("id").substring(1));
+			});
+			
 			//Attach Div to outer
 			div.appendTo(".kdview .workspace .tw-playgrounds");
-			
-			//Add a click for each div
-			$(document).delegate("#p" + value.projectID, "click", function() {
-				alert($(this).attr("id").substring(1));
-				$.getJSON(HOSTNAME + "board", "pId=" + $(this).attr("id").substring(1), function(data) {
+		});
+	});
+}
+
+//Kanban Board Canvas
+function __board(project_id) {
+	//Load Table
+	$(".kdview .workspace").load("board-p.html", function () {
+		//Populate the Table
+		$.getJSON(HOSTNAME + "board", "pId=" + project_id, function(data) {
+			$.each(data, function(key, value) {
+//				alert(key +  " " + value);
+				$.each(value, function(index, element) {
+//					alert(key +  " " + index + " " + element);
 					
+					//Create Div Block
+					var div = $("<div>", {id:"t" + element.taskID, class:"terminal-bottom-message"});
+					$("<h1>", {text:element.title}).appendTo(div);
+					
+					//Add a click for each div
+					$(div).one("click", function() {
+						//removes all click handlers
+						$(".kdview .workspace").off("click", "**");
+						
+						//Setup page for task
+						setup($("#page-title").text(), $(this).find("h1").text() + " on " + $("#page-title").text());
+						
+						//Go to the Task Canvas
+						__task($(this).attr("id").substring(1));
+					});
+					
+					//Add to correct column
+					div.appendTo("#" + key);
 				});
 			});
 		});
 	});
 }
 
-//Kanban Board
-function __board() {
-	setup("My Projects", "My Projects");
+//Task Canvas
+function __task(task_id) {
+//	alert(task_id);
+	
+	//Load Task Page
+	$(".kdview .workspace").load("task-p.html", function () {
+		//Populate
+		$.getJSON(HOSTNAME + "task", "tId=" + task_id, function(task) {
+			//Title
+			$("#tTitle").text(task.title);
+			
+			//Description
+			var description_html = $.parseHTML(task.description);
+			$("#tDescription").append(description_html);
+			
+			//Notes
+			var task_html = $.parseHTML(task.notes);
+			$("#tNotes").append(task_html);
+			
+//			var position = $("#testID").offset();
+//			$.each(position, function(index, value) {
+//				alert(index + ": " + value);
+//			});
+			
+			var x = $("#testID").offset().left;
+			var y = $("#testID").offset().top;
+			alert("x: " + x + " y:" + y);
+			
+//			$(".kdview .kdtooltip .just-text .placement-top .direction-center").css({top: y, left: x-3});
+			
+			var width = $("#member-tooltip").width();
+			
+			$("#member-tooltip").css('top', y-30);
+			$("#member-tooltip").css('left', x-(width/2)+15);
+			alert();
+			
+			//Project Members
+			$.getJSON(HOSTNAME + "task_users", "tId=" + task_id, function(users) {
+				
+			});
+		});
+	});
 }
 
-//Wipe main canvas, page title, document title
-function setup(pageT, documentT) {
-	$("#page-title").text(pageT); //Page Title
-	document.title = documentT + " | " + SITE_NAME; //Document Title
-	
-	//Clear Main Area
-	$(".kdview .workspace").empty();
-}

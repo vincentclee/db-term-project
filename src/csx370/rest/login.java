@@ -84,5 +84,4 @@ public class login extends HttpServlet {
 		//Send Data
 		printWriter.print(gson.toJson(user));
 	}
-} // curl http://localhost:8080/db-term-project/login --data "username=jpub&password=1234" -X POST
-//jpub','1234
+}

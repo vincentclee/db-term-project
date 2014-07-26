@@ -2,6 +2,7 @@ package csx370.rest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,18 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import csx370.impl.DAO;
-import csx370.impl.TaskBoard;
+import csx370.impl.Task;
+import csx370.impl.User;
 import csx370.util.CookieUtil;
 
 /**
- * Servlet implementation class board
+ * Servlet implementation class task_users
  */
-@WebServlet("/board")
-public class board extends HttpServlet {
+@WebServlet("/task_users")
+public class task_users extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	/** @see HttpServlet#HttpServlet() */
-	public board() {super();}
+	public task_users() {super();}
 	
 	/**
 	 * List
@@ -41,34 +43,25 @@ public class board extends HttpServlet {
 		dao.createLog(request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort(), request.getServletPath(), "GET", (cookie == null) ?  null : cookie.getValue());
 		
 		//Input
-		String pIdStr = request.getParameter("pId");
-		int pid = 0;
+		String tIdStr = request.getParameter("tId");
+		int tid = 0;
 		try {
-			pid = Integer.parseInt(pIdStr);
+			tid = Integer.parseInt(tIdStr);
 		} catch (Exception e) {}
 		
+		System.out.println("Task: " + tid);
+		
 		//Invalid input
-		if (pid == 0 || cookie == null) {
+		if (tid == 0 || cookie == null) {
 			printWriter.print("[]");
 			dao.close();
 			return;
 		}
 		
-		//Get Tasks for project
-		TaskBoard taskBoard = dao.getProjectTaskBoard(cookie.getValue(), pid);
+		//Get Task Users
+		List<User> task_users = dao.getUsersOnTask(cookie.getValue(), tid);
 		
-		
-		//TODO REMOVE
-		System.out.println(taskBoard.getBacklogTasks());
-		System.out.println(taskBoard.getStartedTasks());
-		System.out.println(taskBoard.getInProgressTasks());
-		System.out.println(taskBoard.getTestingTasks());
-		System.out.println(taskBoard.getPeerReviewTasks());
-		System.out.println(taskBoard.getCompletedTasks());
-		//TODO REMOVE
-		
-		
-		
+		System.out.println(task_users);
 		
 		//Close DB connection
 		dao.close();
@@ -77,10 +70,10 @@ public class board extends HttpServlet {
 		//Output
 		//////////////////////////////////////////////
 		Gson gson = new Gson();
-		System.out.println(gson.toJson(taskBoard));
+		System.out.println(gson.toJson(task_users));
 		
 		//Send Data
-		printWriter.print(gson.toJson(taskBoard));
+		printWriter.print(gson.toJson(task_users));
 	}
 	
 	/**
