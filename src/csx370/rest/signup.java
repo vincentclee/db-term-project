@@ -49,13 +49,7 @@ public class signup extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String confirmPassword = request.getParameter("confirmPassword");
-		
-		System.out.println("name: " + name);
-		System.out.println("email: " + email);
-		System.out.println("username: " + username);
-		System.out.println("password: " + password);
-		System.out.println("confirmPassword: " + confirmPassword);
-		System.out.println();
+		String avatar = request.getParameter("avatar");
 		
 		/////////////////////////////////////////////
 		//Input Fixing
@@ -141,8 +135,13 @@ public class signup extends HttpServlet {
 			return;
 		}
 		
+		//Avatar
+		if (avatar == null || avatar.isEmpty()) {
+			avatar = "http://vincentclee.github.io/project-management/a/avatar/default.png";
+		}
+		
 		//Create the user
-		user = dao.createUser(username, email, name, password, "http://vincentclee.github.io/project-management/a/avatar/default.png");
+		user = dao.createUser(username, email, name, password, avatar);
 		
 		//User is null
 		if (user == null) {
@@ -152,10 +151,6 @@ public class signup extends HttpServlet {
 			dao.close(); //Close DB connection
 			return;
 		}
-		
-		System.out.println(gson.toJson(user));
-		
-		
 		
 		//////////////////////////////////////////////
 		//Output

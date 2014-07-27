@@ -1,11 +1,11 @@
 var HOSTNAME = "http://localhost:8080/db-term-project/";
-var SITE_NAME = "Kitten";
+var SITE_NAME = "Project Pusheen";
 var POPUP_DURATION = 2000; //in ms
 
 $(document).ready(function() {
 	//Popup Close
 	$(".kdnotification").click(function() {
-		$(this).css("display", "none");
+		$(this).hide();
 	});
 	
 	//set correct height on browser open
@@ -27,5 +27,5 @@ $(window).resize(function() {
 function popup(message) {
 	$(".kdnotification-title").text(message);
 	$(".kdnotification").show();
-	$(".kdnotification").delay(POPUP_DURATION).fadeOut(); //1 sec
+	$(".kdnotification").delay(POPUP_DURATION).fadeOut();
 }

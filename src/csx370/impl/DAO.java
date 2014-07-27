@@ -438,13 +438,13 @@ public class DAO
    * @param username the user's new username
    * @return 0 for successful update, -1 if an error occurred
    */
-  public int updateUsername(int userID, String username)
+  public int updateUsername(String cookieID, String username)
   {
     try
     {
-      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET UserName = (?) WHERE UserID = (?)");
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET UserName = (?) WHERE CookieID = (?)");
       updateUser.setString(1, username);
-      updateUser.setInt(2, userID);
+      updateUser.setString(2, cookieID);
 
       updateUser.executeUpdate();
     }// try
@@ -464,13 +464,13 @@ public class DAO
    * @param email the user's new email
    * @return 0 for successful update, -1 if an error occurred
    */
-  public int updateUserEmail(int userID, String email)
+  public int updateUserEmail(String cookieID, String email)
   {
     try
     {
-      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Email = (?) WHERE UserID = (?)");
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Email = (?) WHERE CookieID = (?)");
       updateUser.setString(1, email);
-      updateUser.setInt(2, userID);
+      updateUser.setString(2, cookieID);
 
       updateUser.executeUpdate();
     }// try
@@ -490,13 +490,13 @@ public class DAO
    * @param displayName the user's new display name
    * @return 0 for successful update, -1 if an error occurred
    */
-  public int updateUserDisplayName(int userID, String displayName)
+  public int updateUserDisplayName(String cookieID, String displayName)
   {
     try
     {
-      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET DisplayName = (?) WHERE UserID = (?)");
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET DisplayName = (?) WHERE CookieID = (?)");
       updateUser.setString(1, displayName);
-      updateUser.setInt(2, userID);
+      updateUser.setString(2, cookieID);
 
       updateUser.executeUpdate();
     }// try
@@ -509,6 +509,29 @@ public class DAO
     return 0;
   }// updateUserDisplayName
 
+  
+  public int updateUserAvatar(String cookieID, String avatar)
+  {
+    try
+    {
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Avatar = (?) WHERE CookieID = (?)");
+      updateUser.setString(1, avatar);
+      updateUser.setString(2, cookieID);
+
+      updateUser.executeUpdate();
+    }// try
+    catch(Exception e)
+    {
+      System.err.println("Error updating user info: " + e.getMessage());
+      return -1;
+    }// catch
+
+    return 0;
+  }
+  
+  
+  
+  
   /**
    * Update cookieID for user identified by the given id. 
    *
@@ -542,13 +565,13 @@ public class DAO
    * @param password the user's new password
    * @return 0 for successful update, -1 if an error occurred
    */
-  public int updateUserPassword(int userID, String password)
+  public int updateUserPassword(String cookieID, String password)
   {
     try
     {
-      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Password = UNHEX(SHA2((?), 512)) WHERE UserID = (?)");
+      PreparedStatement updateUser = this.conn.prepareStatement("UPDATE User SET Password = UNHEX(SHA2((?), 512)) WHERE CookieID = (?)");
       updateUser.setString(1, password);
-      updateUser.setInt(2, userID);
+      updateUser.setString(2, cookieID);
 
       updateUser.executeUpdate();
     }// try
@@ -588,7 +611,8 @@ public class DAO
 				    rs.getDate("StartDate"), 
 				    rs.getDate("TargetDate"), 
 				    rs.getInt("Manager"),
-				    stringToProjectStatus(rs.getString("Status"))));
+				    stringToProjectStatus(rs.getString("Status")),
+				    rs.getString("ImageURL")));
       }// while
     }// try
     catch(Exception e)
@@ -627,7 +651,8 @@ public class DAO
 				    rs.getDate("StartDate"), 
 				    rs.getDate("TargetDate"), 
 				    rs.getInt("Manager"),
-				    stringToProjectStatus(rs.getString("Status"))));
+				    stringToProjectStatus(rs.getString("Status")),
+				    rs.getString("ImageURL")));
       }// while
     }// try
     catch(Exception e)
@@ -675,7 +700,7 @@ public class DAO
    * @param status
    * @return a Project object containing all info about this project from the Project table or null if an error occured.
    */
-  public Project createProject(String title, String description, Date startDate, Date targetDate, int managerID, ProjectStatus status)
+  public Project createProject(String title, String description, Date startDate, Date targetDate, int managerID, ProjectStatus status, String imageURL)
   {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO
@@ -688,13 +713,14 @@ public class DAO
     try
     {
       // insert info into db
-      PreparedStatement insertProject = this.conn.prepareStatement("INSERT INTO Project(Title, Description, StartDate, TargetDate, Manager, Status) VALUES (?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+      PreparedStatement insertProject = this.conn.prepareStatement("INSERT INTO Project(Title, Description, StartDate, TargetDate, Manager, Status, ImageURL) VALUES (?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
       insertProject.setString(1, title);
       insertProject.setString(2, description);
       insertProject.setDate(3, startDate);
       insertProject.setDate(4, targetDate);
       insertProject.setInt(5, managerID);
       insertProject.setString(6, status.toString());
+      insertProject.setString(7, imageURL);
       
       insertProject.executeUpdate();
 
@@ -704,7 +730,7 @@ public class DAO
       int projectID = rs.getInt(1);
       
       // create project object to return
-      project = new Project(projectID, title, description, startDate, targetDate, managerID, status);
+      project = new Project(projectID, title, description, startDate, targetDate, managerID, status, imageURL);
     }// try
     catch(Exception e)
     {
@@ -741,11 +767,12 @@ public class DAO
 			      rs.getDate("StartDate"),
 			      rs.getDate("TargetDate"),
 			      rs.getInt("Manager"), 
-			      stringToProjectStatus(rs.getString("Status")));
+			      stringToProjectStatus(rs.getString("Status")),
+			      rs.getString("ImageURL"));
       }// if
       else
       {
-	project = new Project(-1, "", "", null, null, -1, ProjectStatus.NOT_STARTED);
+	project = new Project(-1, "", "", null, null, -1, ProjectStatus.NOT_STARTED, null);
       }// else
     }// try
     catch(Exception e)

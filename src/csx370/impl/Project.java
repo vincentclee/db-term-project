@@ -8,7 +8,7 @@ import java.sql.Date;
 public class Project
 {
   private int projectID, manager;
-  private String title, description, status;
+  private String title, description, status, imageURL;
   private Date startDate, targetDate;
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,7 +28,7 @@ public class Project
    * @param status
    */
   public Project(int projectID, String title, String description, Date startDate, Date targetDate, 
-		 int manager, ProjectStatus status)
+		 int manager, ProjectStatus status, String imageURL)
   {
     super();
 
@@ -39,6 +39,7 @@ public class Project
     this.targetDate = targetDate;
     this.manager = manager;
     this.status = status.toString();
+    this.imageURL = imageURL;
   }// ctor
 
   /**
@@ -124,6 +125,13 @@ public String toString() {
  */
 public void setManager(int manager) {
 	this.manager = manager;
+}
+
+/**
+ * @return the imageURL
+ */
+public String getImageURL() {
+	return imageURL;
 }
   
   

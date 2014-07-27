@@ -3414,10 +3414,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     float: left;
     margin: 0 73px 60px 0;
     position: relative;
-    text-align: left;
-}
-.tw-playground-item:nth-child(4n) {
-    margin-right: 0;
+    text-align: center;
 }
 .tw-playground-item img {
     border-radius: 12px 12px 12px 12px;
@@ -3453,7 +3450,8 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 .tw-playgrounds {
     margin: 0 auto;
     overflow: hidden;
-    width: 679px;
+    padding: 0 60px;
+/*     width: 679px; */
 }
 .tw-playgrounds-container {
     position: relative;
