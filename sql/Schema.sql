@@ -16,11 +16,11 @@ USE `mydb1` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb1`.`User` (
   `UserID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `UserName` VARCHAR(200) NULL,
-  `Email` VARCHAR(200) NULL,
+  `UserName` VARCHAR(200) UNIQUE NULL,
+  `Email` VARCHAR(200) UNIQUE NULL,
   `DisplayName` VARCHAR(200) NULL,
   `Password` BINARY(64) NULL,
-  `CookieID` VARCHAR(200) NULL,
+  `CookieID` VARCHAR(200) UNIQUE NULL,
   `Avatar` VARCHAR(255) NULL,
   PRIMARY KEY (`UserID`),
   UNIQUE INDEX `UserID_UNIQUE` (`UserID` ASC),
