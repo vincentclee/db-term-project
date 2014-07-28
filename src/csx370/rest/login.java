@@ -16,7 +16,6 @@ import com.google.gson.Gson;
 
 import csx370.impl.DAO;
 import csx370.impl.User;
-import csx370.util.CORS;
 import csx370.util.CookieUtil;
 
 /**
