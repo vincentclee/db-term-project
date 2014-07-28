@@ -2,6 +2,8 @@ package csx370.rest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,6 +32,31 @@ public class signup extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//////////////////////////////////////////////
+		//Cross-Domain AJAX
+		//////////////////////////////////////////////
+		//List of allowed origins
+		List<String> incomingURLs = Arrays.asList(getServletContext().getInitParameter("incomingURLs").trim().split(","));
+		
+		// Get client's origin
+		String clientOrigin = request.getHeader("origin");
+		
+		int myIndex = incomingURLs.indexOf(clientOrigin);
+		//if the client origin is found in our list then give access
+		//if you don't want to check for origin and want to allow access
+		//to all incoming request then change the line to this
+		//response.setHeader("Access-Control-Allow-Origin", "*");
+		if(myIndex != -1){
+			response.setHeader("Access-Control-Allow-Origin", clientOrigin);
+			response.setHeader("Access-Control-Allow-Methods", "POST");
+			response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+			response.setHeader("Access-Control-Max-Age", "86400");
+		}
+		//////////////////////////////////////////////
+		//Cross-Domain AJAX
+		//////////////////////////////////////////////
+		
+		
 		PrintWriter printWriter = response.getWriter();
 		Gson gson = new Gson();
 		DAO dao = new DAO();

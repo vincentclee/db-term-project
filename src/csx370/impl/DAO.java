@@ -21,9 +21,9 @@ import csx370.util.CookieUtil;
 public class DAO
 {
   // db login info
-	  private final String DB_URL = "jdbc:mysql://172.17.149.126/mydb";
+	  private final String DB_URL = "jdbc:mysql://localhost/mydb";
 	  private final String DB_USER = "root";
-	  private final String DB_PASS = ")(*&^%$#@!";
+	  private final String DB_PASS = "";
 
   private Connection conn;
 

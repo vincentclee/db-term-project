@@ -1,4 +1,4 @@
-var HOSTNAME = "http://localhost:8080/db-term-project/";
+var HOSTNAME = "";
 var SITE_NAME = "Project Pusheen";
 var POPUP_DURATION = 2000; //in ms
 
