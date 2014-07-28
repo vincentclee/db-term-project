@@ -1,0 +1,29 @@
+1	Low	1	\N	sub1	\N	\N	\N	Backlog
+2	Normal	0	\N	sub2	\N	\N	\N	In Progress
+3	High	0	\N	sub1	\N	\N	\N	Started
+4	Low	1	\N	sub35	\N	\N	\N	Complete
+5	Normal	0	\N	Select - Point Query	<ul>\
+<li>Plot performance for Selects and Joins (response time in ms vs. number of tuples).</li>\
+<li>Compare sequential select vs. indexed select, nested loop join vs. indexed join and TreeMap vs. all index structures.</li>\
+<li>Print your Index Structure. Present performance results. Gold (+6), silver (+4) and bronze (+2) medals for best performers.</li>\
+</ul>\
+	<center>σ id = v (Student)</center>\
+\
+<br><br>\
+\
+<ol>\
+<li>Table Scan - ArrayList</li>\
+<li>Indexed Select - ArrayList, TreeMap</li>\
+<li>Indexed Select - ArrayList, BpTree</li>\
+<li>Indexed Select - ArrayList, LinHash</li>\
+<li>Indexed Select - ArrayList, ExtHash</li>\
+</ol>\
+\
+<br><br>\
+<ul>\
+  <li>Coffee</li>\
+  <li>Tea</li>\
+  <li>Milk</li>\
+</ul> \
+		Peer Review
+6	Urgent	0	\N	no-name	\N	\N	\N	Testing

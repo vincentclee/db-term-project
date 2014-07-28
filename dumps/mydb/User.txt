@@ -1,0 +1,30 @@
+1	JDO	jdeo@uga.edu	John Doe	†5_§ğ¹‹`SÀ%C™™Mû³„>Öâ’Ê¸örí^Xyóãm®ÉiœÂûÜˆ´şnúÎi8·‡8	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+2	jpub	jopu@uga.edu	Dr. John Miller PhD	ÔUŸ`.«oÖ¬v€ÚËú­Ñ603^•\	zóáv¶Û(Q/.\0û¥>‹nõ³¨«`¾K—ÌÛ	391809d2-d7d4-427a-b5d8-35a1a6aa8bc0	http://www.cs.uga.edu/sites/default/files/miller.jpg
+3	MSmith	msmith@uga.edu	Mary Smith	1òÌ^UÓeƒ¿uË¯åg¶&05‚_¶d\\ağ~‚æöç}çÆ¼=>[Ë­Š¼ªpYX[»n*1e	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+4	basim2	basim@uga.edu	Bart Simpson	}¦œ‡k·el`dğˆb\	úkëÈjvF#È4Î™ûL4˜øÕÚLü²z*GQQ\
+fqR©ƒz2Ó›D7Ì†|	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+5	Homsim	HomSim@uga.edu	Homer Simpson	Æ\04švj`q¾A¨¯â%û\\(“æ&¶`nùĞ™Vm-V¹*Z­W?Â_Àhü|“GèÔ«õ:×áNvoÔh	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+6	CJ	Cj@uga.edu	CJ Bennett	`W™­_ıËNÆwL\0GğÍÙŒÖ²ô1~›Ğ!ßáìÀ)x±ÍÑ.­Ï¯N£¢¬«ñóú÷ÕŞÙ-®ö…W	c09fb8a4-78fe-45e4-9450-56eb3bf57676	http://vincentclee.github.io/project-management/a/avatar/default.png
+7	Vince	Vincent@uga.edu	Vincent Lee	x†Â†ÆßüĞ^¦Ø<Â_ŞÌ*ÄzÕè‚ë©¨İ5y>"ÜÚw/*Kú¨×«;ÉóSeutëïœzÜ	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+8	bitaa	bitak@uga.edu	Bita Kazemi	™w<¥Ğ¤4ëş]=K·ğk,Œ%FgZòŠoF¢A”Ä7Ézjå/<‰ß«"ÛÉi=A9ùB§C­'Ôpï	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+9	Matt	mtb@uga.edu	Matthew Baron	A@ó¨ó½XôâäÀqĞ—Ö@xs@İoc÷áWÓüÒ¤÷eó¶³L5,5Í²˜=KvôØêIXn&\
+¸c£›	\N	http://media3.giphy.com/media/FV5SmqAfNGCDm/200_s.gif
+10	Collin	watts@uga.edu	Collin Watts	şV:Š>„ ”¢\
+²&48ŞİÏ+4zTA˜¨UQGˆşŠ<ßÚö¯v¥TÚ‡†”)ktçËç^¯J”ŞQ)œŸ¯	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+11	sdfsdsfdsdf	you4@yahoo.com	MyName	ÔUŸ`.«oÖ¬v€ÚËú­Ñ603^•\	zóáv¶Û(Q/.\0û¥>‹nõ³¨«`¾K—ÌÛ	9e66101e-f5c6-4672-943a-45f36e489182	http://vincentclee.github.io/project-management/a/avatar/default.png
+12	asdf	d@yaho.com	Bob	ÔUŸ`.«oÖ¬v€ÚËú­Ñ603^•\	zóáv¶Û(Q/.\0û¥>‹nõ³¨«`¾K—ÌÛ	1264db24-18cf-4c4b-95ac-3fa4843b757f	http://vincentclee.github.io/project-management/a/avatar/default.png
+13	dcphd	phd@gatech.edu	Chris Plaue	ÈC(]’:c“HaÀx©YŞ§è·¸_İ–¨ûÜÈ¸0ß0ôò6÷;às’a¼Ù3PEméş¹/„Kìd Å	5b152763-c553-4d3d-a62f-e65bc6ce5bdd	http://www.cs.uga.edu/sites/default/files/faculty_06.jpg
+14	nophd	d@yahoo.com	NoPHD	ÔUŸ`.«oÖ¬v€ÚËú­Ñ603^•\	zóáv¶Û(Q/.\0û¥>‹nõ³¨«`¾K—ÌÛ	9da9c041-1634-476d-a2e0-3ce31b0d04d3	
+15	hci	s@yahoo.com	HCI	ÔUŸ`.«oÖ¬v€ÚËú­Ñ603^•\	zóáv¶Û(Q/.\0û¥>‹nõ³¨«`¾K—ÌÛ	f3d62bdd-b2b2-4aaf-9952-db38aeb719b5	http://vincentclee.github.io/project-management/a/avatar/default.png
+17	dcphdhci	Plaue@phd.com	Chris	ÔUŸ`.«oÖ¬v€ÚËú­Ñ603^•\	zóáv¶Û(Q/.\0û¥>‹nõ³¨«`¾K—ÌÛ	d5e1b692-35c0-4090-800e-a49023ff1790	http://vincentclee.github.io/project-management/a/avatar/default.png
+18	bob	bob@bob.com	bob	¢k¥T3B†±•Iì­{¦Ã5u´ùÿ3gµÎ÷ìÙ;Cf6f{'³cC—Ã^÷'3Pó<4¯	7f6cb37f-a832-447a-99ab-34812a601351	https://i.imgur.com/hJ6Sx.jpg
+19	mynameisjonas	jonas@inter.net	jonas	@\	ê³ÀÔÊT’+¸¾ÈıS+\
+uòØ³rt)³7Y½>DE;•EU· .Ã›t“÷eêç1õ¦^Ñ	0c1388ab-47e0-4678-96dd-7fe103c6fb55	https://i.imgur.com/5O0Zn.jpg
+20	cmp	cmphd@yahoo.com	Chris Plaue PhD	ÔUŸ`.«oÖ¬v€ÚËú­Ñ603^•\	zóáv¶Û(Q/.\0û¥>‹nõ³¨«`¾K—ÌÛ	2428bc54-115f-4b55-9039-1000c0fc39eb	http://www.cs.uga.edu/sites/default/files/faculty_06.jpg
+21	phd	phd@yahoo.com	Doctor	ÔUŸ`.«oÖ¬v€ÚËú­Ñ603^•\	zóáv¶Û(Q/.\0û¥>‹nõ³¨«`¾K—ÌÛ	3d056439-34fd-475b-8b70-c13fde8cb45f	http://www.thedrum.com/uploads/drum_basic_article/100415/main_images/PHD-Logo-high-res.jpg
+22	hithere	youguys@yahoo.com	applesauce	ÏÒ:0õæá^²ùVrºt\
+İûqLüsR;£3\
+#&kV„u“y7Nw_¡/Ÿ½{[½hfR…äÃÍrÈ	41f77461-4e74-4c5e-915d-42efcd0bdfd5	http://data2.whicdn.com/images/76447021/thumb.gif
+23	jam	jam@phd.uga.edu	Dr. John Miller PhD	úX]‰ÈQİ3ŠpÜõ5ª*’şçƒmÖ¯ñ"eƒè\	–)?¼\0œe(&àü\\pf• <İÎ7/ÿM•¦ñõÓê¾	77806282-f6b0-4aea-b212-bfffc854aae9	http://www.cs.uga.edu/sites/default/files/miller.jpg
+24	Locke	watts@nike.cs.uga.edu	Collin	@\	ê³ÀÔÊT’+¸¾ÈıS+\
+uòØ³rt)³7Y½>DE;•EU· .Ã›t“÷eêç1õ¦^Ñ	49f5d90e-00de-44dc-97fe-1e06a654e38f	null

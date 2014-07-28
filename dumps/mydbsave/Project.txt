@@ -1,0 +1,7 @@
+1	DB1	CS related	\N	\N	5	Not Started	\N	\N
+2	DB2	MGT related	\N	\N	5	Started	\N	\N
+3	CMS	Business	\N	\N	6	Finished	\N	\N
+4	Mathemathics	Algebra	\N	\N	7	Not Started	\N	\N
+5	SoftEng	CS software development	\N	\N	4	In Progress	\N	\N
+6	Statistics	MGT	\N	\N	8	Finished	\N	\N
+7	Performance Evaluation of RA Operators	MAT	\N	\N	2	In Progress	\N	\N

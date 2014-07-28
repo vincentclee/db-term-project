@@ -1,0 +1,9 @@
+1	DB1	CS related	\N	\N	5	Not Started	\N	\N
+2	IBM DB2	MGT related	\N	\N	5	Started	\N	https://pbs.twimg.com/profile_images/1860384152/images__1_.jpg
+3	CMS	Business	\N	\N	6	Finished	\N	http://www.blog-revenue.com/wp-content/uploads/2014/03/wordpress-01.png
+4	Mathemathics	Algebra	\N	\N	7	Not Started	\N	\N
+5	SoftEng	CS software development	\N	\N	4	In Progress	\N	\N
+6	Statistics	MGT	\N	\N	8	Finished	\N	\N
+7	Performance Evaluation of RA Operators	MAT	\N	\N	2	In Progress	\N	http://authorstream.s3.amazonaws.com/content/899122_634361226412422500.jpg
+8	Software Engineering Term Project	The YouDrive system is designed to quickly and efficiently connect users with their rental car services	2014-07-28	0000-00-00	23	In Progress	\N	http://www.viralblog.com/wp-content/uploads/2012/10/mercedes-youdrive.png
+9	ScalaTion	An efficient and practical means of creating distributed simulations utilizing Scala	2014-07-28	0000-00-00	23	In Progress	\N	http://www.optimalenergetics.com/Blog/wp-content/uploads/2011/01/WheelOfSimulation.jpg

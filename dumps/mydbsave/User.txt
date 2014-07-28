@@ -1,0 +1,15 @@
+1	JDO	jdeo@uga.edu	John Doe	†5_§ğ¹‹`SÀ%C™™Mû³„>Öâ’Ê¸örí^Xyóãm®ÉiœÂûÜˆ´şnúÎi8·‡8	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+2	jpub	jopu@uga.edu	Joseph Public	ÔUŸ`.«oÖ¬v€ÚËú­Ñ603^•\	zóáv¶Û(Q/.\0û¥>‹nõ³¨«`¾K—ÌÛ	096552a2-ca18-43cb-affa-78f3c08bc562	http://cs.uga.edu/sites/default/files/styles/photo_medium/public/faculty_05.jpg
+3	MSmith	msmith@uga.edu	Mary Smith	1òÌ^UÓeƒ¿uË¯åg¶&05‚_¶d\\ağ~‚æöç}çÆ¼=>[Ë­Š¼ªpYX[»n*1e	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+4	basim2	basim@uga.edu	Bart Simpson	}¦œ‡k·el`dğˆb\	úkëÈjvF#È4Î™ûL4˜øÕÚLü²z*GQQ\
+fqR©ƒz2Ó›D7Ì†|	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+5	Homsim	HomSim@uga.edu	Homer Simpson	Æ\04švj`q¾A¨¯â%û\\(“æ&¶`nùĞ™Vm-V¹*Z­W?Â_Àhü|“GèÔ«õ:×áNvoÔh	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+6	CJ	Cj@uga.edu	CJ Bennet	`W™­_ıËNÆwL\0GğÍÙŒÖ²ô1~›Ğ!ßáìÀ)x±ÍÑ.­Ï¯N£¢¬«ñóú÷ÕŞÙ-®ö…W	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+7	Vince	Vincent@uga.edu	Vincent Lee	x†Â†ÆßüĞ^¦Ø<Â_ŞÌ*ÄzÕè‚ë©¨İ5y>"ÜÚw/*Kú¨×«;ÉóSeutëïœzÜ	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+8	bitaa	bitak@uga.edu	Bita Kazemi	™w<¥Ğ¤4ëş]=K·ğk,Œ%FgZòŠoF¢A”Ä7Ézjå/<‰ß«"ÛÉi=A9ùB§C­'Ôpï	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+9	Matt	mtb@uga.edu	Matthew Baron	A@ó¨ó½XôâäÀqĞ—Ö@xs@İoc÷áWÓüÒ¤÷eó¶³L5,5Í²˜=KvôØêIXn&\
+¸c£›	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+10	Collin	watts@uga.edu	Collin Watts	şV:Š>„ ”¢\
+²&48ŞİÏ+4zTA˜¨UQGˆşŠ<ßÚö¯v¥TÚ‡†”)ktçËç^¯J”ŞQ)œŸ¯	\N	http://vincentclee.github.io/project-management/a/avatar/default.png
+11	sdfsdsfdsdf	you4@yahoo.com	MyName	ÔUŸ`.«oÖ¬v€ÚËú­Ñ603^•\	zóáv¶Û(Q/.\0û¥>‹nõ³¨«`¾K—ÌÛ	9e66101e-f5c6-4672-943a-45f36e489182	http://vincentclee.github.io/project-management/a/avatar/default.png
+12	asdf	d@yaho.com	Bob	ÔUŸ`.«oÖ¬v€ÚËú­Ñ603^•\	zóáv¶Û(Q/.\0û¥>‹nõ³¨«`¾K—ÌÛ	1264db24-18cf-4c4b-95ac-3fa4843b757f	http://vincentclee.github.io/project-management/a/avatar/default.png

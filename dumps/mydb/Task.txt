@@ -1,0 +1,47 @@
+1	Low	1	\N	sub1	\N	\N	\N	Backlog
+2	Normal	0	\N	sub2	\N	\N	\N	In Progress
+3	High	0	\N	sub1	\N	\N	\N	Started
+4	Low	1	\N	sub35	\N	\N	\N	Complete
+5	Normal	0	\N	Select - Point Query	<ul>\
+<li>Plot performance for Selects and Joins (response time in ms vs. number of tuples).</li>\
+<li>Compare sequential select vs. indexed select, nested loop join vs. indexed join and TreeMap vs. all index structures.</li>\
+<li>Print your Index Structure. Present performance results. Gold (+6), silver (+4) and bronze (+2) medals for best performers.</li>\
+</ul>\
+	<center>σ id = v (Student)</center>\
+\
+<br><br>\
+\
+<ol>\
+<li>Table Scan - ArrayList</li>\
+<li>Indexed Select - ArrayList, TreeMap</li>\
+<li>Indexed Select - ArrayList, BpTree</li>\
+<li>Indexed Select - ArrayList, LinHash</li>\
+<li>Indexed Select - ArrayList, ExtHash</li>\
+</ol>\
+\
+<br><br>\
+<ul>\
+  <li>Coffee</li>\
+  <li>Tea</li>\
+  <li>Milk</li>\
+</ul> \
+		Peer Review
+6	Urgent	0	\N	no-name	\N	\N	\N	Testing
+7	Low	0	\N	Project	Ensure that this task is coordinated with the join task	Implementing the RA Project operator for the project	\N	Backlog
+8	Low	0	\N	Join	Ensure that this task is coordinated with the project task	Implementing the RA Join operator for the project	\N	Backlog
+9	Low	0	\N	Minus	Ensure that this task is coordinated with the project task	Implementing the RA Minus operator for the project	\N	In Progress
+10	Low	0	\N	Divide	<h3>Notes</h3>Ensure that this task is coordinated with the rest of the RA operator tasks	<h3>Description</h3>Implementing the RA Divide operator for the project	\N	Started
+11	High	0	\N	Users have the ability to remove posts	Ensure that users cannot accidentially delete posts from others	Users need the ability to delete their own posts. This requires a slight UI change in the form of a 'Delete Post' button, as well as adding a new database query in the backend	\N	Started
+12	Normal	0	\N	Task1	Notes	Description	\N	Backlog
+13	Normal	0	\N	Task2	Notes	Description	\N	Backlog
+14	Normal	0	\N	Task3	Notes	Description	\N	Backlog
+15	Normal	0	\N	Task4	Notes	Description	\N	Complete
+16	Normal	0	\N	Task5	Notes	Description	\N	Complete
+17	Normal	0	\N	Task5	Notes	Description	\N	Complete
+18	Normal	0	\N	Users have the ability to create posts	<strong>Notes</strong><br>This task has an implicit dependency on being ablue to view posts, however they can be developed concurrently	<strong>Description</strong><br>Users need to be able to view their own posts from a location other than their home page. This requires a new page be created, and properly linked to the homepage	\N	Testing
+19	Normal	0	\N	Basic Homepage Design	<strong>Notes</strong>Please make sure these look pretty<br>	<strong>Description</strong><br>This is the HTMLCSSgraphic design of the basic homepage	\N	Complete
+20	Normal	0	\N	User account creation	<strong>Notes</strong><br>Make sure that passwords are not stored in plaintext - Management	<strong>Description</strong><br>The front to back design of the User's ability to login and create user accounts	\N	Peer Review
+21	Normal	1	\N	User login	<strong>Notes</strong><br>N/A	<strong>Description</strong><br>The ability to interface with the created user accounts to successfully login	\N	Peer Review
+22	Normal	0	\N	The ability to create posts	<strong>Notes</strong><br>Be careful to not introduce recursive dependencies on post creation	<strong>Description</strong><br>This is the user's ability to create posts and store them on their homepage	\N	In Progress
+23	Normal	0	\N	The ability to comment on posts	<strong>Notes</strong><br>Be careful to not introduce recursive dependencies between comments	<strong>Description</strong><br>This is the user's ability to comment on others posts	\N	In Progress
+24	Normal	0	\N	Task7	<strong>Notes</strong><br>	<strong>Description</strong><br>Task7	\N	In Progress
