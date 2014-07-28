@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import csx370.impl.DAO;
-import csx370.impl.Task;
 import csx370.impl.User;
 import csx370.util.CookieUtil;
 
